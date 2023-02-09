@@ -1,0 +1,285 @@
+// ignore_for_file: avoid_print, must_be_immutable, non_constant_identifier_names, duplicate_ignore
+
+import 'package:dio/dio.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter/material.dart';
+import 'package:sfiasset/components/custom_drawer_herder.dart';
+import 'package:sfiasset/components/custom_drawer_menu.dart';
+import 'package:sfiasset/components/normal_dialog.dart';
+import 'package:sfiasset/screens/approve_holiday/approve_holiday_screen.dart';
+import 'package:sfiasset/screens/emp_card/emp_card_screen.dart';
+import 'package:sfiasset/screens/holiday/holiday_screen.dart';
+import 'package:sfiasset/screens/holiday_factory/holiday_factory_screen.dart';
+import 'package:sfiasset/screens/home/components/body_home_activity.dart';
+import 'package:sfiasset/screens/home/components/body_home_news.dart';
+import 'package:sfiasset/screens/jobEntry/job_entry_screen.dart';
+import 'package:sfiasset/screens/team/team_screen.dart';
+import 'package:sfiasset/screens/user_manual/user_manual_screen.dart';
+import 'package:sfiasset/size_config.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+import '../../constans.dart';
+import 'components/bottom_navigation.dart';
+
+class HomeScreen extends StatefulWidget {
+  const HomeScreen({Key? key}) : super(key: key);
+  static String routName = "/home";
+
+  @override
+  _HomeScreenState createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  static String? empCode, name, positionName, positionGroupCode;
+  // ignore: prefer_typing_uninitialized_variables
+  var currentPage;
+  GlobalKey globalKey = GlobalKey();
+
+  String? token;
+  String _title = "หน้าแรก";
+
+  bool _homePage = true;
+
+  List<Widget> listWidgets = [const BodyHomeNews(), const BodyHomeActivity()];
+
+  var indexPage = 0;
+
+  DateTime pre_backpress = DateTime.now();
+
+  @override
+  void initState() {
+    getUserPeferent();
+    currentPage = const BodyHomeActivity();
+    // TODO: implement initState
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return WillPopScope(
+      onWillPop: _onWillPopApp,
+      child: Scaffold(
+        appBar: CustomAppBarHome(),
+        drawer: Drawer(
+          child: Column(
+            children: [
+              Expanded(
+                flex: 2,
+                child: CustomDrawerHeader(
+                    empCode: empCode, name: name, positionName: positionName),
+              ),
+              Expanded(
+                  flex: 5,
+                  child: ListView(
+                    children: <Widget>[
+                      CustomDrawerMenu(context, "หน้าแรก", Icons.home, () {
+                        PageChang(const BodyHomeNews(), "หน้าแรก");
+                        _homePage = true;
+                      }),
+                      CustomDrawerMenu(
+                          context, "บัตรพนักงาน", Icons.person_pin_outlined,
+                          () {
+                        Navigator.pop(context);
+                        Navigator.pushNamed(context, EmpCardScreen.routName);
+                        // PageChang(const BodyInformationEmp(),"บัตรพนักงาน");
+                        _homePage = false;
+                      }),
+                      CustomDrawerMenu(
+                          context, "ปฏิทินบริษัท", Icons.calendar_today_sharp,
+                          () {
+                        //PageChang(const BodyCalenda(),"ปฏิทินบริษัท");
+                        Navigator.pop(context);
+                        Navigator.pushNamed(
+                            context, HolidayFactoryScreen.routName);
+                        _homePage = false;
+                      }),
+                      CustomDrawerMenu(context, "ทีมงาน", Icons.account_tree,
+                          () {
+                        /*PageChang(const BodyPersonalDepartment(),"ทีมงาน");*/
+                        Navigator.pop(context);
+                        Navigator.pushNamed(context, TeamScreen.routName);
+                        _homePage = false;
+                      }),
+                      CustomDrawerMenu(context, "วันหยุด", Icons.beach_access,
+                          () {
+                        Navigator.pop(context);
+                        Navigator.pushNamed(context, HolidayScreen.routName);
+                      }),
+                      CheckPosition(positionGroupCode.toString()) == true
+                          ? CustomDrawerMenu(
+                              context, "อนุมัติวันหยุด", Icons.approval, () {
+                              //PageChang(const BodyApprove(),"อนุมัติวันหยุด");
+                              Navigator.pop(context);
+                              Navigator.pushNamed(
+                                  context, ApproveHolidayScreen.routName);
+                              _homePage = false;
+                            })
+                          : Container(),
+                      CustomDrawerMenu(
+                          context, "คู่มือพนักงาน", Icons.menu_book, () {
+                            Navigator.pop(context);
+                            Navigator.pushNamed(
+                                context, UserManualScreen.routName);
+                        _homePage = false;
+                      }),
+                      CustomDrawerMenu(context, "ข้อร้องเรียน", Icons.create,
+                          () {
+                        _homePage = false;
+                      }),
+                      CustomDrawerMenu(
+                          context, "ตำแหน่งงานว่าง", Icons.wc_sharp, () {
+                        Navigator.pop(context);
+                        Navigator.pushNamed(context, JobEntryScreen.routName);
+                      }),
+                      CustomDrawerMenu(context, "ออกจากระบบ", Icons.exit_to_app,
+                          () {
+                        normalDialogYesNo(
+                            context, 'คุณต้องการออกจากระบบหรือไม่');
+                        print('ออกจากระบบ');
+                      }),
+                    ],
+                  ))
+            ],
+          ),
+        ),
+        body: listWidgets[indexPage],
+        bottomNavigationBar: showBottomNavigationBar(),
+      ),
+    );
+  }
+
+  Future<bool> _onWillPopApp() async {
+    final timegap = DateTime.now().difference(pre_backpress);
+    final cantExit = timegap >= const Duration(seconds: 2);
+    if (cantExit) {
+      pre_backpress = DateTime.now();
+      if (cantExit == true) {
+        final snackBar = SnackBar(
+          content: Text('กดอีกครั้งเพื่อออกจากแอพ'),
+          action: SnackBarAction(
+            label: 'ย้อนกลับ',
+            onPressed: () {
+              // Some code to undo the change.
+            },
+          ),
+        );
+        ScaffoldMessenger.of(context).showSnackBar(snackBar);
+      }
+      return false;
+    } else {
+      return true;
+    }
+  }
+
+  /* Future<bool> _onWillPop() async {
+    final timegap = DateTime.now().difference(pre_backpress);
+    final cantExit = timegap >= const Duration(seconds: 2);
+    if (cantExit) {
+      pre_backpress = DateTime.now();
+      return false;
+    }
+    if (_homePage == true) {
+      return false;
+    } else {
+      return (await showDialog(
+            context: context,
+            builder: (context) => AlertDialog(
+              title: Column(
+                children: const [
+                  Text('คุณต้องการออกจากแอพหรือไม่ ?'),
+                  SizedBox(
+                    height: 20,
+                  ),
+                  Icon(Icons.question_answer_rounded,
+                      size: 50, color: kPrimaryColor),
+                ],
+              ),
+              actions: <Widget>[
+                TextButton(
+                  onPressed: () => Navigator.of(context).pop(false),
+                  child: Text(
+                    'ไม่',
+                    style: TextStyle(
+                        color: Colors.red,
+                        fontSize: getProportionateScreenWidth(12.0)),
+                  ),
+                ),
+                TextButton(
+                  onPressed: () =>
+                      PageChang(const BodyHomeActivity(), "หน้าแรก"),
+                  child: Text(
+                    'ใช่',
+                    style: TextStyle(
+                        color: Colors.green,
+                        fontSize: getProportionateScreenWidth(12.0)),
+                  ),
+                ),
+              ],
+            ),
+          )) ??
+          false;
+    }
+  }*/
+
+  BottomNavigationBar showBottomNavigationBar() => BottomNavigationBar(
+        selectedItemColor: kPrimaryColor,
+        currentIndex: indexPage,
+        onTap: (value) {
+          setState(() {
+            indexPage = value;
+          });
+        },
+        items: <BottomNavigationBarItem>[ButtomNavNews(), ButtomNavActiviy()],
+      );
+
+  Future<void> getUserPeferent() async {
+    String url = "http://61.7.142.47:8086/sfi-hr/updateToken.php";
+
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    setState(() {
+      name = preferences.getString("username");
+      positionGroupCode = preferences.getString('positionGroup');
+      positionName = preferences.getString("positionName");
+      empCode = preferences.getString('empcode')!.substring(0, 2) +
+          '-' +
+          preferences.getString('empcode')!.substring(2);
+    });
+
+    await Firebase.initializeApp().whenComplete(() {
+      FirebaseMessaging.instance.getToken().then((value) async {
+        String? token = value;
+        print("Token:>>>>>>>>>>>>>>>>>$token");
+
+        var formData = FormData.fromMap({
+          'empCode': empCode!.split('-')[0] + empCode!.split('-')[1],
+          'nAme': name,
+          'toKen': token
+        });
+        await Dio()
+            .post(url, data: formData)
+            .then((value) => print("อัพเดทข้อมูลเรียบร้อย"));
+      });
+    });
+  }
+
+  // ignore: non_constant_identifier_names
+  void PageChang(Widget page, String title) {
+    setState(() {
+      _title = title;
+      currentPage = page;
+      Navigator.pop(context);
+    });
+  }
+
+  bool CheckPosition(String PositionGroupCode) {
+    if (PositionGroupCode == "052" ||
+        PositionGroupCode == "042" ||
+        PositionGroupCode == "032") {
+      print(PositionGroupCode);
+      return true;
+    } else {
+      return false;
+    }
+  }
+}
