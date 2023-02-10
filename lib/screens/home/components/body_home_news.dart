@@ -124,7 +124,7 @@ class _BodyHomeNewsState extends State<BodyHomeNews> {
                   ),
                   TextButton(
                     onPressed: () {
-                      Navigator.pushNamed(context, PublicizeAllScreen.routName);
+                      Navigator.pushNamed(context, PublicizeAllScreen.routName, arguments: {'blogType': 'news'});
                     },
                     style: TextButton.styleFrom(
                       primary: kPrimaryColor,
