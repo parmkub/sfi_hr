@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:sfiasset/constans.dart';
 import 'package:sfiasset/model/approve_holiday_model.dart';
 import 'package:sfiasset/providers/approve_holiday_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -35,125 +36,130 @@ class _BodyApproveState extends State<BodyApprove> {
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      children: [
-        RefreshIndicator(
-          onRefresh: getApproveHoliday,
-          child: Consumer(builder: (context, ApproveHolidayProvider provider, child) {
-            return ListView.builder(
-                itemCount: provider.ApproveHolidayCard.length,
-                itemBuilder: (context, index) => Padding(
-                    padding: const EdgeInsets.all(5.0),
-                    child: Card(
-                      color: Color(ColorTypeLeaving(provider.ApproveHolidayCard[index].aBSENCECODE.toString())!.toInt()),
-                      //Color(0xB2F39BA1),
-                      elevation: 5,
-                      child: Column(
-                        children: [
-                          Row(
-                            children: [
-                              Expanded(
-                                  flex: 4,
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(20),
-                                    child: Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                      children: [
-                                        // Text(
-                                        //   "ชื่อ: ${provider.ApproveHolidayCard[index].aBSENCEDOCUMENT}",
-                                        //   style: buildTextStyle(14),
-                                        // ),
-                                        Text(
-                                          "ชื่อ: ${provider.ApproveHolidayCard[index].nAME}",
-                                          style: buildTextStyle(14),
-                                        ),
-                                        Text(
-                                          "รหัสพนักงาน: ${provider.ApproveHolidayCard[index].eMPLOYEECODE}",
-                                          style: buildTextStyle(14),
-                                        ),
-                                        Text(
-                                            "ประเภทลา: ${ConvertCodeLeaving(provider.ApproveHolidayCard[index].aBSENCECODE.toString())}",
-                                            style: buildTextStyle(14)),
-                                        Text(
-                                          "ตั้งแต่ : ${provider.ApproveHolidayCard[index].mIN}",
-                                          style: buildTextStyle(14),
-                                        ),
-                                        Text(
-                                            "สิ้นสุด : ${provider.ApproveHolidayCard[index].mAX}",
-                                            style: buildTextStyle(14)),
-                                        Text(
-                                            "รวม ${provider.ApproveHolidayCard[index].dAY} วัน",
-                                            style: buildTextStyle(12)),
-                                        provider.ApproveHolidayCard[index].aBSENCEDETAIL == null
-                                            ? Text('')
-                                            :
-                                        Text('เนื่องจาก: ${provider.ApproveHolidayCard[index].aBSENCEDETAIL}', style: buildTextStyle(12))
-                                      ],
-                                    ),
-                                  )),
-                              Expanded(
-                                flex: 2,
-                                child: Container(
-                                  height: getProportionateScreenHeight(150),
-                                  decoration:  BoxDecoration(
-                                    border: Border.all(
-                                      color: Colors.blueGrey,
-                                        width: 3),
-                                     borderRadius: BorderRadius.all(Radius.circular(5.0))
-                                  ),
-                                  margin: EdgeInsets.all(10.0),
-                                    child: FadeInImage(
-                                      placeholder: const AssetImage(
-                                          "assets/images/userProfile.png"),
-                                      image: NetworkImage(
-                                        "http://61.7.142.47:8086/sfifix/image/${provider.ApproveHolidayCard[index].eMPLOYEECODE!.substring(0, 2)}-${provider.ApproveHolidayCard[index].eMPLOYEECODE!.substring(2)}.jpg",
+    return Container(
+      decoration: const BoxDecoration(
+        gradient: kBackgroundColor,
+      ),
+      child: Stack(
+        children: [
+          RefreshIndicator(
+            onRefresh: getApproveHoliday,
+            child: Consumer(builder: (context, ApproveHolidayProvider provider, child) {
+              return ListView.builder(
+                  itemCount: provider.ApproveHolidayCard.length,
+                  itemBuilder: (context, index) => Padding(
+                      padding: const EdgeInsets.all(5.0),
+                      child: Card(
+                        color: Color(ColorTypeLeaving(provider.ApproveHolidayCard[index].aBSENCECODE.toString())!.toInt()),
+                        //Color(0xB2F39BA1),
+                        elevation: 5,
+                        child: Column(
+                          children: [
+                            Row(
+                              children: [
+                                Expanded(
+                                    flex: 4,
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(20),
+                                      child: Column(
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: [
+                                          // Text(
+                                          //   "ชื่อ: ${provider.ApproveHolidayCard[index].aBSENCEDOCUMENT}",
+                                          //   style: buildTextStyle(14),
+                                          // ),
+                                          Text(
+                                            "ชื่อ: ${provider.ApproveHolidayCard[index].nAME}",
+                                            style: buildTextStyle(14),
+                                          ),
+                                          Text(
+                                            "รหัสพนักงาน: ${provider.ApproveHolidayCard[index].eMPLOYEECODE}",
+                                            style: buildTextStyle(14),
+                                          ),
+                                          Text(
+                                              "ประเภทลา: ${ConvertCodeLeaving(provider.ApproveHolidayCard[index].aBSENCECODE.toString())}",
+                                              style: buildTextStyle(14)),
+                                          Text(
+                                            "ตั้งแต่ : ${provider.ApproveHolidayCard[index].mIN}",
+                                            style: buildTextStyle(14),
+                                          ),
+                                          Text(
+                                              "สิ้นสุด : ${provider.ApproveHolidayCard[index].mAX}",
+                                              style: buildTextStyle(14)),
+                                          Text(
+                                              "รวม ${provider.ApproveHolidayCard[index].dAY} วัน",
+                                              style: buildTextStyle(12)),
+                                          provider.ApproveHolidayCard[index].aBSENCEDETAIL == null
+                                              ? Text('')
+                                              :
+                                          Text('เนื่องจาก: ${provider.ApproveHolidayCard[index].aBSENCEDETAIL}', style: buildTextStyle(12))
+                                        ],
                                       ),
-                                      imageErrorBuilder:
-                                          (context, error, stackTrace) {
-                                        return Image.asset(
-                                            "assets/images/userProfile.png");
-                                      },
-                                      fit: BoxFit.cover,
+                                    )),
+                                Expanded(
+                                  flex: 2,
+                                  child: Container(
+                                    height: getProportionateScreenHeight(150),
+                                    decoration:  BoxDecoration(
+                                      border: Border.all(
+                                        color: Colors.blueGrey,
+                                          width: 3),
+                                       borderRadius: BorderRadius.all(Radius.circular(5.0))
                                     ),
+                                    margin: EdgeInsets.all(10.0),
+                                      child: FadeInImage(
+                                        placeholder: const AssetImage(
+                                            "assets/images/userProfile.png"),
+                                        image: NetworkImage(
+                                          "http://61.7.142.47:8086/sfifix/image/${provider.ApproveHolidayCard[index].eMPLOYEECODE!.substring(0, 2)}-${provider.ApproveHolidayCard[index].eMPLOYEECODE!.substring(2)}.jpg",
+                                        ),
+                                        imageErrorBuilder:
+                                            (context, error, stackTrace) {
+                                          return Image.asset(
+                                              "assets/images/userProfile.png");
+                                        },
+                                        fit: BoxFit.cover,
+                                      ),
 
-                                ),
-                              )
-                            ],
-                          ),
-                          buildStepIndicator(provider.ApproveHolidayCard[index].aBSENCECODE.toString(),
-                              provider.ApproveHolidayCard[index].aBSENCESTATUS.toString()),
-                          ShowButtomApprove(provider, index),
-                          SizedBox(height: 10,)
+                                  ),
+                                )
+                              ],
+                            ),
+                            buildStepIndicator(provider.ApproveHolidayCard[index].aBSENCECODE.toString(),
+                                provider.ApproveHolidayCard[index].aBSENCESTATUS.toString()),
+                            ShowButtomApprove(provider, index),
+                            SizedBox(height: 10,)
 
-                          // positionName == 'sect_code' && provider.ApproveHolidayCard[index].aBSENCESTATUS == '0'?
-                          // ButtomApproveLeav(context: context,documentNo:
-                          // provider.ApproveHolidayCard[index].aBSENCEDOCUMENT.toString(),
-                          //   statusLeave: provider.ApproveHolidayCard[index].aBSENCESTATUS.toString(),
-                          //   reviewDocument: provider.ApproveHolidayCard[index].aBSENCEREVIWE.toString(),
-                          //   ApproveDocument: provider.ApproveHolidayCard[index].aBSENCEAPPROVE.toString(),): Container(),
-                          //
-                          // positionName != 'sect_code' && int.parse(provider.ApproveHolidayCard[index].aBSENCESTATUS.toString())> 0 ?
-                          // ButtomApproveLeav(context: context,documentNo:
-                          // provider.ApproveHolidayCard[index].aBSENCEDOCUMENT.toString(),
-                          //   statusLeave: provider.ApproveHolidayCard[index].aBSENCESTATUS.toString(),
-                          //   reviewDocument: provider.ApproveHolidayCard[index].aBSENCEREVIWE.toString(),
-                          //   ApproveDocument: provider.ApproveHolidayCard[index].aBSENCEAPPROVE.toString(),):
-                          // Container(height: 10,)
+                            // positionName == 'sect_code' && provider.ApproveHolidayCard[index].aBSENCESTATUS == '0'?
+                            // ButtomApproveLeav(context: context,documentNo:
+                            // provider.ApproveHolidayCard[index].aBSENCEDOCUMENT.toString(),
+                            //   statusLeave: provider.ApproveHolidayCard[index].aBSENCESTATUS.toString(),
+                            //   reviewDocument: provider.ApproveHolidayCard[index].aBSENCEREVIWE.toString(),
+                            //   ApproveDocument: provider.ApproveHolidayCard[index].aBSENCEAPPROVE.toString(),): Container(),
+                            //
+                            // positionName != 'sect_code' && int.parse(provider.ApproveHolidayCard[index].aBSENCESTATUS.toString())> 0 ?
+                            // ButtomApproveLeav(context: context,documentNo:
+                            // provider.ApproveHolidayCard[index].aBSENCEDOCUMENT.toString(),
+                            //   statusLeave: provider.ApproveHolidayCard[index].aBSENCESTATUS.toString(),
+                            //   reviewDocument: provider.ApproveHolidayCard[index].aBSENCEREVIWE.toString(),
+                            //   ApproveDocument: provider.ApproveHolidayCard[index].aBSENCEAPPROVE.toString(),):
+                            // Container(height: 10,)
 
-                          // provider.ApproveHolidayCard[index].aBSENCESTATUS == '2' &&
-                          //     provider.ApproveHolidayCard[index].aBSENCECODE != '11'?
-                          // Container(height: 10,) :
-                          // ButtomApproveLeav(context: context,documentNo:
-                          // provider.ApproveHolidayCard[index].aBSENCEDOCUMENT.toString(),
-                          //   statusLeave: provider.ApproveHolidayCard[index].aBSENCESTATUS.toString(),
-                          // reviewDocument: provider.ApproveHolidayCard[index].aBSENCEREVIWE.toString(),
-                          // ApproveDocument: provider.ApproveHolidayCard[index].aBSENCEAPPROVE.toString(),)
-                        ],
-                      )
-                    )));
-          }),
-        )
-      ],
+                            // provider.ApproveHolidayCard[index].aBSENCESTATUS == '2' &&
+                            //     provider.ApproveHolidayCard[index].aBSENCECODE != '11'?
+                            // Container(height: 10,) :
+                            // ButtomApproveLeav(context: context,documentNo:
+                            // provider.ApproveHolidayCard[index].aBSENCEDOCUMENT.toString(),
+                            //   statusLeave: provider.ApproveHolidayCard[index].aBSENCESTATUS.toString(),
+                            // reviewDocument: provider.ApproveHolidayCard[index].aBSENCEREVIWE.toString(),
+                            // ApproveDocument: provider.ApproveHolidayCard[index].aBSENCEAPPROVE.toString(),)
+                          ],
+                        )
+                      )));
+            }),
+          )
+        ],
+      ),
     );
   }
 
