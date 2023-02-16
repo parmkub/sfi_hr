@@ -34,8 +34,11 @@ class _HolidayScreenState extends State<HolidayScreen> {
   ];
   int indexPage = 0;
 
+  bool statusData = true;
+
   @override
   void initState() {
+    getPossitionGroup();
     getLeavingCard();
     super.initState();
   }
@@ -46,7 +49,7 @@ class _HolidayScreenState extends State<HolidayScreen> {
       appBar: CustomAppBarMenu("วันหยุด"),
       body: listWidgets[indexPage],
       bottomNavigationBar: showBottomNavigationBar(),
-      floatingActionButton: indexPage != 0
+      floatingActionButton: indexPage != 0 || statusData
           ? const SizedBox()
           : FloatingActionButton(
               backgroundColor: kPrimaryColor,
@@ -124,6 +127,23 @@ class _HolidayScreenState extends State<HolidayScreen> {
         }
       }
     } catch (e) {}
+  }
+  Future<void> getPossitionGroup() async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    String? positionGroup = preferences.getString('positionGroup');
+    print('ตำแหน่งกลุ่ม:${positionGroup!}');
+    setState(() {
+
+
+    if (positionGroup == '051' || positionGroup == '052' ||
+        positionGroup == '061' || positionGroup == '071' ||
+        positionGroup == '072') {
+        statusData =  true;
+    }
+    else{
+      statusData =  false;
+    }
+    });
   }
 
   // Future FromAlertLeaving(context) async {

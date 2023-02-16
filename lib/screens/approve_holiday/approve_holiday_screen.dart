@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:sfiasset/constans.dart';
 
-import '../../size_config.dart';
 import '../home/components/body_approve.dart';
 
 class ApproveHolidayScreen extends StatefulWidget {

@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:sfiasset/constans.dart';
 
 import 'package:sfiasset/model/holiday_calendar_model.dart';
 import 'package:sfiasset/model/holiday_show_model.dart';
@@ -35,11 +36,14 @@ class _BodyHolidayCalendarState extends State<BodyHolidayCalendar> {
   @override
   Widget build(BuildContext context) {
     return Container(
+      decoration: const BoxDecoration(
+        gradient: kBackgroundColor
+      ),
       child: Center(
         child: Column(
           children: <Widget>[
             BuildCalandar(holidayCalendars: holidayCalendars, holidays: holidays),
-            BuildColorDetail()
+            const BuildColorDetail()
           ],
         ),
       ),

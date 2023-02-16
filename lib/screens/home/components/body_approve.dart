@@ -84,7 +84,10 @@ class _BodyApproveState extends State<BodyApprove> {
                                         Text(
                                             "รวม ${provider.ApproveHolidayCard[index].dAY} วัน",
                                             style: buildTextStyle(12)),
-                                        Text('เนื่องจาก: ', style: buildTextStyle(12))
+                                        provider.ApproveHolidayCard[index].aBSENCEDETAIL == null
+                                            ? Text('')
+                                            :
+                                        Text('เนื่องจาก: ${provider.ApproveHolidayCard[index].aBSENCEDETAIL}', style: buildTextStyle(12))
                                       ],
                                     ),
                                   )),
@@ -273,7 +276,7 @@ class _BodyApproveState extends State<BodyApprove> {
           ApproveHoliday approveHolidayCard = ApproveHoliday.fromJson(map);
           //   setState(() {
           provider.addLeavingCard(approveHolidayCard);
-          print('ดึงข้อมูลการ์ด');
+          debugPrint('ดึงข้อมูลการ์ด');
           // LeavingModels.add(leavingCard);
           //  });
         }

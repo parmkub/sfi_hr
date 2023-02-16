@@ -73,103 +73,107 @@ class _FormLeavingScreenState extends State<FormLeavingScreen> {
     final difference = dateRang.duration;
     return Scaffold(
       resizeToAvoidBottomInset: false, //ยกเลิก ลดขนาดหน้าจอเมื่อคียร์บอร์ดอัพ
-      appBar: AppBar(
-        title: const Text('บันทึกใบลา'),
-      ),
+      appBar: CustomAppBarMenu('บันทึกใบลา'),
       body: GestureDetector(
         onTap: () => FocusScope.of(context).requestFocus(FocusNode()),
         behavior: HitTestBehavior.opaque,
         child: SafeArea(
-          child: Column(
-            children: <Widget>[
-              Expanded(
-                flex: 5,
-                child: Card(
-                  color: Colors.white,
-                  margin: const EdgeInsets.all(10.0),
-                  elevation: 5,
-                  child: Padding(
-                    padding: const EdgeInsets.fromLTRB(20, 20, 20, 10),
-                    child: Form(
-                      key: _formKey,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: <Widget>[
-                          const Text("บันทึกใบลา",
-                              style: TextStyle(
-                                  color: kTextColor,
-                                  fontSize: 16.0,
-                                  fontWeight: FontWeight.bold)),
-                          const Spacer(),
-                          SelectMoreDayOrOneDay(start),
-                          const Spacer(),
-                          SelectTypeLeaving(),
-                          const Spacer(),
-                          chooseLeaveingFormat == 1
-                              ? PickDate()
-                              : PickDateRange(start, end, difference),
-                          const Spacer(),
-                          _selectTypeLeav == "02"
-                              ? TextFieldLeavDetail()
-                              : Container(),
-                          const Spacer(),
-                          // ignore: unrelated_type_equality_checks
-                          chooseLeaveingFormat == 1
-                              ? SelectDayHour()
-                              : Container(),
-                          const Spacer(),
-                          _character == SingingCharacter.hour
-                              ? SelectHour()
-                              : Container(),
-                          const Spacer()
-                        ],
+
+          child: Container(
+            decoration: const BoxDecoration(
+              gradient: kBackgroundColor
+            ),
+            child: Column(
+              children: <Widget>[
+                Expanded(
+                  flex: 5,
+                  child: Card(
+                    color: const Color.fromRGBO(245,245, 220, 1),
+                    margin: const EdgeInsets.all(10.0),
+                    elevation: 5,
+                    child: Padding(
+                      padding: const EdgeInsets.fromLTRB(20, 20, 20, 10),
+                      child: Form(
+                        key: _formKey,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: <Widget>[
+                            Text("บันทึกใบลา",
+                                style: TextStyle(
+                                    color: kTextColor,
+                                    fontSize: getProportionateScreenWidth(14),
+                                    fontWeight: FontWeight.bold)),
+                            const Spacer(),
+                            SelectMoreDayOrOneDay(start),
+                            const Spacer(),
+                            SelectTypeLeaving(),
+                            const Spacer(),
+                            chooseLeaveingFormat == 1
+                                ? PickDate()
+                                : PickDateRange(start, end, difference),
+                            const Spacer(),
+                            _selectTypeLeav == "02"
+                                ? TextFieldLeavDetail()
+                                : Container(),
+                            const Spacer(),
+                            // ignore: unrelated_type_equality_checks
+                            chooseLeaveingFormat == 1
+                                ? SelectDayHour()
+                                : Container(),
+                            const Spacer(),
+                            _character == SingingCharacter.hour
+                                ? SelectHour()
+                                : Container(),
+                            const Spacer()
+                          ],
+                        ),
                       ),
                     ),
                   ),
                 ),
-              ),
-              Expanded(
-                  child: Container(
-                margin: const EdgeInsets.all(10),
-                child: Column(
-                  children: [
-                    DefaultButton(
-                        text: "บันทึกข้อมูล",
-                        press: () {
-                          if (_formKey.currentState!.validate()) {
-                            print("เลขที่เอกสาร: ${getRandString()}");
-                            print('วันที่ลาก absence_date: $_dateTime');
-                            print("รหัสพนักงาน employee_code: $_empCode");
-                            print("รหัสการลา absence_code: $_selectTypeLeav");
-                            print("เต็มวัน absence_day: $_fullDay");
-                            print("ชั่วโมง absence_hour: $_hour");
-                            print(
-                                'สถานน่ะการลา absence_status:$_statusApprove');
-                            print("token: $_token");
-                            print(
-                                'รายละเอียดกาลา absence_detail:$_leavingDtail');
-                            if (chooseLeaveingFormat != 1) {
-                              _dateTime =
-                                  DateFormat('dd-MMM-yyyy').format(start);
+                Expanded(
+                    child: Container(
+                  margin: const EdgeInsets.all(10),
+                  child: Column(
+                    children: [
+                      DefaultButton(
+                          text: "บันทึกข้อมูล",
+                          press: () {
+                            if (_formKey.currentState!.validate()) {
+                              print("เลขที่เอกสาร: ${getRandString()}");
+                              print('วันที่ลาก absence_date: $_dateTime');
+                              print("รหัสพนักงาน employee_code: $_empCode");
+                              print("รหัสการลา absence_code: $_selectTypeLeav");
+                              print("เต็มวัน absence_day: $_fullDay");
+                              print("ชั่วโมง absence_hour: $_hour");
+                              print(
+                                  'สถานน่ะการลา absence_status:$_statusApprove');
+                              print("token: $_token");
+                              print(
+                                  'รายละเอียดกาลา absence_detail:$_leavingDtail');
+                              if (chooseLeaveingFormat != 1) {
+                                _dateTime =
+                                    DateFormat('dd-MMM-yyyy').format(start);
+                              }
+
+                              _shoDialogDetail(
+                                  _dateTime,
+                                  _empCode,
+                                  _selectTypeLeav,
+                                  _fullDay,
+                                  _hour,
+                                  chooseLeaveingFormat,
+                                  difference);
+
+                              // ScaffoldMessenger.of(context).showSnackBar(
+                              //     const SnackBar(content: Text('Processing Data')),);
                             }
-
-                            _shoDialogDetail(
-                                _dateTime,
-                                _empCode,
-                                _selectTypeLeav,
-                                _fullDay,
-                                _hour,
-                                chooseLeaveingFormat,
-                                difference);
-
-                            // ScaffoldMessenger.of(context).showSnackBar(
-                            //     const SnackBar(content: Text('Processing Data')),);
-                          }
-                        }),
-                  ],
-                ),
-              ))
-            ],
+                          }),
+                    ],
+                  ),
+                ))
+              ],
+            ),
           ),
         ),
       ),
@@ -195,15 +199,27 @@ class _FormLeavingScreenState extends State<FormLeavingScreen> {
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
-            title: const Text(
+            shape: const RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(Radius.circular(10.0))),
+            title: Text(
               'รายละเอียดการลา',
-              style: TextStyle(fontSize: 16.0, color: kTextColor),
+              style: TextStyle(
+                  fontSize: getProportionateScreenWidth(14), color: kTextColor,fontWeight: FontWeight.bold),
             ),
-            content: SingleChildScrollView(
-              child: StatusShow == 1
-                  ? ReportAlertOne(dateTime, fullDay, hour)
-                  : Container(),
-            ),
+            content: Builder(builder: (context) {
+              return Container(
+
+                width: getProportionateScreenWidth(300),
+                height: getProportionateScreenHeight(350),
+                padding: const EdgeInsets.all(5),
+                color: const Color.fromRGBO(245, 245, 220, 1),
+                child: SingleChildScrollView(
+                  child: StatusShow == 1
+                      ? ReportAlertOne(dateTime, fullDay, hour)
+                      : Container(),
+                ),
+              );
+            }),
             actions: <Widget>[
               // ignore: deprecated_member_use
               /* FlatButton(
@@ -249,9 +265,9 @@ class _FormLeavingScreenState extends State<FormLeavingScreen> {
                 ),
                 onPressed: () => Navigator.pop(context),
                 child: Text(
-                  "บันทึก",
+                  "ยกเลิก",
                   style: TextStyle(
-                      fontSize: getProportionateScreenWidth(16),
+                      fontSize: getProportionateScreenWidth(14),
                       color: Colors.white),
                 ),
               ),
@@ -269,7 +285,7 @@ class _FormLeavingScreenState extends State<FormLeavingScreen> {
                 child: Text(
                   "บันทึก",
                   style: TextStyle(
-                      fontSize: getProportionateScreenWidth(16),
+                      fontSize: getProportionateScreenWidth(14),
                       color: Colors.white),
                 ),
               )
@@ -283,72 +299,83 @@ class _FormLeavingScreenState extends State<FormLeavingScreen> {
       children: <Widget>[
         ListTile(
           title: SizedBox(
-            width: 80,
             child: Text(
               dateTime,
-              style: const TextStyle(fontSize: 14.0, color: kTextColor),
+              style: TextStyle(
+                  fontSize: getProportionateScreenWidth(14), color: kTextColor),
             ),
           ),
-          leading: const SizedBox(
-            width: 80,
+          leading: SizedBox(
             child: Text(
               "วันที่หยุดงาน:",
-              style: TextStyle(fontSize: 14.0, color: kTextColor),
+              style: TextStyle(
+                  fontSize: getProportionateScreenWidth(14), color: kTextColor),
             ),
           ),
         ),
         ListTile(
           title: SizedBox(
-            width: 80,
             child: Text(
               codeToString[_selectTypeLeav].toString(),
-              style: const TextStyle(fontSize: 14.0, color: kTextColor),
+              style: TextStyle(
+                  fontSize: getProportionateScreenWidth(14), color: kTextColor),
             ),
           ),
-          leading: const SizedBox(
-              width: 80.0,
+          leading: SizedBox(
               child: Text(
-                "ประเภทลา:",
-                style: TextStyle(fontSize: 14.0, color: kTextColor),
-              )),
+            "ประเภทลา:",
+            style: TextStyle(
+                fontSize: getProportionateScreenWidth(14), color: kTextColor),
+          )),
         ),
         fullDay != 0
             ? ListTile(
                 title: SizedBox(
-                    width: 80.0,
                     child: Text(
-                      "$fullDay วัน",
-                      style: const TextStyle(fontSize: 14.0, color: kTextColor),
-                    )),
-                leading: const SizedBox(
-                    width: 80,
+                  "$fullDay วัน",
+                  style: TextStyle(
+                      fontSize: getProportionateScreenWidth(14),
+                      color: kTextColor),
+                )),
+                leading: SizedBox(
                     child: Text(
-                      "จำนวนที่ลา:",
-                      style: TextStyle(color: kTextColor, fontSize: 14.0),
-                    )),
+                  "จำนวนที่ลา:",
+                  style: TextStyle(
+                      color: kTextColor,
+                      fontSize: getProportionateScreenWidth(14)),
+                )),
               )
             : ListTile(
                 title: SizedBox(
-                    width: 80,
                     child: Text(
-                      "$hour ชั่วโมง",
-                      style: const TextStyle(color: kTextColor, fontSize: 14),
-                    )),
-                leading: const SizedBox(
-                    width: 80,
+                  "$hour ชั่วโมง",
+                  style: TextStyle(
+                      color: kTextColor,
+                      fontSize: getProportionateScreenWidth(14)),
+                )),
+                leading: SizedBox(
                     child: Text(
-                      "จำนวนที่ลา: ",
-                      style: TextStyle(fontSize: 14.0, color: kTextColor),
-                    )),
+                  "จำนวนที่ลา: ",
+                  style: TextStyle(
+                      fontSize: getProportionateScreenWidth(14),
+                      color: kTextColor),
+                )),
               ),
         _leavingDtail == ""
             ? Container()
             : Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Text(
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  Text(
                     'เหตุผลการลา:',
-                    style: TextStyle(fontSize: 14.0, color: kTextColor),
+                    style: TextStyle(
+                        fontSize: getProportionateScreenWidth(14),
+                        color: kTextColor,
+                    fontWeight: FontWeight.bold),
+
                   ),
                   const SizedBox(
                     height: 5,
@@ -356,14 +383,16 @@ class _FormLeavingScreenState extends State<FormLeavingScreen> {
                   Container(
                     padding: const EdgeInsets.all(10),
                     width: double.infinity,
-                    height: getProportionateScreenHeight(120),
+                    height: getProportionateScreenWidth(110),
                     decoration: BoxDecoration(
                       border: Border.all(color: kTextColor),
                       borderRadius: BorderRadius.circular(10),
                     ),
                     child: Text(
                       _leavingDtail!,
-                      style: const TextStyle(color: kTextColor, fontSize: 14.0),
+                      style: TextStyle(
+                          color: kTextColor,
+                          fontSize: getProportionateScreenWidth(14)),
                     ),
                   )
                 ],
@@ -375,19 +404,22 @@ class _FormLeavingScreenState extends State<FormLeavingScreen> {
   Row PickDate() {
     return Row(
       children: [
-        const Expanded(
+        Expanded(
             flex: 2,
             child: Text(
               "วันที่ลา:",
               style: TextStyle(
                   color: kTextColor,
-                  fontSize: 14.0,
+                  fontSize: getProportionateScreenWidth(14),
                   fontWeight: FontWeight.bold),
             )),
         Expanded(
             flex: 9,
             child: Container(
               padding: const EdgeInsets.only(top: 10, bottom: 10),
+              decoration: BoxDecoration(
+                  border: Border.all(color: kTextColor),
+                  borderRadius: BorderRadius.circular(26)),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
@@ -400,7 +432,8 @@ class _FormLeavingScreenState extends State<FormLeavingScreen> {
                       ),
                       Text(
                         "    วันที่  : $_dateTime",
-                        style: const TextStyle(fontSize: 14.0),
+                        style: TextStyle(
+                            fontSize: getProportionateScreenWidth(14)),
                       ),
                       const SizedBox(
                         height: 5,
@@ -430,9 +463,6 @@ class _FormLeavingScreenState extends State<FormLeavingScreen> {
                       ))
                 ],
               ),
-              decoration: BoxDecoration(
-                  border: Border.all(color: kTextColor),
-                  borderRadius: BorderRadius.circular(26)),
             ))
       ],
     );
@@ -441,19 +471,22 @@ class _FormLeavingScreenState extends State<FormLeavingScreen> {
   Row PickDateRange(DateTime start, DateTime end, Duration difference) {
     return Row(
       children: [
-        const Expanded(
+        Expanded(
             flex: 2,
             child: Text(
               "วันที่ลา:",
               style: TextStyle(
                   color: kTextColor,
-                  fontSize: 14.0,
+                  fontSize: getProportionateScreenWidth(14),
                   fontWeight: FontWeight.bold),
             )),
         Expanded(
             flex: 9,
             child: Container(
               padding: const EdgeInsets.only(top: 10, bottom: 10),
+              decoration: BoxDecoration(
+                  border: Border.all(color: kTextColor),
+                  borderRadius: BorderRadius.circular(26)),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
@@ -466,21 +499,24 @@ class _FormLeavingScreenState extends State<FormLeavingScreen> {
                       ),
                       Text(
                         "    เริ่ม  : ${DateFormat('dd-MMM-yyyy').format(start)}",
-                        style: const TextStyle(fontSize: 14.0),
+                        style: TextStyle(
+                            fontSize: getProportionateScreenWidth(14)),
                       ),
                       const SizedBox(
                         height: 5,
                       ),
                       Text(
                         "สิ้นสุด  : ${DateFormat('dd-MMM-yyyy').format(end)}",
-                        style: const TextStyle(fontSize: 14.0),
+                        style: TextStyle(
+                            fontSize: getProportionateScreenWidth(14)),
                       ),
                       const SizedBox(
                         height: 5,
                       ),
                       Text(
                         "   รวม  : ${difference.inDays + 1} วัน",
-                        style: const TextStyle(fontSize: 14.0),
+                        style: TextStyle(
+                            fontSize: getProportionateScreenWidth(14)),
                       )
                     ],
                   ),
@@ -495,9 +531,6 @@ class _FormLeavingScreenState extends State<FormLeavingScreen> {
                       ))
                 ],
               ),
-              decoration: BoxDecoration(
-                  border: Border.all(color: kTextColor),
-                  borderRadius: BorderRadius.circular(26)),
             ))
       ],
     );
@@ -548,12 +581,13 @@ class _FormLeavingScreenState extends State<FormLeavingScreen> {
     String url = "http://61.7.142.47:8086/sfi-hr/insertLeaving.php";
     Response response = await Dio().post(url, data: formData);
     if (response.toString() == 'true') {
+      // ignore: use_build_context_synchronously
       var provider = Provider.of<LeavingProvider>(context, listen: false);
       provider.removeLeavingCard();
       SharedPreferences preferences = await SharedPreferences.getInstance();
-      String? _empCode = preferences.getString('empcode');
+      String? empCode = preferences.getString('empcode');
       String url =
-          "http://61.7.142.47:8086/sfi-hr/select_leav_document.php?empcode=$_empCode";
+          "http://61.7.142.47:8086/sfi-hr/select_leav_document.php?empcode=$empCode";
       Response response = await Dio().get(url);
       try {
         var result = jsonDecode(response.data);
@@ -610,10 +644,12 @@ class _FormLeavingScreenState extends State<FormLeavingScreen> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Text(
+        Text(
           'หน่วยลา: ',
           style: TextStyle(
-              color: kTextColor, fontSize: 14.0, fontWeight: FontWeight.bold),
+              color: kTextColor,
+              fontSize: getProportionateScreenWidth(14),
+              fontWeight: FontWeight.bold),
         ),
         Row(
           children: [
@@ -702,10 +738,12 @@ class _FormLeavingScreenState extends State<FormLeavingScreen> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Text(
+        Text(
           'รูปแบบการลา: ',
           style: TextStyle(
-              color: kTextColor, fontSize: 14.0, fontWeight: FontWeight.bold),
+              color: kTextColor,
+              fontSize: getProportionateScreenWidth(14),
+              fontWeight: FontWeight.bold),
         ),
         Row(
           children: [
@@ -823,17 +861,20 @@ class _FormLeavingScreenState extends State<FormLeavingScreen> {
   Row TextFieldLeavDetail() {
     return Row(
       children: [
-        const Expanded(
+        Expanded(
             flex: 2,
             child: Text(
               "เหตุผล:",
               style: TextStyle(
-                  color: kTextColor, fontSize: 14, fontWeight: FontWeight.bold),
+                  color: kTextColor,
+                  fontSize: getProportionateScreenWidth(14),
+                  fontWeight: FontWeight.bold),
             )),
         Expanded(
             flex: 9,
             child: TextFormField(
-              style: const TextStyle(color: kTextColor),
+              style: TextStyle(
+                  color: kTextColor, fontSize: getProportionateScreenWidth(14)),
               validator: (value) {
                 if (value == null || value.isEmpty) {
                   return "กรุณากรอกเหตุผลกาลา";
@@ -853,12 +894,14 @@ class _FormLeavingScreenState extends State<FormLeavingScreen> {
   Row SelectTypeLeaving() {
     return Row(
       children: <Widget>[
-        const Expanded(
+        Expanded(
           flex: 2,
           child: Text(
             'ประเภท:',
             style: TextStyle(
-                fontSize: 14, color: kTextColor, fontWeight: FontWeight.bold),
+                fontSize: getProportionateScreenWidth(14),
+                color: kTextColor,
+                fontWeight: FontWeight.bold),
           ),
         ),
         Expanded(
@@ -867,42 +910,46 @@ class _FormLeavingScreenState extends State<FormLeavingScreen> {
             decoration: const InputDecoration(),
             value: _selectTypeLeav,
             isExpanded: true,
-            items: const [
+            items: [
               DropdownMenuItem(
                 value: "02",
                 child: Text(
                   "ลากิจ",
-                  style: TextStyle(fontSize: 14, color: kTextColor),
+                  style: TextStyle(
+                      fontSize: getProportionateScreenWidth(12),
+                      color: kTextColor),
                 ),
               ),
-              DropdownMenuItem(
+              /*DropdownMenuItem(
                 value: "11",
                 child: Text(
                   "ลาป่วย",
                   style: TextStyle(fontSize: 14, color: kTextColor),
                 ),
-              ),
+              ),*/
               DropdownMenuItem(
                 value: "29",
                 child: Text(
                   "ลาพักผ่อนประจำปี",
-                  style: TextStyle(fontSize: 14, color: kTextColor),
+                  style: TextStyle(
+                      fontSize: getProportionateScreenWidth(12),
+                      color: kTextColor),
                 ),
               ),
-              DropdownMenuItem(
+              /*  DropdownMenuItem(
                 value: "14",
                 child: Text(
                   "ลาคลอด",
                   style: TextStyle(fontSize: 14, color: kTextColor),
                 ),
-              ),
-              DropdownMenuItem(
+              ),*/
+              /*       DropdownMenuItem(
                 value: "12",
                 child: Text(
                   "ลาเนื่องจากอุบัติเหตุ",
                   style: TextStyle(fontSize: 14, color: kTextColor),
                 ),
-              ),
+              ),*/
             ],
             onChanged: (val) => setState(() {
               _selectTypeLeav = val!;
@@ -921,12 +968,14 @@ class _FormLeavingScreenState extends State<FormLeavingScreen> {
   Row SelectHour() {
     return Row(
       children: <Widget>[
-        const Expanded(
+        Expanded(
           flex: 2,
           child: Text(
             'จำนวน :',
             style: TextStyle(
-                fontSize: 14, color: kTextColor, fontWeight: FontWeight.bold),
+                fontSize: getProportionateScreenWidth(14),
+                color: kTextColor,
+                fontWeight: FontWeight.bold),
           ),
         ),
         Expanded(
@@ -935,54 +984,68 @@ class _FormLeavingScreenState extends State<FormLeavingScreen> {
             decoration: const InputDecoration(),
             value: _selectHour,
             isExpanded: true,
-            items: const [
+            items: [
               DropdownMenuItem(
                 value: "1",
                 child: Text(
                   "1 ชั่วโมง",
-                  style: TextStyle(fontSize: 14, color: kTextColor),
+                  style: TextStyle(
+                      fontSize: getProportionateScreenWidth(14),
+                      color: kTextColor),
                 ),
               ),
               DropdownMenuItem(
                 value: "2",
                 child: Text(
                   "2 ชั่วโมง",
-                  style: TextStyle(fontSize: 14, color: kTextColor),
+                  style: TextStyle(
+                      fontSize: getProportionateScreenWidth(14),
+                      color: kTextColor),
                 ),
               ),
               DropdownMenuItem(
                 value: "3",
                 child: Text(
                   "3 ชั่วโมง",
-                  style: TextStyle(fontSize: 14, color: kTextColor),
+                  style: TextStyle(
+                      fontSize: getProportionateScreenWidth(14),
+                      color: kTextColor),
                 ),
               ),
               DropdownMenuItem(
                 value: "4",
                 child: Text(
                   "4 ชั่วโมง",
-                  style: TextStyle(fontSize: 14, color: kTextColor),
+                  style: TextStyle(
+                      fontSize: getProportionateScreenWidth(14),
+                      color: kTextColor),
                 ),
               ),
               DropdownMenuItem(
                 value: "5",
                 child: Text(
                   "5 ชั่วโมง",
-                  style: TextStyle(fontSize: 14, color: kTextColor),
+                  style: TextStyle(
+                      fontSize: getProportionateScreenWidth(14),
+                      color: kTextColor),
                 ),
               ),
               DropdownMenuItem(
                 value: "6",
                 child: Text(
                   "6 ชั่วโมง",
-                  style: TextStyle(fontSize: 14, color: kTextColor),
+                  style: TextStyle(
+                      fontSize: getProportionateScreenWidth(14),
+                      color: kTextColor),
                 ),
               ),
               DropdownMenuItem(
                 value: "7",
                 child: Text(
                   "7 ชั่วโมง",
-                  style: TextStyle(fontSize: 14, color: kTextColor),
+                  style: TextStyle(
+                      fontSize: getProportionateScreenWidth(14),
+                      color: kTextColor),
                 ),
               ),
             ],

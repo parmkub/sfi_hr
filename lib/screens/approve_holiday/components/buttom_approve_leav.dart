@@ -57,7 +57,9 @@ class ButtomApproveLeav extends StatelessWidget {
                       ),
                     ),
                     onPressed: () {
-                      UpdateStatusApproveLeaving(documentNo,statusLeave,reviewDocument);
+
+                      //UpdateStatusApproveLeaving(documentNo,statusLeave,reviewDocument);
+
                     },
                     child: Text(
                       "ไม่อนุมัติ",
@@ -96,6 +98,7 @@ class ButtomApproveLeav extends StatelessWidget {
                     ),
                     onPressed: () {
                       UpdateStatusApproveLeaving(documentNo,statusLeave,reviewDocument);
+                      print('สถานะการอัพเดทเอกสาร : $statusLeave');
                     },
                     child: Text(
                       "อนุมัติ",
@@ -117,13 +120,12 @@ class ButtomApproveLeav extends StatelessWidget {
       if(_statusLeaving == '1'){
         print("_statusLeaving : $_statusLeaving");
         columeApprove = 'ABSENCE_APPROVE';
-      }else {
+      }else if(_statusLeaving == '2'){
         columeApprove = 'absence_review';
       }
       int IntstatusLeaving = int.parse(_statusLeaving);
       print("columApprove:  $columeApprove");
       IntstatusLeaving = IntstatusLeaving + 1;
-
 
       String url = "http://61.7.142.47:8086/sfi-hr/updateStatusApproveLeaving.php"
           "?absenceDocument=$_documentNo&statusApprove=${IntstatusLeaving.toString()}&empCode=$empcode&columeApprove=$columeApprove";
@@ -131,11 +133,12 @@ class ButtomApproveLeav extends StatelessWidget {
 
       if(response.toString() == 'true'){
         print('อัพเดทข้อมูลสถานะลาเรียบร้อย');
-        print("ผู้ทบทวน: $reviewDocument");
-        getApproveHoliday();
+
       }else {
         print('อัพเดทสถานะการลาล้มเหลว');
       }
+
+
   }
 
   Future<void> getApproveHoliday() async {
@@ -174,7 +177,8 @@ class ButtomApproveLeav extends StatelessWidget {
     Response response = await Dio().get(url!);
     try {
       var result = jsonDecode(response.data);
-      if (result != null) {
+      print('result: $result');
+      if (result != null ) {
         for (var map in result) {
           ApproveHoliday approveHolidayCard = ApproveHoliday.fromJson(map);
 
@@ -182,6 +186,7 @@ class ButtomApproveLeav extends StatelessWidget {
 
         }
       }
+
     } catch (e) {}
   }
   

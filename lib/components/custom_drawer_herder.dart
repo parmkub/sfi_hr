@@ -16,26 +16,33 @@ class CustomDrawerHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return UserAccountsDrawerHeader(
+
       currentAccountPicture: ImageDrower(),
-      accountName: Text(
-        "$name",
-        style: const TextStyle(
-            color: Colors.white,
-            fontWeight: FontWeight.bold,
-            shadows: <Shadow>[
-              Shadow(
-                offset: Offset(1.0, 1.0),
-                blurRadius: 3.0,
-                color: Color.fromARGB(255, 0, 0, 0),
-              ),
-            ]),
+      accountName: Column(
+        children: [
+          Text(
+            "$name",
+            style:  TextStyle(
+                color: Colors.white,
+                fontWeight: FontWeight.bold,
+                fontSize: getProportionateScreenWidth(16),
+                shadows: const <Shadow>[
+                  Shadow(
+                    offset: Offset(1.0, 1.0),
+                    blurRadius: 3.0,
+                    color: Color.fromARGB(255, 0, 0, 0),
+                  ),
+                ]),
+          ),
+        ],
       ),
       accountEmail: Text(
         "ตำแหน่ง $positionName",
-        style: const TextStyle(
+        style:  TextStyle(
             color: Colors.white,
             fontWeight: FontWeight.bold,
-            shadows: <Shadow>[
+            fontSize: getProportionateScreenWidth(10),
+            shadows: const <Shadow>[
               Shadow(
                 offset: Offset(1.0, 1.0),
                 blurRadius: 3.0,
@@ -53,15 +60,16 @@ class CustomDrawerHeader extends StatelessWidget {
 
   Widget ImageDrower(){
     return  Container(
-
+      width: getProportionateScreenHeight(200),
       child: ClipOval(
         child: FadeInImage(
           placeholder:
           const AssetImage("assets/images/userProfile.png"),
           image: NetworkImage(
-              "http://61.7.142.47:8086/sfifix/image/$empCode.jpg"),
+              "http://61.7.142.47:8086/img/sfi/$empCode.jpg",scale: 2.0),
           imageErrorBuilder: (context, error, stackTrace) {
-            return Image.asset("assets/images/userProfile.png");
+            return Image.asset("assets/images/userProfile.png",
+                fit: BoxFit.cover);
           },
           fit: BoxFit.cover,
         ),
