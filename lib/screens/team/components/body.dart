@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:sfiasset/constans.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../components/custom_depart_posonal.dart';
@@ -94,6 +95,9 @@ class _BodyState extends State<Body> {
       width: double.infinity,
       child: SingleChildScrollView(
         child: Container(
+          decoration: const BoxDecoration(
+            gradient: kBackgroundColor
+          ),
           width: double.infinity,
           child: Column(
             children: teamCard,

@@ -48,6 +48,7 @@ class _FormLeavingScreenState extends State<FormLeavingScreen> {
   String? _leavingDtail;
   Map<String, String> codeToString = {
     '02': 'ลากิจ',
+    'AB': 'ลากิจหักตังค์',
     '11': 'ลาป่วย',
     '29': 'พักร้อน',
     '14': 'ลาคลอด',
@@ -58,6 +59,8 @@ class _FormLeavingScreenState extends State<FormLeavingScreen> {
   final int? _statusApprove = 0;
 
   String? _token;
+
+  int limite02 = 2;
 
   @override
   void initState() {
@@ -143,7 +146,7 @@ class _FormLeavingScreenState extends State<FormLeavingScreen> {
                               print("เลขที่เอกสาร: ${getRandString()}");
                               print('วันที่ลาก absence_date: $_dateTime');
                               print("รหัสพนักงาน employee_code: $_empCode");
-                              print("รหัสการลา absence_code: $_selectTypeLeav");
+
                               print("เต็มวัน absence_day: $_fullDay");
                               print("ชั่วโมง absence_hour: $_hour");
                               print(
@@ -155,6 +158,12 @@ class _FormLeavingScreenState extends State<FormLeavingScreen> {
                                 _dateTime =
                                     DateFormat('dd-MMM-yyyy').format(start);
                               }
+
+                              if(limite02 > 3){
+                                _selectTypeLeav = "AB";
+                                print("รหัสการลา absence_code: $_selectTypeLeav");
+                              }
+                              print("รหัสการลา absence_code: $_selectTypeLeav");
 
                               _shoDialogDetail(
                                   _dateTime,
@@ -956,7 +965,7 @@ class _FormLeavingScreenState extends State<FormLeavingScreen> {
               if (_selectTypeLeav != "02") {
                 _leavingDtail = "";
               }
-              print("searchSource:" + _selectTypeLeav!);
+              print("ประเภทการลา:" + _selectTypeLeav!);
               print('รายละเอียดการลา:$_leavingDtail');
             }),
           ),

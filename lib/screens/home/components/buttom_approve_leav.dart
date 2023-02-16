@@ -96,6 +96,7 @@ class ButtomApproveLeav extends StatelessWidget {
                     ),
                     onPressed: () {
                       UpdateStatusApproveLeaving(documentNo,statusLeave,reviewDocument);
+
                     },
                     child: Text(
                       "อนุมัติ",
@@ -131,11 +132,28 @@ class ButtomApproveLeav extends StatelessWidget {
 
       if(response.toString() == 'true'){
         print('อัพเดทข้อมูลสถานะลาเรียบร้อย');
-        print("ผู้ทบทวน: $reviewDocument");
+        print("สถานะอัพเดท 55555: $IntstatusLeaving");
+        print("เลขที่เอกสาร $documentNo");
         getApproveHoliday();
+        await InsertAbsenceTable(IntstatusLeaving);
+
       }else {
         print('อัพเดทสถานะการลาล้มเหลว');
       }
+  }
+  Future<void> InsertAbsenceTable(int statusApprove )async {
+    if (statusApprove == 2) {
+      print('จาก InsertAbsenceTableDocument: $documentNo');
+      print('จาก InsertyAbsenceTableStatus: $statusApprove');
+
+      String url = "http://61.7.142.47:8086/sfi-hr/insertAbsence.php?documentNo=$documentNo";
+      Response response = await Dio().get(url);
+      if (response.toString() == 'true') {
+        print('อัพเดทข้อมูลลาTable Absence เรียบร้อย');
+      } else {
+        print('อัพเดทข้อมูลลา Table Absence ล้มเหลว');
+      }
+    }
   }
 
   Future<void> getApproveHoliday() async {

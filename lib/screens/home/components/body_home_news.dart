@@ -184,8 +184,11 @@ class _BodyHomeNewsState extends State<BodyHomeNews> {
               ),
             ),
           ],
-        )): const Center(child: CircularProgressIndicator(),
-    ) ;
+        )): Container(
+      decoration: const BoxDecoration(gradient: kBackgroundColor),
+          child: const Center(child: CircularProgressIndicator(),
+    ),
+        ) ;
 
    /* Column(
       mainAxisAlignment: MainAxisAlignment.center,

@@ -1,3 +1,5 @@
+// ignore_for_file: non_constant_identifier_names, must_be_immutable, avoid_print, duplicate_ignore
+
 import 'dart:convert';
 
 import 'package:dio/dio.dart';
@@ -5,7 +7,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sfiasset/model/approve_holiday_model.dart';
 import 'package:sfiasset/providers/approve_holiday_provider.dart';
-import 'package:sfiasset/screens/home/components/body_approve.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../size_config.dart';
@@ -14,10 +15,11 @@ class ButtomApproveLeav extends StatelessWidget {
   String documentNo;
   String statusLeave;
   String reviewDocument;
+  // ignore: non_constant_identifier_names
   String ApproveDocument;
   BuildContext context;
 
-  var url;
+  var url = '';
    ButtomApproveLeav({
     Key? key,
      required this.documentNo,
@@ -112,34 +114,42 @@ class ButtomApproveLeav extends StatelessWidget {
     );
   }
 
-  Future<void> UpdateStatusApproveLeaving(String _documentNo,_statusLeaving,_reviewDocument) async{
+  Future<void> UpdateStatusApproveLeaving(String documentNo,statusLeaving,reviewDocument) async{
       SharedPreferences preferences = await SharedPreferences.getInstance();
       String? empcode = preferences.getString('empcode');
       String? columeApprove;
 
-      if(_statusLeaving == '1'){
-        print("_statusLeaving : $_statusLeaving");
+      if(statusLeaving == '1'){
+        print("_statusLeaving : $statusLeaving");
         columeApprove = 'ABSENCE_APPROVE';
-      }else if(_statusLeaving == '2'){
+      }else if(statusLeaving == '2'){
         columeApprove = 'absence_review';
       }
-      int IntstatusLeaving = int.parse(_statusLeaving);
+      int IntstatusLeaving = int.parse(statusLeaving);
       print("columApprove:  $columeApprove");
       IntstatusLeaving = IntstatusLeaving + 1;
 
       String url = "http://61.7.142.47:8086/sfi-hr/updateStatusApproveLeaving.php"
-          "?absenceDocument=$_documentNo&statusApprove=${IntstatusLeaving.toString()}&empCode=$empcode&columeApprove=$columeApprove";
-      Response response = await Dio().get(url);
+          "?absenceDocument=$documentNo&statusApprove=${IntstatusLeaving.toString()}&empCode=$empcode&columeApprove=$columeApprove";
+     try{
+       Response response = await Dio().get(url);
 
-      if(response.toString() == 'true'){
-        print('อัพเดทข้อมูลสถานะลาเรียบร้อย');
+       if(response.toString() == 'true'){
+         print('อัพเดทข้อมูลสถานะลาเรียบร้อย');
+         print('สถานะการอนุมัติ : $IntstatusLeaving');
+       }else {
+         print('อัพเดทสถานะการลาล้มเหลว');
+       }
+     }catch(e) {
+       print('error: $e');
+     }
 
-      }else {
-        print('อัพเดทสถานะการลาล้มเหลว');
-      }
 
 
   }
+
+
+
 
   Future<void> getApproveHoliday() async {
 
@@ -174,6 +184,9 @@ class ButtomApproveLeav extends StatelessWidget {
     }
 
 
+
+
+    // ignore: unnecessary_non_null_assertion
     Response response = await Dio().get(url!);
     try {
       var result = jsonDecode(response.data);
@@ -187,6 +200,7 @@ class ButtomApproveLeav extends StatelessWidget {
         }
       }
 
+    // ignore: empty_catches
     } catch (e) {}
   }
   
