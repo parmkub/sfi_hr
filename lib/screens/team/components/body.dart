@@ -17,7 +17,7 @@ class Body extends StatefulWidget {
 }
 
 class _BodyState extends State<Body> {
-  String? sectID,positionGroup,positionName,positionCode;
+  String? sectID, positionGroup, positionName, positionCode;
   List<TeamModel> teamModels = [];
   List<Widget> teamCard = [];
 
@@ -33,20 +33,26 @@ class _BodyState extends State<Body> {
     positionGroup = preferences.getString('positionGroup');
     print('positionGroup = $positionGroup');
 
-     if(positionGroup == '032'||positionGroup == '022' || positionGroup == '015'
-         || positionGroup == '014'|| positionGroup == '013'|| positionGroup == '012'|| positionGroup == '011'|| positionGroup=='021'){
-       positionName = 'sect_code';
-       positionCode = preferences.getString('sectcode');
-     }else if( positionGroup ==  '042' || positionGroup ==  '041' ){
-       positionName = 'divi_code';
-       positionCode = preferences.getString('divicode');
-     }else if( positionGroup ==  '052' || positionGroup ==  '051'){
-       positionName = 'depart_code';
-       positionCode = preferences.getString('departcode');
-     }else if(positionGroup == '061'){
-        positionName = 'depart_code';
-        positionCode = '5200';
-     }
+    if (positionGroup == '032' ||
+        positionGroup == '022' ||
+        positionGroup == '015' ||
+        positionGroup == '014' ||
+        positionGroup == '013' ||
+        positionGroup == '012' ||
+        positionGroup == '011' ||
+        positionGroup == '021') {
+      positionName = 'sect_code';
+      positionCode = preferences.getString('sectcode');
+    } else if (positionGroup == '042' || positionGroup == '041') {
+      positionName = 'divi_code';
+      positionCode = preferences.getString('divicode');
+    } else if (positionGroup == '052' || positionGroup == '051') {
+      positionName = 'depart_code';
+      positionCode = preferences.getString('departcode');
+    } else if (positionGroup == '061') {
+      positionName = 'depart_code';
+      positionCode = '5200';
+    }
 
 /*    if(positionGroup == '052' ){
       positionName = 'depart_code';
@@ -58,8 +64,6 @@ class _BodyState extends State<Body> {
 
     // positionName = 'divi_code';
     // positionCode = preferences.getString('divicode');
-
-
 
     print('ชื่อตำแหน่ง : $positionName');
     print('รหัสตำแหน่ง : $positionCode');
@@ -89,21 +93,21 @@ class _BodyState extends State<Body> {
   Widget build(BuildContext context) {
     return teamCard.length == 0
         ? Center(
-      child: showProgress(),
-    )
-        :  SizedBox(
-      width: double.infinity,
-      child: SingleChildScrollView(
-        child: Container(
-          decoration: const BoxDecoration(
-            gradient: kBackgroundColor
-          ),
-          width: double.infinity,
-          child: Column(
-            children: teamCard,
-          ),
-        ),
-      ),
-    );
+            child: showProgress(),
+          )
+        : Stack(
+            children: [
+              Container(
+                width: double.infinity,
+                height: double.infinity,
+                decoration: const BoxDecoration(gradient: kBackgroundColor),
+              ),
+              SingleChildScrollView(
+                child: Column(
+                  children: teamCard,
+                ),
+              ),
+            ],
+          );
   }
 }

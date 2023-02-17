@@ -71,74 +71,79 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
               Expanded(
                   flex: 5,
-                  child: ListView(
-                    children: <Widget>[
-                      CustomDrawerMenu(context, "หน้าแรก", Icons.home, () {
-                        PageChang(const BodyHomeNews(), "หน้าแรก");
-                        _homePage = true;
-                      }),
-                      CustomDrawerMenu(
-                          context, "บัตรพนักงาน", Icons.person_pin_outlined,
-                          () {
-                        Navigator.pop(context);
-                        Navigator.pushNamed(context, EmpCardScreen.routName);
-                        // PageChang(const BodyInformationEmp(),"บัตรพนักงาน");
-                        _homePage = false;
-                      }),
-                      CustomDrawerMenu(
-                          context, "ปฏิทินบริษัท", Icons.calendar_today_sharp,
-                          () {
-                        //PageChang(const BodyCalenda(),"ปฏิทินบริษัท");
-                        Navigator.pop(context);
-                        Navigator.pushNamed(
-                            context, HolidayFactoryScreen.routName);
-                        _homePage = false;
-                      }),
-                      CustomDrawerMenu(context, "ทีมงาน", Icons.account_tree,
-                          () {
-                        /*PageChang(const BodyPersonalDepartment(),"ทีมงาน");*/
-                        Navigator.pop(context);
-                        Navigator.pushNamed(context, TeamScreen.routName);
-                        _homePage = false;
-                      }),
-                      CustomDrawerMenu(context, "วันหยุด", Icons.beach_access,
-                          () {
-                        Navigator.pop(context);
-                        Navigator.pushNamed(context, HolidayScreen.routName);
-                      }),
-                      CheckPosition(positionGroupCode.toString()) == true
-                          ? CustomDrawerMenu(
-                              context, "อนุมัติวันหยุด", Icons.approval, () {
-                              //PageChang(const BodyApprove(),"อนุมัติวันหยุด");
+                  child: Container(
+                    decoration: const BoxDecoration(
+                      gradient: kBackgroundColor
+                    ),
+                    child: ListView(
+                      children: <Widget>[
+                        CustomDrawerMenu(context, "หน้าแรก", Icons.home, () {
+                          PageChang(const BodyHomeNews(), "หน้าแรก");
+                          _homePage = true;
+                        }),
+                        CustomDrawerMenu(
+                            context, "บัตรพนักงาน", Icons.person_pin_outlined,
+                            () {
+                          Navigator.pop(context);
+                          Navigator.pushNamed(context, EmpCardScreen.routName);
+                          // PageChang(const BodyInformationEmp(),"บัตรพนักงาน");
+                          _homePage = false;
+                        }),
+                        CustomDrawerMenu(
+                            context, "ปฏิทินบริษัท", Icons.calendar_today_sharp,
+                            () {
+                          //PageChang(const BodyCalenda(),"ปฏิทินบริษัท");
+                          Navigator.pop(context);
+                          Navigator.pushNamed(
+                              context, HolidayFactoryScreen.routName);
+                          _homePage = false;
+                        }),
+                        CustomDrawerMenu(context, "ทีมงาน", Icons.account_tree,
+                            () {
+                          /*PageChang(const BodyPersonalDepartment(),"ทีมงาน");*/
+                          Navigator.pop(context);
+                          Navigator.pushNamed(context, TeamScreen.routName);
+                          _homePage = false;
+                        }),
+                        CustomDrawerMenu(context, "วันหยุด", Icons.beach_access,
+                            () {
+                          Navigator.pop(context);
+                          Navigator.pushNamed(context, HolidayScreen.routName);
+                        }),
+                        CheckPosition(positionGroupCode.toString()) == true
+                            ? CustomDrawerMenu(
+                                context, "อนุมัติวันหยุด", Icons.approval, () {
+                                //PageChang(const BodyApprove(),"อนุมัติวันหยุด");
+                                Navigator.pop(context);
+                                Navigator.pushNamed(
+                                    context, ApproveHolidayScreen.routName);
+                                _homePage = false;
+                              })
+                            : Container(),
+                        CustomDrawerMenu(
+                            context, "คู่มือพนักงาน", Icons.menu_book, () {
                               Navigator.pop(context);
                               Navigator.pushNamed(
-                                  context, ApproveHolidayScreen.routName);
-                              _homePage = false;
-                            })
-                          : Container(),
-                      CustomDrawerMenu(
-                          context, "คู่มือพนักงาน", Icons.menu_book, () {
-                            Navigator.pop(context);
-                            Navigator.pushNamed(
-                                context, UserManualScreen.routName);
-                        _homePage = false;
-                      }),
-                      CustomDrawerMenu(context, "ข้อร้องเรียน", Icons.create,
-                          () {
-                        _homePage = false;
-                      }),
-                      CustomDrawerMenu(
-                          context, "ตำแหน่งงานว่าง", Icons.wc_sharp, () {
-                        Navigator.pop(context);
-                        Navigator.pushNamed(context, JobEntryScreen.routName);
-                      }),
-                      CustomDrawerMenu(context, "ออกจากระบบ", Icons.exit_to_app,
-                          () {
-                        normalDialogYesNo(
-                            context, 'คุณต้องการออกจากระบบหรือไม่');
-                        print('ออกจากระบบ');
-                      }),
-                    ],
+                                  context, UserManualScreen.routName);
+                          _homePage = false;
+                        }),
+                        CustomDrawerMenu(context, "ข้อร้องเรียน", Icons.create,
+                            () {
+                          _homePage = false;
+                        }),
+                        CustomDrawerMenu(
+                            context, "ตำแหน่งงานว่าง", Icons.wc_sharp, () {
+                          Navigator.pop(context);
+                          Navigator.pushNamed(context, JobEntryScreen.routName);
+                        }),
+                        CustomDrawerMenu(context, "ออกจากระบบ", Icons.exit_to_app,
+                            () {
+                          normalDialogYesNo(
+                              context, 'คุณต้องการออกจากระบบหรือไม่');
+                          print('ออกจากระบบ');
+                        }),
+                      ],
+                    ),
                   ))
             ],
           ),

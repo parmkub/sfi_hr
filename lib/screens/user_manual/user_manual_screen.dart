@@ -16,7 +16,7 @@ class _UserManualScreenState extends State<UserManualScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CustomAppBarMenu('คู่มือพนักงาน'),
-      body: const BodyUserManual(),
+      body:  const BodyUserManual(blogType: 'manual',),
     );
   }
 }

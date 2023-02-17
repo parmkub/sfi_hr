@@ -72,7 +72,8 @@ class _BodyBublicizeState extends State<BodyBublicize> {
       child: Center(
         child: Stack(
           children: [
-            WebViewWidget(controller: _controller),
+            WebViewWidget(
+                controller: _controller),
             if (loadingPercentage < 100)
               LinearProgressIndicator(value: loadingPercentage / 100),
             loadingPercentage < 100

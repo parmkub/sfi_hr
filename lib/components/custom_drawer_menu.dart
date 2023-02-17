@@ -7,6 +7,13 @@ import 'package:sfiasset/size_config.dart';
 Card CustomDrawerMenu(
     BuildContext context, String menu, var icon, Function press) {
   return Card(
+    shape: RoundedRectangleBorder(
+      side:
+      const BorderSide(color: kPrimaryColor, width: 0.2),
+      borderRadius: BorderRadius.circular(10.0),
+    ),
+    color: Colors.white,
+    elevation: 5,
     child: ListTile(
       leading: Icon(
         icon,

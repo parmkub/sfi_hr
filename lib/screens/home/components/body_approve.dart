@@ -111,7 +111,7 @@ class _BodyApproveState extends State<BodyApprove> {
                                         placeholder: const AssetImage(
                                             "assets/images/userProfile.png"),
                                         image: NetworkImage(
-                                          "http://61.7.142.47:8086/sfifix/image/${provider.ApproveHolidayCard[index].eMPLOYEECODE!.substring(0, 2)}-${provider.ApproveHolidayCard[index].eMPLOYEECODE!.substring(2)}.jpg",
+                                          "http://61.7.142.47:8086/img/sfi/${provider.ApproveHolidayCard[index].eMPLOYEECODE!.substring(0, 2)}-${provider.ApproveHolidayCard[index].eMPLOYEECODE!.substring(2)}.jpg",
                                         ),
                                         imageErrorBuilder:
                                             (context, error, stackTrace) {

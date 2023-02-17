@@ -83,7 +83,8 @@ class _BodyHolidayCalendarState extends State<BodyHolidayCalendar> {
               color = 0xFF094999;
             }
 
-          }else if(holidayCalendars[i].aBSENCECODE == "01"){
+            //01 คือวันหยุดปรกติของรายเดือน 88 คือวันหยุดปรกติของรายวัน
+          }else if(holidayCalendars[i].aBSENCECODE == "01" || holidayCalendars[i].aBSENCECODE == "88"){
             if(holidayCalendars[i].aBSENCECOMMENT == "2"){
               color = 0xFFFFFF66;
             }else{

@@ -23,7 +23,7 @@ Widget createCard(TeamModel teamModel) {
                     placeholder:
                         const AssetImage("assets/images/userProfile.png"),
                     image: NetworkImage(
-                        "http://61.7.142.47:8086/sfifix/image/${teamModel.eMPCODE!.substring(0, 2)}-${teamModel.eMPCODE!.substring(2)}.jpg"),
+                        "http://61.7.142.47:8086/img/sfi/${teamModel.eMPCODE!.substring(0, 2)}-${teamModel.eMPCODE!.substring(2)}.jpg"),
                     imageErrorBuilder: (context, error, stackTrace) {
                       return Image.asset("assets/images/userProfile.png");
                     },

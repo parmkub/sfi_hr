@@ -9,6 +9,7 @@ import 'package:sfiasset/screens/holiday/holiday_screen.dart';
 import 'package:sfiasset/screens/holiday_factory/holiday_factory_screen.dart';
 import 'package:sfiasset/screens/home/home_screen.dart';
 import 'package:sfiasset/screens/home/publicize_screen/publicize_screen.dart';
+import 'package:sfiasset/screens/hr_team/hr_team_screen.dart';
 import 'package:sfiasset/screens/jobEntry/job_entry_screen.dart';
 import 'package:sfiasset/screens/sign_in/sign_in_screen.dart';
 import 'package:sfiasset/screens/splash_screen/splash_screen.dart';
@@ -34,5 +35,6 @@ final Map<String, WidgetBuilder> routs = {
   UserManualScreen.routName : (context)=> const UserManualScreen(),
   PublicezeScreen.routName : (context)=> const PublicezeScreen(),
   PublicizeAllScreen.routName : (context)=> const PublicizeAllScreen(),
+  HRTeamScreen.routName : (context)=> const HRTeamScreen(),
   // FixScreen.routName : (context)=>FixScreen(),
 };

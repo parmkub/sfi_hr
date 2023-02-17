@@ -7,6 +7,7 @@ import 'package:sfiasset/screens/emp_card/emp_card_screen.dart';
 import 'package:sfiasset/screens/holiday/holiday_screen.dart';
 import 'package:sfiasset/screens/holiday_factory/holiday_factory_screen.dart';
 import 'package:sfiasset/screens/home/publicize_screen/publicize_screen.dart';
+import 'package:sfiasset/screens/hr_team/hr_team_screen.dart';
 import 'package:sfiasset/screens/publicize_all/publicize_all_screen.dart';
 import 'package:sfiasset/screens/team/team_screen.dart';
 import 'package:sfiasset/screens/user_manual/user_manual_screen.dart';
@@ -38,7 +39,8 @@ class _BodyHomeNewsState extends State<BodyHomeNews> {
     HolidayFactoryScreen.routName,
     HolidayScreen.routName,
     TeamScreen.routName,
-    UserManualScreen.routName
+    UserManualScreen.routName,
+    HRTeamScreen.routName
   ];
   int currentPageNews = 0;
 
@@ -88,11 +90,11 @@ class _BodyHomeNewsState extends State<BodyHomeNews> {
                     },
                     child: Card(
                       shape: RoundedRectangleBorder(
-                        side: BorderSide(color: kPrimaryColor, width: 1),
+                        side: BorderSide(color: kPrimaryColor, width: 0.2),
                         borderRadius: BorderRadius.circular(10.0),
                       ),
                       margin: EdgeInsets.all(10),
-                      elevation: 10,
+                      elevation: 5,
                       child: Container(
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(10),
@@ -159,11 +161,11 @@ class _BodyHomeNewsState extends State<BodyHomeNews> {
                     child: Card(
                       shape: RoundedRectangleBorder(
                         side:
-                        const BorderSide(color: kPrimaryColor, width: 1),
+                        const BorderSide(color: kPrimaryColor, width: 0.2),
                         borderRadius: BorderRadius.circular(10.0),
                       ),
                       margin: EdgeInsets.all(10),
-                      elevation: 4,
+                      elevation: 5,
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
