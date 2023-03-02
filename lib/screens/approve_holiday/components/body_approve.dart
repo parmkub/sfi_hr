@@ -129,7 +129,9 @@ class _BodyApproveState extends State<BodyApprove> {
                                       .toString(),
                                   provider
                                       .ApproveHolidayCard[index].aBSENCESTATUS
-                                      .toString()),
+                                      .toString(),
+                                provider.ApproveHolidayCard[index].rEVIEWS.toString(),
+                                provider.ApproveHolidayCard[index].aPPROVES.toString(),),
                               ShowButtomApprove(provider, index),
                               SizedBox(
                                 height: 10,
@@ -167,7 +169,7 @@ class _BodyApproveState extends State<BodyApprove> {
     ): Center(child: CircularProgressIndicator(),);
   }
 
-  Widget buildStepIndicator(String leavType, String leavStatus) {
+  Widget buildStepIndicator(String leavType, String leavStatus,String review,String approve) {
     if (leavType == "11") {
       nbStape = 4;
     } else {
@@ -234,14 +236,30 @@ class _BodyApproveState extends State<BodyApprove> {
                   SizedBox(
                     width: 5,
                   ),
-                  Text('ทบทวน',
-                      style: TextStyle(
-                          fontSize: getProportionateScreenWidth(12.0),
-                          fontWeight: FontWeight.bold)),
-                  Text('อนุมัติ',
-                      style: TextStyle(
-                          fontSize: getProportionateScreenWidth(12.0),
-                          fontWeight: FontWeight.bold)),
+                  Column(
+                    children: [
+                      Text('ทบทวน',
+                          style: TextStyle(
+                              fontSize: getProportionateScreenWidth(12.0),
+                              fontWeight: FontWeight.bold)),
+                      Text(review,
+                          style: TextStyle(
+                              fontSize: getProportionateScreenWidth(12.0),
+                              fontWeight: FontWeight.bold)),
+                    ],
+                  ),
+                  Column(
+                    children: [
+                      Text('อนุมัติ',
+                          style: TextStyle(
+                              fontSize: getProportionateScreenWidth(12.0),
+                              fontWeight: FontWeight.bold)),
+                      Text(approve,
+                          style: TextStyle(
+                              fontSize: getProportionateScreenWidth(12.0),
+                              fontWeight: FontWeight.bold)),
+                    ],
+                  ),
                   Text('เสร็จสิ้น',
                       style: TextStyle(
                           fontSize: getProportionateScreenWidth(12.0),

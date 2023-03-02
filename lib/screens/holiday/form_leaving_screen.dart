@@ -1,4 +1,4 @@
-// ignore_for_file: avoid_print, non_constant_identifier_names, empty_catches
+// ignore_for_file: avoid_print, non_constant_identifier_names, empty_catches, unnecessary_string_interpolations
 
 import 'dart:convert';
 import 'dart:math';
@@ -9,8 +9,10 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:sfiasset/components/default_buttom.dart';
+import 'package:sfiasset/components/normal_dialog.dart';
 import 'package:sfiasset/constans.dart';
 import 'package:sfiasset/model/leaving_card.dart';
+import 'package:sfiasset/model/total_pakron_model.dart';
 import 'package:sfiasset/providers/leaving_provider.dart';
 import 'package:sfiasset/size_config.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -45,6 +47,7 @@ class _FormLeavingScreenState extends State<FormLeavingScreen> {
 
   var _dateTime = DateFormat('dd-MMM-yyyy').format(DateTime.now());
 
+
   String? _leavingDtail;
   Map<String, String> codeToString = {
     '02': 'ลากิจ',
@@ -60,20 +63,25 @@ class _FormLeavingScreenState extends State<FormLeavingScreen> {
 
   String? _token;
 
-  int limite02 = 2;
+  int uSEPAKRON =0;
+
+  int countPaKron = 0;
+
+  int dIFFPAKRON =0;
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     getDataUser();
+    getPakronTableMobile();
   }
 
   @override
   Widget build(BuildContext context) {
-    final start = dateRang.start;
-    final end = dateRang.end;
-    final difference = dateRang.duration;
+    final DateTime start = dateRang.start;
+    final DateTime end = dateRang.end;
+    final Duration difference = dateRang.duration;
     return Scaffold(
       resizeToAvoidBottomInset: false, //ยกเลิก ลดขนาดหน้าจอเมื่อคียร์บอร์ดอัพ
       appBar: CustomAppBarMenu('บันทึกใบลา'),
@@ -159,20 +167,43 @@ class _FormLeavingScreenState extends State<FormLeavingScreen> {
                                     DateFormat('dd-MMM-yyyy').format(start);
                               }
 
-                              if(limite02 > 3){
-                                _selectTypeLeav = "AB";
-                                print("รหัสการลา absence_code: $_selectTypeLeav");
-                              }
+
                               print("รหัสการลา absence_code: $_selectTypeLeav");
 
-                              _shoDialogDetail(
-                                  _dateTime,
-                                  _empCode,
-                                  _selectTypeLeav,
-                                  _fullDay,
-                                  _hour,
-                                  chooseLeaveingFormat,
-                                  difference);
+                              switch(_selectTypeLeav){
+                                case "02":
+                                  _leavingDtail = "ลากิจ";
+                                  _shoDialogDetail(
+                                      start,
+                                      end,
+                                      difference,
+                                      _dateTime,
+                                      _empCode,
+                                      _selectTypeLeav,
+                                      _fullDay,
+                                      _hour,
+                                      chooseLeaveingFormat);
+                                  break;
+                                case "29":
+                                 if(dIFFPAKRON <= countPaKron) {
+                                  normalDialog(context, 'ไม่สามารถลาพักร้อนได้เนื่องจากท่านใช้สิทธิ์หมดแล้ว');
+                                 }else{
+                                   _shoDialogDetail(
+                                       start,
+                                       end,
+                                       difference,
+                                       _dateTime,
+                                       _empCode,
+                                       _selectTypeLeav,
+                                       _fullDay,
+                                       _hour,
+                                       chooseLeaveingFormat);
+                                 }
+                                  break;
+
+                              }
+
+
 
                               // ScaffoldMessenger.of(context).showSnackBar(
                               //     const SnackBar(content: Text('Processing Data')),);
@@ -193,17 +224,68 @@ class _FormLeavingScreenState extends State<FormLeavingScreen> {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     _empCode = preferences.getString('empcode');
     _documentNo = getRandString();
+
+    String url = "http://61.7.142.47:8086/sfi-hr/select_pakron.php?empcode=$_empCode";
+    Response response = await Dio().get(url);
+    try {
+      var result = jsonDecode(response.data);
+      if (result != null) {
+        debugPrint('resultGetleavingPakeron : $result');
+        for (var map in result) {
+          TotalPakronModel totalPakronModel = TotalPakronModel.fromJson(map);
+           dIFFPAKRON = int.parse(totalPakronModel.dIFFPAKRON.toString())*8;
+        }
+      }
+    } catch (e) {}
     print("รหัสเอกสาร: $_documentNo");
+    print("เหลือพักร้อนใน Table หลัก: ${int.parse(dIFFPAKRON.toString()) } ชั่วโมง");
+
   }
 
+  Future<void> getPakronTableMobile() async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    String? _empCode = preferences.getString('empcode');
+    String url =
+        "http://61.7.142.47:8086/sfi-hr/select_leav_document.php?empcode=$_empCode";
+    Response response = await Dio().get(url);
+    int day = 0;
+    int hour = 0;
+    try {
+      var result = jsonDecode(response.data);
+      if (result != null) {
+        for (var map in result) {
+          LeavingCard leavingCard = LeavingCard.fromJson(map);
+
+          if(leavingCard.aBSENCECODE.toString()=='29'){
+            if(int.parse(leavingCard.cOUNTDATE.toString())>1){
+               day = (int.parse(leavingCard.aBSENCEDAY.toString())*int.parse(leavingCard.cOUNTDATE.toString()))*8;
+            }else{
+              day = int.parse(leavingCard.aBSENCEDAY.toString())*8;
+            }
+
+            hour = int.parse(leavingCard.aBSENCEHOUR.toString());
+            countPaKron = countPaKron + day + hour;
+          }
+
+        }
+
+        debugPrint('พักร้อนใน Table Mobile : ${countPaKron} ชั่วโมง');
+      }
+    } catch (e) {}
+  }
+
+
+
   Future<void> _shoDialogDetail(
+      DateTime start,
+      DateTime end,
+      Duration difference,
       String dateTime,
       String? empCode,
       String? selectTypeLeav,
       int? fullDay,
       int? hour,
-      int StatusShow,
-      var difference) async {
+      int StatusShow) async {
     return showDialog(
         context: context,
         builder: (BuildContext context) {
@@ -217,15 +299,13 @@ class _FormLeavingScreenState extends State<FormLeavingScreen> {
             ),
             content: Builder(builder: (context) {
               return Container(
-
                 width: getProportionateScreenWidth(300),
-                height: getProportionateScreenHeight(350),
-                padding: const EdgeInsets.all(5),
+         padding: const EdgeInsets.all(5),
                 color: const Color.fromRGBO(245, 245, 220, 1),
                 child: SingleChildScrollView(
                   child: StatusShow == 1
                       ? ReportAlertOne(dateTime, fullDay, hour)
-                      : Container(),
+                      : ReportAlertMoreOne(start, end, difference)
                 ),
               );
             }),
@@ -303,9 +383,132 @@ class _FormLeavingScreenState extends State<FormLeavingScreen> {
         });
   }
 
+  ListBody ReportAlertMoreOne(DateTime start, DateTime end ,Duration difference) {
+    return ListBody(
+      children:  <Widget>[
+        ListTile(
+          title: SizedBox(
+            child: Text(
+            codeToString[_selectTypeLeav].toString(),
+              style: TextStyle(
+                  fontSize: getProportionateScreenWidth(14), color: kTextColor),
+            ),
+          ),
+          leading: SizedBox(
+            child: Text(
+              "ประเภทการลา:",
+              style: TextStyle(
+                  fontSize: getProportionateScreenWidth(14), color: kTextColor),
+            ),
+          ),
+        ),
+        ListTile(
+          title: SizedBox(
+            child: Text(
+              "${DateFormat('dd-MMM-yyyy').format(start)} ",
+              style: TextStyle(
+                  fontSize: getProportionateScreenWidth(14), color: kTextColor),
+            ),
+          ),
+          leading: SizedBox(
+            child: Text(
+              "วันที่เริ่มหยุด:",
+              style: TextStyle(
+                  fontSize: getProportionateScreenWidth(14), color: kTextColor),
+            ),
+          ),
+        ),
+        ListTile(
+          title: SizedBox(
+            child: Text(
+              "${DateFormat('dd-MMM-yyyy').format(end)}",
+              style: TextStyle(
+                  fontSize: getProportionateScreenWidth(14), color: kTextColor),
+            ),
+          ),
+          leading: SizedBox(
+            child: Text(
+              "วันที่หยุดสิ้นสุด:",
+              style: TextStyle(
+                  fontSize: getProportionateScreenWidth(14), color: kTextColor),
+            ),
+          ),
+        ),
+        ListTile(
+          title: SizedBox(
+            child: Text(
+              "${difference.inDays + 1} วัน",
+              style: TextStyle(
+                  fontSize: getProportionateScreenWidth(14), color: kTextColor,fontWeight: FontWeight.bold),
+            ),
+          ),
+          leading: SizedBox(
+            child: Text(
+              "รวม:",
+              style: TextStyle(
+                  fontSize: getProportionateScreenWidth(14), color: kTextColor,fontWeight: FontWeight.bold),
+            ),
+          ),
+        ),
+        _leavingDtail == ""
+            ? Container()
+            : Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const SizedBox(
+              height: 10,
+            ),
+            Text(
+              'เหตุผลการลา:',
+              style: TextStyle(
+                  fontSize: getProportionateScreenWidth(14),
+                  color: kTextColor,
+                  fontWeight: FontWeight.bold),
+
+            ),
+            const SizedBox(
+              height: 5,
+            ),
+            Container(
+              padding: const EdgeInsets.all(10),
+              width: double.infinity,
+              height: getProportionateScreenWidth(110),
+              decoration: BoxDecoration(
+                border: Border.all(color: kTextColor),
+                borderRadius: BorderRadius.circular(10),
+              ),
+              child: Text(
+                _leavingDtail!,
+                style: TextStyle(
+                    color: kTextColor,
+                    fontSize: getProportionateScreenWidth(14)),
+              ),
+            )
+          ],
+        ),
+
+      ],
+    );
+  }
+
   ListBody ReportAlertOne(String dateTime, int? fullDay, int? hour) {
     return ListBody(
       children: <Widget>[
+        ListTile(
+          title: SizedBox(
+            child: Text(
+              codeToString[_selectTypeLeav].toString(),
+              style: TextStyle(
+                  fontSize: getProportionateScreenWidth(14), color: kTextColor),
+            ),
+          ),
+          leading: SizedBox(
+              child: Text(
+                "ประเภทลา:",
+                style: TextStyle(
+                    fontSize: getProportionateScreenWidth(14), color: kTextColor),
+              )),
+        ),
         ListTile(
           title: SizedBox(
             child: Text(
@@ -322,21 +525,7 @@ class _FormLeavingScreenState extends State<FormLeavingScreen> {
             ),
           ),
         ),
-        ListTile(
-          title: SizedBox(
-            child: Text(
-              codeToString[_selectTypeLeav].toString(),
-              style: TextStyle(
-                  fontSize: getProportionateScreenWidth(14), color: kTextColor),
-            ),
-          ),
-          leading: SizedBox(
-              child: Text(
-            "ประเภทลา:",
-            style: TextStyle(
-                fontSize: getProportionateScreenWidth(14), color: kTextColor),
-          )),
-        ),
+
         fullDay != 0
             ? ListTile(
                 title: SizedBox(
@@ -607,7 +796,11 @@ class _FormLeavingScreenState extends State<FormLeavingScreen> {
             //   setState(() {
 
             provider.addLeavingCard(leavingCard);
+            if(leavingCard.aBSENCECODE.toString()=='29'){
+              countPaKron = countPaKron + 1;
 
+            };
+            print('ในForm ดึงข้อมูลการ์ดลาพักร้อนเท่ากับ : ${countPaKron} วัน');
             print('ดึงข้อมูลการ์ด');
             // LeavingModels.add(leavingCard);
             //  });
@@ -965,6 +1158,7 @@ class _FormLeavingScreenState extends State<FormLeavingScreen> {
               if (_selectTypeLeav != "02") {
                 _leavingDtail = "";
               }
+
               print("ประเภทการลา:" + _selectTypeLeav!);
               print('รายละเอียดการลา:$_leavingDtail');
             }),

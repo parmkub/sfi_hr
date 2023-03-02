@@ -31,188 +31,179 @@ class _BodyHolidayLeavingState extends State<BodyHolidayLeaving> {
 
   bool statusData = true;
 
+  var countPaKron = 0;
 
   @override
   Widget build(BuildContext context) {
-    return
-         Container(
-            decoration: const BoxDecoration(gradient: kBackgroundColor),
-            child: Stack(
-              children: <Widget>[
-                RefreshIndicator(
-                  onRefresh: getLeavingCard,
-                  child: Consumer(
-                      builder: (context, LeavingProvider provider, child) {
-                    return ListView.builder(
-                      itemCount: provider.leavingCards.length,
-                      itemBuilder: (context, index) => Padding(
-                        padding: const EdgeInsets.only(
-                          left: 20.0,
-                          right: 20.0,
-                          top: 5.0,
-                        ),
-                        child: GestureDetector(
-                          onTap: () {
-                            // Navigator.pushNamed(context, LeavingDocument.routName);
-                          },
-                          child: Card(
-                              // color: Color(0xF53E5EFA),
-                              color: Color(ColorTypeLeaving(
-                                      '${provider.leavingCards[index].aBSENCECODE}')!
-                                  .toInt()),
-                              elevation: 5.0,
-                              child: Padding(
-                                padding: const EdgeInsets.all(5.0),
-                                child: Stack(
-                                  children: <Widget>[
-                                    Column(
-                                      children: [
-                                        Row(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.start,
-                                          children: [
-                                            Expanded(
-                                              flex: 3,
-                                              child: Image.asset(
-                                                  "assets/images/${ImageTypeLeaving('${provider.leavingCards[index].aBSENCECODE}')}"),
+    return Container(
+      decoration: const BoxDecoration(gradient: kBackgroundColor),
+      child: Stack(
+        children: <Widget>[
+          RefreshIndicator(
+            onRefresh: getLeavingCard,
+            child:
+                Consumer(builder: (context, LeavingProvider provider, child) {
+              return ListView.builder(
+                itemCount: provider.leavingCards.length,
+                itemBuilder: (context, index) => Padding(
+                  padding: const EdgeInsets.only(
+                    left: 20.0,
+                    right: 20.0,
+                    top: 5.0,
+                  ),
+                  child: GestureDetector(
+                    onTap: () {
+                      // Navigator.pushNamed(context, LeavingDocument.routName);
+                    },
+                    child: Card(
+                        // color: Color(0xF53E5EFA),
+                        color: Color(ColorTypeLeaving(
+                                '${provider.leavingCards[index].aBSENCECODE}')!
+                            .toInt()),
+                        elevation: 5.0,
+                        child: Padding(
+                          padding: const EdgeInsets.all(5.0),
+                          child: Stack(
+                            children: <Widget>[
+                              Column(
+                                children: [
+                                  Row(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    children: [
+                                      Expanded(
+                                        flex: 3,
+                                        child: Image.asset(
+                                            "assets/images/${ImageTypeLeaving('${provider.leavingCards[index].aBSENCECODE}')}"),
+                                      ),
+                                      Expanded(
+                                          flex: 5,
+                                          child: Padding(
+                                            padding: const EdgeInsets.fromLTRB(
+                                                5, 0, 5, 0),
+                                            child: Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                // Text(
+                                                //   'เลขที่เอกสาร  : ${provider.leavingCards[index].aBSENCEDOCUMENT}',
+                                                //   style: const TextStyle(
+                                                //       fontSize: 14.0,
+                                                //       fontWeight: FontWeight.bold),
+                                                // ),
+
+                                                Row(
+                                                  children: [
+                                                    Expanded(
+                                                      child: Text(
+                                                        'ประเภทการลา: ${ConvertCodeLeaving('${provider.leavingCards[index].aBSENCECODE}')} ',
+                                                        style: TextStyle(
+                                                            fontSize:
+                                                                getProportionateScreenHeight(
+                                                                    14),
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .bold),
+                                                      ),
+                                                    )
+                                                  ],
+                                                ),
+
+                                                Text(
+                                                  'จากวันที่: ${provider.leavingCards[index].sTARTDATE}',
+                                                  style: TextStyle(
+                                                      fontSize:
+                                                          getProportionateScreenHeight(
+                                                              14),
+                                                      fontWeight:
+                                                          FontWeight.bold),
+                                                ),
+                                                const SizedBox(
+                                                  height: 5,
+                                                ),
+                                                Text(
+                                                  'ถึงวันที่  : ${provider.leavingCards[index].eNDDATE}',
+                                                  style: TextStyle(
+                                                      fontSize:
+                                                          getProportionateScreenHeight(
+                                                              14),
+                                                      fontWeight:
+                                                          FontWeight.bold),
+                                                ),
+                                                const SizedBox(
+                                                  height: 5,
+                                                ),
+                                                SumLeavingDay(
+                                                    day: provider
+                                                        .leavingCards[index]
+                                                        .cOUNTDATE
+                                                        .toString(),
+                                                    hour: provider
+                                                        .leavingCards[index]
+                                                        .aBSENCEHOUR
+                                                        .toString()),
+                                                const SizedBox(
+                                                  height: 10,
+                                                ),
+                                              ],
                                             ),
-                                            Expanded(
-                                                flex: 5,
-                                                child: Padding(
-                                                  padding:
-                                                      const EdgeInsets.fromLTRB(
-                                                          5, 0, 5, 0),
-                                                  child: Column(
-                                                    crossAxisAlignment:
-                                                        CrossAxisAlignment
-                                                            .start,
-                                                    children: [
-                                                      // Text(
-                                                      //   'เลขที่เอกสาร  : ${provider.leavingCards[index].aBSENCEDOCUMENT}',
-                                                      //   style: const TextStyle(
-                                                      //       fontSize: 14.0,
-                                                      //       fontWeight: FontWeight.bold),
-                                                      // ),
-
-                                                      Row(
-                                                        children: [
-                                                          Expanded(
-                                                            child: Text(
-                                                              'ประเภทการลา: ${ConvertCodeLeaving('${provider.leavingCards[index].aBSENCECODE}')} ',
-                                                              style: TextStyle(
-                                                                  fontSize:
-                                                                      getProportionateScreenHeight(
-                                                                          14),
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .bold),
-                                                            ),
-                                                          )
-                                                        ],
-                                                      ),
-
-                                                      Text(
-                                                        'จากวันที่: ${provider.leavingCards[index].sTARTDATE}',
-                                                        style: TextStyle(
-                                                            fontSize:
-                                                                getProportionateScreenHeight(
-                                                                    14),
-                                                            fontWeight:
-                                                                FontWeight
-                                                                    .bold),
-                                                      ),
-                                                      const SizedBox(
-                                                        height: 5,
-                                                      ),
-                                                      Text(
-                                                        'ถึงวันที่  : ${provider.leavingCards[index].eNDDATE}',
-                                                        style: TextStyle(
-                                                            fontSize:
-                                                                getProportionateScreenHeight(
-                                                                    14),
-                                                            fontWeight:
-                                                                FontWeight
-                                                                    .bold),
-                                                      ),
-                                                      const SizedBox(
-                                                        height: 5,
-                                                      ),
-                                                      SumLeavingDay(
-                                                        day: provider
-                                                            .leavingCards[index]
-                                                            .cOUNTDATE
-                                                            .toString(),
-                                                        hour: provider
-                                                            .leavingCards[index]
-                                                            .aBSENCEHOUR
-                                                            .toString(),
-                                                      ),
-                                                      const SizedBox(
-                                                        height: 10,
-                                                      ),
-                                                      buildStepIndicator(
-                                                          provider
-                                                              .leavingCards[
-                                                                  index]
-                                                              .aBSENCECODE
-                                                              .toString(),
-                                                          provider
-                                                              .leavingCards[
-                                                                  index]
-                                                              .aBSENCESTATUS
-                                                              .toString())
-                                                    ],
-                                                  ),
-                                                ))
-                                          ],
-                                        ),
-                                      ],
-                                    ),
-                                    int.parse(provider.leavingCards[index]
-                                                .aBSENCESTATUS
-                                                .toString()) >
-                                            0
-                                        ? Container()
-                                        : Positioned(
-                                            top: -25,
-                                            right: -25,
-                                            child: SizedBox(
-                                              width: 80,
-                                              height: 80,
-                                              child: /*FlatButton(
+                                          ))
+                                    ],
+                                  ),
+                                  buildStepIndicator(
+                                      provider.leavingCards[index].aBSENCECODE
+                                          .toString(),
+                                      provider.leavingCards[index].aBSENCESTATUS
+                                          .toString(),
+                                      provider.leavingCards[index].rEVIEW
+                                          .toString(),
+                                      provider.leavingCards[index].aPPROVE
+                                          .toString())
+                                ],
+                              ),
+                              int.parse(provider
+                                          .leavingCards[index].aBSENCESTATUS
+                                          .toString()) >
+                                      0
+                                  ? Container()
+                                  : Positioned(
+                                      top: -25,
+                                      right: -25,
+                                      child: SizedBox(
+                                        width: 80,
+                                        height: 80,
+                                        child: /*FlatButton(
                                     onPressed: () {
                                       DeleatLeavingCard(provider.leavingCards[index].aBSENCEDOCUMENT.toString());
                                     },
                                     child: SvgPicture.asset('assets/icons/Trash.svg',color: Colors.white,),
                                   ),*/
-                                                  TextButton(
-                                                onPressed: () {
-                                                  DeleatLeavingCard(provider
-                                                      .leavingCards[index]
-                                                      .aBSENCEDOCUMENT
-                                                      .toString());
-                                                },
-                                                child: SvgPicture.asset(
-                                                  'assets/icons/Trash.svg',
-                                                  color: Colors.white,
-                                                ),
-                                              ),
-                                            ),
-                                          )
-                                  ],
-                                ),
-                              )),
-                        ),
-                      ),
-                    );
-                  }),
+                                            TextButton(
+                                          onPressed: () {
+                                            DeleatLeavingCard(provider
+                                                .leavingCards[index]
+                                                .aBSENCEDOCUMENT
+                                                .toString());
+                                          },
+                                          child: SvgPicture.asset(
+                                            'assets/icons/Trash.svg',
+                                            color: Colors.white,
+                                          ),
+                                        ),
+                                      ),
+                                    )
+                            ],
+                          ),
+                        )),
+                  ),
                 ),
-              ],
-            ),
-          );
-
+              );
+            }),
+          ),
+        ],
+      ),
+    );
   }
 
   Future<void> DeleatLeavingCard(String Document) async {
@@ -230,7 +221,8 @@ class _BodyHolidayLeavingState extends State<BodyHolidayLeaving> {
     }
   }
 
-  Widget buildStepIndicator(String leavType, String leavStatus) {
+  Widget buildStepIndicator(
+      String leavType, String leavStatus, String review, String approve) {
     if (leavType == "11") {
       nbStape = 4;
     } else {
@@ -245,7 +237,7 @@ class _BodyHolidayLeavingState extends State<BodyHolidayLeaving> {
         Text(
           'ลำดับการอนุมัติ',
           style: TextStyle(
-              fontSize: getProportionateScreenHeight(13),
+              fontSize: getProportionateScreenWidth(10),
               fontWeight: FontWeight.bold),
         ),
         const SizedBox(
@@ -258,32 +250,31 @@ class _BodyHolidayLeavingState extends State<BodyHolidayLeaving> {
           selectedStep: StepValude(leavType, leavStatus),
           lineLength: nbStape == 4
               ? getProportionateScreenWidth(35.0)
-              : getProportionateScreenWidth(55),
+              : getProportionateScreenWidth(90),
           nbSteps: nbStape,
         ),
         nbStape == 4
             ? Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   const SizedBox(
                     width: 5,
                   ),
                   Text('ผู้ทบทวน',
                       style: TextStyle(
-                          fontSize: getProportionateScreenHeight(12),
+                          fontSize: getProportionateScreenWidth(10),
                           fontWeight: FontWeight.bold)),
                   Text('ผู้อนุมัติ',
                       style: TextStyle(
-                          fontSize: getProportionateScreenHeight(12),
+                          fontSize: getProportionateScreenWidth(10),
                           fontWeight: FontWeight.bold)),
                   Text('หมอ',
                       style: TextStyle(
-                          fontSize: getProportionateScreenHeight(12),
+                          fontSize: getProportionateScreenWidth(10),
                           fontWeight: FontWeight.bold)),
                   Text('เสร็จสิ้น',
                       style: TextStyle(
-                          fontSize: getProportionateScreenHeight(12),
+                          fontSize: getProportionateScreenWidth(10),
                           fontWeight: FontWeight.bold)),
                   const SizedBox(
                     height: 20,
@@ -293,21 +284,42 @@ class _BodyHolidayLeavingState extends State<BodyHolidayLeaving> {
             : Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 crossAxisAlignment: CrossAxisAlignment.start,
-                children: const [
-                  SizedBox(
-                    width: 5,
+                children: [
+                  Column(
+                    children: [
+                      Text('ผู้ทบทวน',
+                          style: TextStyle(
+                              fontSize: getProportionateScreenWidth(10),
+                              fontWeight: FontWeight.bold)),
+                      Text(review,
+                          style: TextStyle(
+                              fontSize: getProportionateScreenWidth(10),
+                              fontWeight: FontWeight.bold)),
+                    ],
                   ),
-                  Text('ผู้ทบทวน',
-                      style:
-                          TextStyle(fontSize: 12, fontWeight: FontWeight.bold)),
+                  Column(
+                    children: [
+                      Text('ผู้อนุมัติ',
+                          style: TextStyle(
+                              fontSize: getProportionateScreenWidth(10),
+                              fontWeight: FontWeight.bold)),
+                      Text(approve,
+                          style: TextStyle(
+                              fontSize: getProportionateScreenWidth(10),
+                              fontWeight: FontWeight.bold)),
+                    ],
+                  ),
+
+/*
                   Text('ผู้อนุมัติ',
                       style: TextStyle(
-                          fontSize: 12.0, fontWeight: FontWeight.bold)),
+                          fontSize: 12.0, fontWeight: FontWeight.bold)),*/
                   Text('เสร็จสิ้น',
                       style: TextStyle(
-                          fontSize: 12.0, fontWeight: FontWeight.bold)),
+                          fontSize: getProportionateScreenWidth(10),
+                          fontWeight: FontWeight.bold)),
                   SizedBox(
-                    height: 20,
+                    height: getProportionateScreenHeight(10),
                   )
                 ],
               )
@@ -316,6 +328,7 @@ class _BodyHolidayLeavingState extends State<BodyHolidayLeaving> {
   }
 
   Future<void> getLeavingCard() async {
+    countPaKron = 0;
     setState(() {
       statusData = true;
     });
@@ -332,7 +345,6 @@ class _BodyHolidayLeavingState extends State<BodyHolidayLeaving> {
       if (result != null) {
         for (var map in result) {
           LeavingCard leavingCard = LeavingCard.fromJson(map);
-
           //   setState(() {
           provider.addLeavingCard(leavingCard);
           print('ดึงข้อมูลการ์ด');
@@ -351,6 +363,7 @@ class _BodyHolidayLeavingState extends State<BodyHolidayLeaving> {
   String? ConvertCodeLeaving(String date) {
     Map<String, String> dataMap = {
       '02': 'ลากิจ',
+      'AB': 'ลากิจหักเงิน',
       '11': 'ลาป่วย',
       '14': 'ลาคลอด',
       '12': 'อุบัติเหตุ',
@@ -362,6 +375,7 @@ class _BodyHolidayLeavingState extends State<BodyHolidayLeaving> {
   int? ColorTypeLeaving(String date) {
     Map<String, int> dataMap = {
       '02': 0xF0EC9A42,
+      'AB': 0xF0EC9A42,
       '11': 0xFF4BC9EE,
       '14': 0xA98540F3,
       '12': 0xA9E324BA,
@@ -373,6 +387,7 @@ class _BodyHolidayLeavingState extends State<BodyHolidayLeaving> {
   String? ImageTypeLeaving(String date) {
     Map<String, String> dataMap = {
       '02': 'lagit-jay.png',
+      'AB': 'lagit-njay.png',
       '11': 'sick-jay.png',
       '14': 'Midwives-jay.png',
       '12': 'sick-not-jay.png',

@@ -21,20 +21,20 @@ class _BodyHomeActivityState extends State<BodyHomeActivity> {
       ),
       child: Column(
         children:  [
-          Expanded(flex: 2,child: _buildCard('csr', 'csr.jpg')),
-          Expanded(flex: 2,child: _buildCard('activity', '_activity.jpg')),
-          Expanded(flex: 2,child: _buildCard('society', 'society.jpg')),
+          Expanded(flex: 2,child: _buildCard('csr', 'csr.jpg', 'SFI-CSR')),
+          Expanded(flex: 2,child: _buildCard('activity', '_activity.jpg', 'SFI-Activity')),
+          Expanded(flex: 2,child: _buildCard('society', 'society.jpg', 'SFI-Society')),
 
         ],
       ),
     );
   }
 
-  Widget _buildCard(String blogType, String image) {
+  Widget _buildCard(String blogType, String image ,String title) {
     return InkWell(
       onTap: () {
         Navigator.pushNamed(context, PublicizeAllScreen.routName,
-            arguments: {'blogType': blogType});
+            arguments: {'blogType': blogType, 'title': title});
       },
       child: Padding(
         padding: const EdgeInsets.all(5),

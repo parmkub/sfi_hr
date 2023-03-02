@@ -83,9 +83,8 @@ class _BodyHolidayState extends State<BodyHoliday> {
                     CustomHolidayCard(
                         context,
                         "เข้างานสาย",
-                        ConverDate(holidayModels[0].sAI.toString())
-                                .split(" ")[0] +
-                            " ครั้ง",
+                        "${ConverDate(holidayModels[0].sAI.toString())
+                                .split(" ")[0]} ครั้ง",
                         "assets/images/Deadline-pana.png",
                         () {}),
                     CustomHolidayCard(
@@ -98,7 +97,7 @@ class _BodyHolidayState extends State<BodyHoliday> {
                         context,
                         "ลากิจ-ไม่จ่าย",
                         ConverDate(holidayModels[0].lAGITNOTJAY.toString()),
-                        "assets/images/lagit-not-Jay.png",
+                        "assets/images/lagit-njay.png",
                         () {}),
                     CustomHolidayCard(
                         context,

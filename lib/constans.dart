@@ -58,6 +58,42 @@ AppBar CustomAppBarHome() => AppBar(
   ),
   centerTitle: true,
 );
+AppBar CustomAppBarButtom(String title,Function press) => AppBar(
+  actions: [
+  PopupMenuButton(itemBuilder: (BuildContext context) {
+    return [
+      PopupMenuItem(
+        child: ListTile(
+          isThreeLine: false,
+          iconColor: kPrimaryColor,
+
+          leading: const Icon(Icons.create),
+          title:  Text('แจ้งทำบัตรใหม่',style: TextStyle(fontSize: getProportionateScreenWidth(12),color: kPrimaryColor),),
+          onTap: () {
+            press();
+          },
+        ),
+      ),
+    ];
+  })
+  ],
+  flexibleSpace: Container(
+    decoration: const BoxDecoration(
+        gradient: kBackgroundColor
+    ),
+  ),
+  title: Align(
+    alignment: Alignment.centerRight,
+    child: Text(
+      title,
+      style: TextStyle(
+          color: kTextColor,
+          fontWeight: FontWeight.bold,
+          fontSize: getProportionateScreenWidth(18.0)),
+    ),
+  ),
+  centerTitle: false,
+);
 
 AppBar CustomAppBarMenu(String title) => AppBar(
 flexibleSpace: Container(

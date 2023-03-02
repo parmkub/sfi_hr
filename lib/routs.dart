@@ -1,6 +1,7 @@
 
 
 import 'package:flutter/cupertino.dart';
+import 'package:sfiasset/model/team_model.dart';
 import 'package:sfiasset/screens/approve_holiday/approve_holiday_screen.dart';
 import 'package:sfiasset/screens/emp_card/emp_card_screen.dart';
 import 'package:sfiasset/screens/holiday/components/report_leaving_pdf.dart';
@@ -14,6 +15,7 @@ import 'package:sfiasset/screens/jobEntry/job_entry_screen.dart';
 import 'package:sfiasset/screens/sign_in/sign_in_screen.dart';
 import 'package:sfiasset/screens/splash_screen/splash_screen.dart';
 import 'package:sfiasset/screens/team/team_screen.dart';
+import 'package:sfiasset/screens/team_statics/team_statics_screen.dart';
 import 'package:sfiasset/screens/user_manual/user_manual_screen.dart';
 
 import 'screens/publicize_all/publicize_all_screen.dart';
@@ -36,5 +38,6 @@ final Map<String, WidgetBuilder> routs = {
   PublicezeScreen.routName : (context)=> const PublicezeScreen(),
   PublicizeAllScreen.routName : (context)=> const PublicizeAllScreen(),
   HRTeamScreen.routName : (context)=> const HRTeamScreen(),
+  TeamStatics.routName : (context)=>   TeamStatics(teamModel: ModalRoute.of(context)!.settings.arguments as TeamModel),
   // FixScreen.routName : (context)=>FixScreen(),
 };

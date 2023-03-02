@@ -29,7 +29,7 @@ class _BodyHomeNewsState extends State<BodyHomeNews> {
     {'title': 'วันหยุด', 'icon': '0xe0d6'},
     {'title': 'ทีมงาน', 'icon': '0xef7e'},
     {'title': 'คู่มือพนักงาน', 'icon': '0xe3dd'},
-    {'title': 'HR Team', 'icon': '0xe24d'}
+    {'title': 'HR Contacts', 'icon': '0xf280'}
   ];
 
   List<PublicizeModel> publicizeAll = [];
@@ -86,7 +86,8 @@ class _BodyHomeNewsState extends State<BodyHomeNews> {
                     onTap: () {
                       print(publicizeAll[index].iD);
                       Navigator.pushNamed(context, PublicezeScreen.routName,
-                          arguments: {'id': publicizeAll[index].iD});
+                          arguments: {'id': publicizeAll[index].iD,'webViewType': publicizeAll[index].wEBVIEWTYPE,'publicizeDetail':
+                          publicizeAll[index].dETAIL},);
                     },
                     child: Card(
                       shape: RoundedRectangleBorder(
@@ -126,7 +127,7 @@ class _BodyHomeNewsState extends State<BodyHomeNews> {
                   ),
                   TextButton(
                     onPressed: () {
-                      Navigator.pushNamed(context, PublicizeAllScreen.routName, arguments: {'blogType': 'news'});
+                      Navigator.pushNamed(context, PublicizeAllScreen.routName, arguments: {'blogType': 'news', 'title': 'ข่าวประชาสัมพันธ์ทั้งหมด'});
                     },
                     style: TextButton.styleFrom(
                       primary: kPrimaryColor,

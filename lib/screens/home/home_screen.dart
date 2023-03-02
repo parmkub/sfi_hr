@@ -13,10 +13,11 @@ import 'package:sfiasset/screens/holiday/holiday_screen.dart';
 import 'package:sfiasset/screens/holiday_factory/holiday_factory_screen.dart';
 import 'package:sfiasset/screens/home/components/body_home_activity.dart';
 import 'package:sfiasset/screens/home/components/body_home_news.dart';
+import 'package:sfiasset/screens/home/publicize_screen/publicize_screen.dart';
+import 'package:sfiasset/screens/hr_team/hr_team_screen.dart';
 import 'package:sfiasset/screens/jobEntry/job_entry_screen.dart';
 import 'package:sfiasset/screens/team/team_screen.dart';
 import 'package:sfiasset/screens/user_manual/user_manual_screen.dart';
-import 'package:sfiasset/size_config.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../constans.dart';
@@ -98,7 +99,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               context, HolidayFactoryScreen.routName);
                           _homePage = false;
                         }),
-                        CustomDrawerMenu(context, "ทีมงาน", Icons.account_tree,
+                        CustomDrawerMenu(context, "ทีมงาน", Icons.contacts_outlined,
                             () {
                           /*PageChang(const BodyPersonalDepartment(),"ทีมงาน");*/
                           Navigator.pop(context);
@@ -136,12 +137,18 @@ class _HomeScreenState extends State<HomeScreen> {
                           Navigator.pop(context);
                           Navigator.pushNamed(context, JobEntryScreen.routName);
                         }),
+                        CustomDrawerMenu(
+                            context, "HR-Contacts", Icons.person_search_outlined, () {
+                          Navigator.pop(context);
+                          Navigator.pushNamed(context, HRTeamScreen.routName);
+                        }),
                         CustomDrawerMenu(context, "ออกจากระบบ", Icons.exit_to_app,
                             () {
                           normalDialogYesNo(
                               context, 'คุณต้องการออกจากระบบหรือไม่');
                           print('ออกจากระบบ');
                         }),
+
                       ],
                     ),
                   ))
@@ -265,6 +272,24 @@ class _HomeScreenState extends State<HomeScreen> {
             .post(url, data: formData)
             .then((value) => print("อัพเดทข้อมูลเรียบร้อย"));
       });
+
+
+    });
+    await FirebaseMessaging.instance.subscribeToTopic('allDevices')
+        .then((value) => print("สมัครรับข้อมูลเรียบร้อย"));
+
+    FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
+      print('A new onMessageOpenedApp event was published!');
+      print('Message data: ${message.data}');
+      if (message.data['screen'] == 'approve_holiday') {
+        Navigator.pushNamed(context, ApproveHolidayScreen.routName);
+      } else if (message.data['screen'] == 'activity') {
+        Navigator.pushNamed(context, HomeScreen.routName);
+      } else if(message.data['screen'] == 'publicize'){
+
+        Navigator.pushNamed(context, PublicezeScreen.routName,
+            arguments: {'id': message.data['id'], 'webViewType': message.data['webViewType'],'publicizeDetail': message.data['publicizeDetail']});
+      }
     });
   }
 

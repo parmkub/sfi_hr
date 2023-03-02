@@ -80,7 +80,7 @@ class _BodyState extends State<Body> {
           TeamModel teamModel = TeamModel.fromJson(map);
           setState(() {
             //teamModels.add(teamModel);
-            teamCard.add(createCard(teamModel));
+            teamCard.add(createCard(teamModel, context, positionGroup!));
           });
         }
       }

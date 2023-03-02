@@ -10,6 +10,8 @@ class ApproveHoliday {
   String? aBSENCEDAY;
   String? aBSENCEHOUR;
   String? dELETEMARK;
+  String? rEVIEWS;
+  String? aPPROVES;
   String? aBSENCEPERIOD;
   String? aBSENCESTATUS;
   String? aBSENCETOKEN;
@@ -30,6 +32,8 @@ class ApproveHoliday {
         this.aBSENCEDAY,
         this.aBSENCEHOUR,
         this.dELETEMARK,
+        this.rEVIEWS,
+        this.aPPROVES,
         this.aBSENCEPERIOD,
         this.aBSENCESTATUS,
         this.aBSENCETOKEN,
@@ -48,6 +52,8 @@ class ApproveHoliday {
     aBSENCEDAY = json['ABSENCE_DAY'];
     aBSENCEHOUR = json['ABSENCE_HOUR'];
     dELETEMARK = json['DELETE_MARK'];
+    rEVIEWS = json['REVIEW'];
+    aPPROVES = json['APPROVE'];
     aBSENCEPERIOD = json['ABSENCE_PERIOD'];
     aBSENCESTATUS = json['ABSENCE_STATUS'];
     aBSENCETOKEN = json['ABSENCE_TOKEN'];
@@ -70,6 +76,8 @@ class ApproveHoliday {
     data['ABSENCE_DAY'] = aBSENCEDAY;
     data['ABSENCE_HOUR'] = aBSENCEHOUR;
     data['DELETE_MARK'] = dELETEMARK;
+    data['REVIEW'] = rEVIEWS;
+    data['APPROVE'] = aPPROVES;
     data['ABSENCE_PERIOD'] = aBSENCEPERIOD;
     data['ABSENCE_STATUS'] = aBSENCESTATUS;
     data['ABSENCE_TOKEN'] = aBSENCETOKEN;

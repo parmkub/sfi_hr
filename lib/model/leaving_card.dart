@@ -7,6 +7,8 @@ class LeavingCard {
   String? aBSENCEDAY;
   String? aBSENCEHOUR;
   String? dELETEMARK;
+  String? rEVIEW;
+  String? aPPROVE;
   String? aBSENCEPERIOD;
   String? aBSENCESTATUS;
   String? aBSENCETOKEN;
@@ -24,6 +26,8 @@ class LeavingCard {
         this.aBSENCEDAY,
         this.aBSENCEHOUR,
         this.dELETEMARK,
+        this.rEVIEW,
+        this.aPPROVE,
         this.aBSENCEPERIOD,
         this.aBSENCESTATUS,
         this.aBSENCETOKEN,
@@ -40,6 +44,8 @@ class LeavingCard {
     aBSENCEDAY = json['ABSENCE_DAY'];
     aBSENCEHOUR = json['ABSENCE_HOUR'];
     dELETEMARK = json['DELETE_MARK'];
+    rEVIEW = json['REVIEW'];
+    aPPROVE = json['APPROVE'];
     aBSENCEPERIOD = json['ABSENCE_PERIOD'];
     aBSENCESTATUS = json['ABSENCE_STATUS'];
     aBSENCETOKEN = json['ABSENCE_TOKEN'];
@@ -58,6 +64,8 @@ class LeavingCard {
     data['ABSENCE_DAY'] = aBSENCEDAY;
     data['ABSENCE_HOUR'] = aBSENCEHOUR;
     data['DELETE_MARK'] = dELETEMARK;
+    data['REVIEW'] = rEVIEW;
+    data['APPROVE'] = aPPROVE;
     data['ABSENCE_PERIOD'] = aBSENCEPERIOD;
     data['ABSENCE_STATUS'] = aBSENCESTATUS;
     data['ABSENCE_TOKEN'] = aBSENCETOKEN;

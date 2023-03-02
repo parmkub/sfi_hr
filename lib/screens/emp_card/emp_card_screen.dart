@@ -18,7 +18,7 @@ class _EmpCardScreenState extends State<EmpCardScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAppBarMenu("บัตรพนักงาน"),
+      appBar: CustomAppBarMenu(_title),
       body: const BodyCard(),
     );
   }

@@ -6,11 +6,11 @@ import 'package:provider/provider.dart';
 import 'package:sfiasset/constans.dart';
 import 'package:sfiasset/model/approve_holiday_model.dart';
 import 'package:sfiasset/model/leaving_card.dart';
+import 'package:sfiasset/model/total_pakron_model.dart';
 import 'package:sfiasset/providers/approve_holiday_provider.dart';
 import 'package:sfiasset/providers/leaving_provider.dart';
 import 'package:sfiasset/screens/holiday/components/body_holiday_statistics.dart';
 import 'package:sfiasset/screens/holiday/form_leaving_screen.dart';
-import 'package:sfiasset/size_config.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'components/body_holiday_calendar.dart';
@@ -35,6 +35,8 @@ class _HolidayScreenState extends State<HolidayScreen> {
   int indexPage = 0;
 
   bool statusData = true;
+
+  var countPaKron = 0;
 
   @override
   void initState() {
@@ -91,17 +93,15 @@ class _HolidayScreenState extends State<HolidayScreen> {
       if (result != null) {
         for (var map in result) {
           LeavingCard leavingCard = LeavingCard.fromJson(map);
-
           //   setState(() {
-
           provider.addLeavingCard(leavingCard);
-          print('ดึงข้อมูลการ์ด');
           // LeavingModels.add(leavingCard);
           //  });
         }
       }
     } catch (e) {}
   }
+
 
   Future<void> getApproveHoliday(
       String PositionGroupCode, String DepartCode) async {

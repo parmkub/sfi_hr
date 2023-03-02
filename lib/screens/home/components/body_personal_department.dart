@@ -72,7 +72,7 @@ class _BodyPersonalDepartmentState extends State<BodyPersonalDepartment> {
           TeamModel teamModel = TeamModel.fromJson(map);
           setState(() {
             //teamModels.add(teamModel);
-            teamCard.add(createCard(teamModel));
+            teamCard.add(createCard(teamModel,context,positionGroup!));
           });
         }
       }

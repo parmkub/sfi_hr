@@ -44,7 +44,7 @@ class _BodyPublicizeAllState extends State<BodyPublicizeAll> {
                   return InkWell(
                     onTap: () {
                       Navigator.pushNamed(context, PublicezeScreen.routName,
-                          arguments: {'id': publicizeAll[index].iD});
+                          arguments: {'id': publicizeAll[index].iD, 'webViewType': publicizeAll[index].wEBVIEWTYPE,'publicizeDetail':publicizeAll[index].dETAIL});
                     },
                     child: Padding(
                       padding:  EdgeInsets.all(5),
@@ -70,9 +70,18 @@ class _BodyPublicizeAllState extends State<BodyPublicizeAll> {
               ),
             ),
         )
-        : const Center(
-            child: CircularProgressIndicator(),
-          ): const Center(  child: Text('ไม่มีข้อมูล'),);
+        : Container(
+      decoration: const BoxDecoration(gradient: kBackgroundColor),
+          child: const Center(
+
+              child: CircularProgressIndicator(),
+            ),
+        ):  Container(
+      decoration: const BoxDecoration(gradient: kBackgroundColor),
+      child: const Center(
+        child: Text('ไม่มีข้อมูล'),
+      ),
+    );
   }
 
   Future<void> _getPublicize() async {

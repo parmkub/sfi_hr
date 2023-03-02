@@ -8,9 +8,9 @@ class PublicizeAllScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final  arguments = (ModalRoute.of(context)?.settings.arguments ?? <String, dynamic>{'blogType' : ''}) as Map<String, dynamic>;  // กรณีที่มีการส่งค่ามาหลายค่า
+    final  arguments = (ModalRoute.of(context)?.settings.arguments ?? <String, dynamic>{'blogType' : '','title': ''}) as Map<String, dynamic>;  // กรณีที่มีการส่งค่ามาหลายค่า
     return Scaffold(
-      appBar: CustomAppBarMenu('ข่าวประชาสัมพันธ์ทั้งหมด'),
+      appBar: CustomAppBarMenu(arguments['title'] as String),
       body:  BodyPublicizeAll(blogType: arguments['blogType'] as String,),
     );
   }
