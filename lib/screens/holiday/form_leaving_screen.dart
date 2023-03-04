@@ -167,7 +167,6 @@ class _FormLeavingScreenState extends State<FormLeavingScreen> {
                                     DateFormat('dd-MMM-yyyy').format(start);
                               }
 
-
                               print("รหัสการลา absence_code: $_selectTypeLeav");
 
                               switch(_selectTypeLeav){
@@ -1073,10 +1072,10 @@ class _FormLeavingScreenState extends State<FormLeavingScreen> {
                   fontWeight: FontWeight.bold),
             )),
         Expanded(
-            flex: 9,
+            flex: 8,
             child: TextFormField(
               style: TextStyle(
-                  color: kTextColor, fontSize: getProportionateScreenWidth(14)),
+                  color: kTextColor, fontSize: getProportionateScreenWidth(12)),
               validator: (value) {
                 if (value == null || value.isEmpty) {
                   return "กรุณากรอกเหตุผลกาลา";

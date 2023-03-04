@@ -54,6 +54,28 @@ dependencies:
   barcode: ^2.2.3
   barcode_widget: ^2.0.0
   syncfusion_flutter_pdfviewer: ^20.4.50
+  flutter_launcher_icons: ^0.12.0
+  rename: ^2.1.1
+
+flutter_icons:
+  android: "launcher_icon"
+  ios: true
+  image_path: "assets/icons/app_logo.png"
+  min_sdk_android: 21 # android min sdk min:16, default 21
+  icon_size_android: 96 # android icon size min:48, max:512, default 48
+  web:
+    generate: true
+    image_path: "assets/icons/app_logo.png"
+    background_color: "#hexcode"
+    theme_color: "#hexcode"
+  windows:
+    generate: true
+    image_path: "assets/icons/app_logo.png"
+    icon_size: 48 # min:48, max:256, default: 48
+  macos:
+    generate: true
+    image_path: "assets/icons/app_logo.png"
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

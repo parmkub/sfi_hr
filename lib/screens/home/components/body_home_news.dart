@@ -23,25 +23,10 @@ class BodyHomeNews extends StatefulWidget {
 }
 
 class _BodyHomeNewsState extends State<BodyHomeNews> {
-  List<Map<String, String>> listMenu = [
-    {'title': 'บัตรพนักงาน', 'icon': '0xf27d'},
-    {'title': 'ปฏิทินบริษัท', 'icon': '0xf06bb'},
-    {'title': 'วันหยุด', 'icon': '0xe0d6'},
-    {'title': 'ทีมงาน', 'icon': '0xef7e'},
-    {'title': 'คู่มือพนักงาน', 'icon': '0xe3dd'},
-    {'title': 'HR Contacts', 'icon': '0xf280'}
-  ];
+
 
   List<PublicizeModel> publicizeAll = [];
 
-  List<String> listPages = [
-    EmpCardScreen.routName,
-    HolidayFactoryScreen.routName,
-    HolidayScreen.routName,
-    TeamScreen.routName,
-    UserManualScreen.routName,
-    HRTeamScreen.routName
-  ];
   int currentPageNews = 0;
 
   bool statusLoad = false;
@@ -130,7 +115,7 @@ class _BodyHomeNewsState extends State<BodyHomeNews> {
                       Navigator.pushNamed(context, PublicizeAllScreen.routName, arguments: {'blogType': 'news', 'title': 'ข่าวประชาสัมพันธ์ทั้งหมด'});
                     },
                     style: TextButton.styleFrom(
-                      primary: kPrimaryColor,
+                      foregroundColor: kPrimaryColor,
                     ),
                     child: Text('ดูทั้งหมด',
                         style:
@@ -143,7 +128,7 @@ class _BodyHomeNewsState extends State<BodyHomeNews> {
               flex: 5,
               child: Container(
                 margin: EdgeInsets.fromLTRB(10, 0, 10, 0),
-                child: GridView.builder(
+                child: /*GridView.builder(
                   shrinkWrap: true,
                   gridDelegate:
                   const SliverGridDelegateWithFixedCrossAxisCount(
@@ -153,39 +138,23 @@ class _BodyHomeNewsState extends State<BodyHomeNews> {
                     childAspectRatio: 1.1,
                   ),
                   itemCount: listMenu.length,
-                  itemBuilder: (context, index) => InkWell(
-                    onTap: () {
-                      // Navigator.pop(context);
-                      Navigator.pushNamed(context, listPages[index]);
-                      print(listMenu[index]);
-                    },
-                    child: Card(
-                      shape: RoundedRectangleBorder(
-                        side:
-                        const BorderSide(color: kPrimaryColor, width: 0.2),
-                        borderRadius: BorderRadius.circular(10.0),
-                      ),
-                      margin: EdgeInsets.all(10),
-                      elevation: 5,
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Icon(
-                            IconData(int.parse(listMenu[index]['icon']!),
-                                fontFamily: 'MaterialIcons'),
-                            size: getProportionateScreenWidth(30),
-                            color: kPrimaryColor,
-                          ),
-                          Text(listMenu[index]['title']!,
-                              style: TextStyle(
-                                  fontSize: getProportionateScreenWidth(12))),
-                        ],
-                      ),
-                    ),
-                  ),
+                  itemBuilder: (context, index) => CardMenu(context, index),
+                ),*/
+                GridView.count(
+                  crossAxisCount: 3,
+                  mainAxisSpacing: 5,
+                  crossAxisSpacing: 5,
+                  childAspectRatio: 1.1,
+                  children: [
+                    CardMenu(context, Icons.card_membership, "บัตรพนักงาน", EmpCardScreen.routName),
+                    CardMenu(context, Icons.calendar_month_outlined, "ปฏิทินบริษัท", HolidayFactoryScreen.routName),
+                    CardMenu(context, Icons.beach_access, "วันหยุด", HolidayScreen.routName),
+                    CardMenu(context, Icons.person_search_outlined, "ทีมงาน", TeamScreen.routName),
+                    CardMenu(context, Icons.menu_book, "คู่มือพนักงาน", UserManualScreen.routName),
+                    CardMenu(context, Icons.favorite, "HR-Contacts", HRTeamScreen.routName),
+                  ]),
                 ),
               ),
-            ),
           ],
         )): Container(
       decoration: const BoxDecoration(gradient: kBackgroundColor),
@@ -205,6 +174,36 @@ class _BodyHomeNewsState extends State<BodyHomeNews> {
         }, child: Text('รีเฟรช',style: TextStyle(color: kPrimaryColor,fontSize: getProportionateScreenWidth(18.0)),))
       ],
     ),*/
+  }
+
+  InkWell CardMenu(BuildContext context,IconData icon, String title, String page) {
+    return InkWell(
+                  onTap: () {
+                    // Navigator.pop(context);
+                    Navigator.pushNamed(context, page);
+                  },
+
+                  child: Card(
+                    shape: RoundedRectangleBorder(
+                      side:
+                      const BorderSide(color: kPrimaryColor, width: 0.2),
+                      borderRadius: BorderRadius.circular(10.0),
+                    ),
+                    margin: EdgeInsets.all(10),
+                    elevation: 5,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(icon ,
+                            size: getProportionateScreenWidth(30),color: kPrimaryColor,),
+                        Text(title,
+                            style: TextStyle(
+                                fontSize: getProportionateScreenWidth(12))),
+                      ],
+                    ),
+                  ),
+
+                );
   }
 
   Future<void> _getPublicize() async {

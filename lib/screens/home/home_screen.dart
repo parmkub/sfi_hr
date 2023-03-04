@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:sfiasset/components/custom_drawer_herder.dart';
 import 'package:sfiasset/components/custom_drawer_menu.dart';
 import 'package:sfiasset/components/normal_dialog.dart';
+import 'package:sfiasset/screens/appeal_screen/appeal_screen.dart';
 import 'package:sfiasset/screens/approve_holiday/approve_holiday_screen.dart';
 import 'package:sfiasset/screens/emp_card/emp_card_screen.dart';
 import 'package:sfiasset/screens/holiday/holiday_screen.dart';
@@ -61,6 +62,7 @@ class _HomeScreenState extends State<HomeScreen> {
     return WillPopScope(
       onWillPop: _onWillPopApp,
       child: Scaffold(
+        resizeToAvoidBottomInset: false,
         appBar: CustomAppBarHome(),
         drawer: Drawer(
           child: Column(
@@ -73,9 +75,7 @@ class _HomeScreenState extends State<HomeScreen> {
               Expanded(
                   flex: 5,
                   child: Container(
-                    decoration: const BoxDecoration(
-                      gradient: kBackgroundColor
-                    ),
+                    decoration: const BoxDecoration(gradient: kBackgroundColor),
                     child: ListView(
                       children: <Widget>[
                         CustomDrawerMenu(context, "หน้าแรก", Icons.home, () {
@@ -83,15 +83,14 @@ class _HomeScreenState extends State<HomeScreen> {
                           _homePage = true;
                         }),
                         CustomDrawerMenu(
-                            context, "บัตรพนักงาน", Icons.person_pin_outlined,
-                            () {
+                            context, "บัตรพนักงาน", Icons.card_membership, () {
                           Navigator.pop(context);
                           Navigator.pushNamed(context, EmpCardScreen.routName);
                           // PageChang(const BodyInformationEmp(),"บัตรพนักงาน");
                           _homePage = false;
                         }),
                         CustomDrawerMenu(
-                            context, "ปฏิทินบริษัท", Icons.calendar_today_sharp,
+                            context, "ปฏิทินบริษัท", Icons.calendar_month_outlined,
                             () {
                           //PageChang(const BodyCalenda(),"ปฏิทินบริษัท");
                           Navigator.pop(context);
@@ -99,8 +98,8 @@ class _HomeScreenState extends State<HomeScreen> {
                               context, HolidayFactoryScreen.routName);
                           _homePage = false;
                         }),
-                        CustomDrawerMenu(context, "ทีมงาน", Icons.contacts_outlined,
-                            () {
+                        CustomDrawerMenu(
+                            context, "ทีมงาน", Icons.person_search_outlined, () {
                           /*PageChang(const BodyPersonalDepartment(),"ทีมงาน");*/
                           Navigator.pop(context);
                           Navigator.pushNamed(context, TeamScreen.routName);
@@ -123,13 +122,15 @@ class _HomeScreenState extends State<HomeScreen> {
                             : Container(),
                         CustomDrawerMenu(
                             context, "คู่มือพนักงาน", Icons.menu_book, () {
-                              Navigator.pop(context);
-                              Navigator.pushNamed(
-                                  context, UserManualScreen.routName);
+                          Navigator.pop(context);
+                          Navigator.pushNamed(
+                              context, UserManualScreen.routName);
                           _homePage = false;
                         }),
                         CustomDrawerMenu(context, "ข้อร้องเรียน", Icons.create,
                             () {
+                          Navigator.pop(context);
+                          Navigator.pushNamed(context, AppealScreen.routName);
                           _homePage = false;
                         }),
                         CustomDrawerMenu(
@@ -137,18 +138,28 @@ class _HomeScreenState extends State<HomeScreen> {
                           Navigator.pop(context);
                           Navigator.pushNamed(context, JobEntryScreen.routName);
                         }),
-                        CustomDrawerMenu(
-                            context, "HR-Contacts", Icons.person_search_outlined, () {
+                        CustomDrawerMenu(context, "HR-Contacts",
+                            Icons.person_search_outlined, () {
                           Navigator.pop(context);
                           Navigator.pushNamed(context, HRTeamScreen.routName);
                         }),
-                        CustomDrawerMenu(context, "ออกจากระบบ", Icons.exit_to_app,
-                            () {
+                        CustomDrawerMenu(context, "นโยบายความเป็นส่วนตัว",
+                            Icons.policy_rounded, () {
+                          Navigator.pop(context);
+                          Navigator.pushNamed(context, PublicezeScreen.routName,
+                              arguments: {
+                                'id': '26',
+                                'webViewType': 'pdf',
+                                'publicizeDetail':
+                                    'http://61.7.142.47:8880/sfiblog/upload/pdf/policy.pdf'
+                              });
+                        }),
+                        CustomDrawerMenu(
+                            context, "ออกจากระบบ", Icons.exit_to_app, () {
                           normalDialogYesNo(
                               context, 'คุณต้องการออกจากระบบหรือไม่');
                           print('ออกจากระบบ');
                         }),
-
                       ],
                     ),
                   ))
@@ -272,10 +283,9 @@ class _HomeScreenState extends State<HomeScreen> {
             .post(url, data: formData)
             .then((value) => print("อัพเดทข้อมูลเรียบร้อย"));
       });
-
-
     });
-    await FirebaseMessaging.instance.subscribeToTopic('allDevices')
+    await FirebaseMessaging.instance
+        .subscribeToTopic('allDevices')
         .then((value) => print("สมัครรับข้อมูลเรียบร้อย"));
 
     FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
@@ -285,10 +295,12 @@ class _HomeScreenState extends State<HomeScreen> {
         Navigator.pushNamed(context, ApproveHolidayScreen.routName);
       } else if (message.data['screen'] == 'activity') {
         Navigator.pushNamed(context, HomeScreen.routName);
-      } else if(message.data['screen'] == 'publicize'){
-
-        Navigator.pushNamed(context, PublicezeScreen.routName,
-            arguments: {'id': message.data['id'], 'webViewType': message.data['webViewType'],'publicizeDetail': message.data['publicizeDetail']});
+      } else if (message.data['screen'] == 'publicize') {
+        Navigator.pushNamed(context, PublicezeScreen.routName, arguments: {
+          'id': message.data['id'],
+          'webViewType': message.data['webViewType'],
+          'publicizeDetail': message.data['publicizeDetail']
+        });
       }
     });
   }
