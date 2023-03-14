@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:sfiasset/app_localizations.dart';
 
 class SumLeavingDay extends StatelessWidget {
   final String day,hour;
@@ -10,13 +11,13 @@ class SumLeavingDay extends StatelessWidget {
   Widget build(BuildContext context) {
     String? _dayHour;
     if(hour =="0"){
-      _dayHour = day+" วัน";
+      _dayHour = "$day ${AppLocalizations.of(context).translate('day')}";
     }else{
-      _dayHour =hour +" ชั่วโมง";
+      _dayHour ="$hour ${AppLocalizations.of(context).translate('hour')} ";
     }
 
     return Text(
-      'รวม       : $_dayHour ',
+      '${AppLocalizations.of(context).translate('sumDay')}       : $_dayHour ',
       style: const TextStyle(
           fontSize: 14.0,
           fontWeight: FontWeight.bold),

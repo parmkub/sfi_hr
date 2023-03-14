@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:sfiasset/app_localizations.dart';
 import 'package:sfiasset/model/publicize_model.dart';
 import 'package:sfiasset/screens/emp_card/emp_card_screen.dart';
 import 'package:sfiasset/screens/holiday/holiday_screen.dart';
@@ -51,10 +52,10 @@ class _BodyHomeNewsState extends State<BodyHomeNews> {
             ),
             Container(
                 width: double.infinity,
-                child: const Text(
-                  'ข่าวประชาสัมพันธ์',
+                child:  Text(
+                  AppLocalizations.of(context).translate('newsTitle'),
                   textAlign: TextAlign.center,
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                  style:  TextStyle(fontSize: getProportionateScreenWidth(16), fontWeight: FontWeight.w100),
                 )),
             Expanded(
               flex: 4,
@@ -112,12 +113,12 @@ class _BodyHomeNewsState extends State<BodyHomeNews> {
                   ),
                   TextButton(
                     onPressed: () {
-                      Navigator.pushNamed(context, PublicizeAllScreen.routName, arguments: {'blogType': 'news', 'title': 'ข่าวประชาสัมพันธ์ทั้งหมด'});
+                      Navigator.pushNamed(context, PublicizeAllScreen.routName, arguments: {'blogType': 'news', 'title': AppLocalizations.of(context).translate('newsAll')});
                     },
                     style: TextButton.styleFrom(
                       foregroundColor: kPrimaryColor,
                     ),
-                    child: Text('ดูทั้งหมด',
+                    child: Text(AppLocalizations.of(context).translate('watchAll'),
                         style:
                             TextStyle(fontSize: getProportionateScreenWidth(12))),
                   )
@@ -127,7 +128,7 @@ class _BodyHomeNewsState extends State<BodyHomeNews> {
             Expanded(
               flex: 5,
               child: Container(
-                margin: EdgeInsets.fromLTRB(10, 0, 10, 0),
+                margin: const EdgeInsets.fromLTRB(10, 0, 10, 0),
                 child: /*GridView.builder(
                   shrinkWrap: true,
                   gridDelegate:
@@ -146,12 +147,12 @@ class _BodyHomeNewsState extends State<BodyHomeNews> {
                   crossAxisSpacing: 5,
                   childAspectRatio: 1.1,
                   children: [
-                    CardMenu(context, Icons.card_membership, "บัตรพนักงาน", EmpCardScreen.routName),
-                    CardMenu(context, Icons.calendar_month_outlined, "ปฏิทินบริษัท", HolidayFactoryScreen.routName),
-                    CardMenu(context, Icons.beach_access, "วันหยุด", HolidayScreen.routName),
-                    CardMenu(context, Icons.person_search_outlined, "ทีมงาน", TeamScreen.routName),
-                    CardMenu(context, Icons.menu_book, "คู่มือพนักงาน", UserManualScreen.routName),
-                    CardMenu(context, Icons.favorite, "HR-Contacts", HRTeamScreen.routName),
+                    CardMenu(context, Icons.card_membership, AppLocalizations.of(context).translate('empCard'), EmpCardScreen.routName),
+                    CardMenu(context, Icons.calendar_month_outlined, AppLocalizations.of(context).translate('businessCalendar'), HolidayFactoryScreen.routName),
+                    CardMenu(context, Icons.beach_access, AppLocalizations.of(context).translate('holiday'), HolidayScreen.routName),
+                    CardMenu(context, Icons.person_search_outlined, AppLocalizations.of(context).translate('myTeam'), TeamScreen.routName),
+                    CardMenu(context, Icons.menu_book, AppLocalizations.of(context).translate('userManual'), UserManualScreen.routName),
+                    CardMenu(context, Icons.favorite, AppLocalizations.of(context).translate('hrContacts'), HRTeamScreen.routName),
                   ]),
                 ),
               ),

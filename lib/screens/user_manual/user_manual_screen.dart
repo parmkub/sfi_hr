@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:sfiasset/app_localizations.dart';
 import 'package:sfiasset/constans.dart';
 
 import 'componanents/body.dart';
@@ -15,7 +16,7 @@ class _UserManualScreenState extends State<UserManualScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAppBarMenu('คู่มือพนักงาน'),
+      appBar: CustomAppBarMenu(AppLocalizations.of(context)!.translate('userManual')!),
       body:  const BodyUserManual(blogType: 'manual',),
     );
   }

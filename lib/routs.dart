@@ -5,7 +5,6 @@ import 'package:sfiasset/model/team_model.dart';
 import 'package:sfiasset/screens/appeal_screen/appeal_screen.dart';
 import 'package:sfiasset/screens/approve_holiday/approve_holiday_screen.dart';
 import 'package:sfiasset/screens/emp_card/emp_card_screen.dart';
-import 'package:sfiasset/screens/holiday/components/report_leaving_pdf.dart';
 import 'package:sfiasset/screens/holiday/form_leaving_screen.dart';
 import 'package:sfiasset/screens/holiday/holiday_screen.dart';
 import 'package:sfiasset/screens/holiday_factory/holiday_factory_screen.dart';
@@ -30,7 +29,6 @@ final Map<String, WidgetBuilder> routs = {
   HolidayScreen.routName : (context)=> const HolidayScreen(),
   JobEntryScreen.routName : (context)=> const JobEntryScreen(),
   FormLeavingScreen.routName : (context)=> const FormLeavingScreen(),
-  LeavingDocument.routName : (context)=> const LeavingDocument(),
   EmpCardScreen.routName : (context)=> const EmpCardScreen(),
   TeamScreen.routName: (context)=> const TeamScreen(),
   HolidayFactoryScreen.routName : (context)=> const HolidayFactoryScreen(),

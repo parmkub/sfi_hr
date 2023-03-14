@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:sfiasset/app_localizations.dart';
 import 'package:sfiasset/screens/sign_in/components/sign_form.dart';
 import 'package:sfiasset/size_config.dart';
 
@@ -23,14 +24,14 @@ class Body extends StatelessWidget {
                 children: <Widget>[
 
                   Text(
-                    "Welcome Back",
+                    AppLocalizations.of(context).translate('wellcome'),
                     style: TextStyle(
                         color: Colors.black,
                         fontSize: getProportionateScreenWidth(20),
                         fontWeight: FontWeight.bold),
                   ),
                   Text(
-                    "ลงชื่อด้วย Username และ Password",
+                    AppLocalizations.of(context).translate('typeTitleLogin'),
                     textAlign: TextAlign.center,
                     style:
                         TextStyle(fontSize: getProportionateScreenWidth(12.0)),
@@ -40,7 +41,7 @@ class Body extends StatelessWidget {
                     height: getProportionateScreenHeight(265),
                     width: getProportionateScreenWidth(235),
                   ),
-                  const SignForm(),
+                    const SignForm(),
                   SizedBox(
                     height: SizeConfig.screenHeight! * 0.08,
                   ),

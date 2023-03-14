@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:sfiasset/app_localizations.dart';
 import 'package:sfiasset/constans.dart';
 import 'package:sfiasset/screens/home/publicize_screen/components/body_bublicize.dart';
 
@@ -22,7 +23,7 @@ class _PublicezeScreenState extends State<PublicezeScreen> {
           'publicizeDetail': ''
         }) as Map<String, dynamic>; // กรณีที่มีการส่งค่ามาหลายค่า
     return Scaffold(
-        appBar: CustomAppBarMenu('รายละเอียด'),
+        appBar: CustomAppBarMenu(AppLocalizations.of(context)!.translate('detail')),
         body: BodyBublicize(
           publicizeID: arguments['id'] as String,
           WebViewType: arguments['webViewType'] as String,

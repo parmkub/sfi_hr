@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:sfiasset/app_localizations.dart';
 import 'package:sfiasset/constans.dart';
 import 'components/body.dart';
 
@@ -14,7 +15,7 @@ class _TeamScreenState extends State<TeamScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAppBarMenu('ทีมงาน'),
+      appBar: CustomAppBarMenu(AppLocalizations.of(context).translate('myTeam')),
       body: const Body(),
     );
   }

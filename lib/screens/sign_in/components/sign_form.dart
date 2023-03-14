@@ -4,13 +4,16 @@ import 'dart:convert';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:sfiasset/app_localizations.dart';
 import 'package:sfiasset/components/custom_surfix_icon.dart';
 import 'package:sfiasset/components/default_buttom.dart';
 import 'package:sfiasset/components/normal_dialog.dart';
 import 'package:sfiasset/constans.dart';
 import 'package:sfiasset/model/login_model.dart';
 import 'package:sfiasset/screens/home/home_screen.dart';
+import 'package:sfiasset/screens/home/publicize_screen/publicize_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
 
 import '../../../size_config.dart';
 
@@ -27,10 +30,22 @@ class _SignFormState extends State<SignForm> {
   bool passwordVisable = true;
   //UserModel? userModel;
   LoginModel? loginModel;
+  bool isChecked = false;
 
 
   @override
   Widget build(BuildContext context) {
+    Color getColor(Set<MaterialState> states){
+      const Set<MaterialState> interactiveStates = <MaterialState>{
+        MaterialState.pressed,
+        MaterialState.hovered,
+        MaterialState.focused,
+      };
+      if(states.any(interactiveStates.contains)){
+        return kPrimaryColor.withOpacity(0.5);
+      }
+      return Colors.black26;
+    }
     return Form(
         key: _formKey,
         child: Column(
@@ -41,17 +56,48 @@ class _SignFormState extends State<SignForm> {
             ),
             buildPassFormField(),
             SizedBox(
-              height: getProportionateScreenHeight(80.0),
+              height: getProportionateScreenHeight(40.0),
             ),
             DefaultButton(
-                text: "Continue",
+
+                text: AppLocalizations.of(context).translate('continue'),
                 press: () {
                   bool pass = _formKey.currentState!.validate();
                   if (pass) {
+                    if(isChecked){
+                      checkAuthen();
+                    }else{
+                      normalDialog(context, AppLocalizations.of(context).translate('acceptPolicy'));
+                    }
                     // checkAuthens();
-                    checkAuthen();
+
                   }
                 }),
+            SizedBox(
+              height: getProportionateScreenHeight(20),
+            ),
+            Row(
+mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Checkbox(value: isChecked, onChanged: (bool? value){
+                  setState(() {
+                    isChecked = value!;
+                  });
+                }),
+                TextButton(
+                  onPressed: (){
+                    Navigator.pushNamed(context, PublicezeScreen.routName,
+                        arguments: {
+                          'id': '26',
+                          'webViewType': 'pdf',
+                          'publicizeDetail':
+                          'http://61.7.142.47:8880/sfiblog/upload/pdf/policy.pdf'
+                        });
+                },
+                  child: Text(AppLocalizations.of(context).translate('acceptPolicy') ,style: TextStyle(color: Colors.black),))
+
+              ],
+            )
           ],
         ));
   }
@@ -87,13 +133,13 @@ class _SignFormState extends State<SignForm> {
       onChanged: (value)=>{username = value.trim().toUpperCase()},
       validator: (value) {
         if (value.toString().isEmpty) {
-          return "กรุณากรอก Username";
+          return AppLocalizations.of(context).translate('PleaseEnterUsername');
         }
         return null;
       },
       decoration: InputDecoration(
-        labelText: 'Username',
-        hintText: 'Username',
+        labelText: AppLocalizations.of(context).translate('username'),
+        hintText: AppLocalizations.of(context).translate('PleaseEnterUsername'),
         floatingLabelBehavior: FloatingLabelBehavior.always,
         suffixIcon: CustomSurfixIcon(
           press: () {},
@@ -105,17 +151,18 @@ class _SignFormState extends State<SignForm> {
 
   TextFormField buildPassFormField() {
     return TextFormField(
+      keyboardType: TextInputType.number,
       onChanged: (value) => {password = value.trim()},
       validator: (value) {
         if (value!.isEmpty) {
-          return "กรุณากรอก Password";
+          return AppLocalizations.of(context).translate('PleaseEnterEmpcode');
         }
         return null;
       },
       obscureText: passwordVisable,
       decoration: InputDecoration(
-        labelText: 'Password',
-        hintText: 'กรุณากรอก Password',
+        labelText: AppLocalizations.of(context).translate('empcode'),
+        hintText: AppLocalizations.of(context).translate('PleaseEnterEmpcode'),
         floatingLabelBehavior: FloatingLabelBehavior.always,
         suffixIcon: PasswordVisableButton(),
       ),

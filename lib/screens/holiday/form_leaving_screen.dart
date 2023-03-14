@@ -8,6 +8,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
+import 'package:sfiasset/app_localizations.dart';
 import 'package:sfiasset/components/default_buttom.dart';
 import 'package:sfiasset/components/normal_dialog.dart';
 import 'package:sfiasset/constans.dart';
@@ -49,7 +50,37 @@ class _FormLeavingScreenState extends State<FormLeavingScreen> {
 
 
   String? _leavingDtail;
+
+  String CodeToString(BuildContext context,String title)  {
+    String _resual = "";
+    Map<String, String> codeToString = {
+      '02': AppLocalizations.of(context)!.translate('lagit'),
+      'AB': AppLocalizations.of(context)!.translate('lagitDiscount'),
+      '11': AppLocalizations.of(context)!.translate('sick'),
+      '14': AppLocalizations.of(context)!.translate('lakron'),
+      '12': AppLocalizations.of(context)!.translate('accident'),
+      '29': AppLocalizations.of(context)!.translate('lapukron'),
+
+   /*   '02': AppLocalizations.of(context).translate('lagit'),
+      'AB': 'ลากิจหักตังค์',
+      '11': 'ลาป่วย',
+      '29': 'พักร้อน',
+      '14': 'ลาคลอด',
+      '12': 'ลาเนื่องจากอุบัติเหตุ'*/
+    };
+    _resual = codeToString[title].toString();
+
+    return _resual;
+  }
+
   Map<String, String> codeToString = {
+    /*'02': AppLocalizations.of(context)!.translate('lagit'),
+    'AB': AppLocalizations.of(context)!.translate('lagitDiscount'),
+    '11': AppLocalizations.of(context)!.translate('sick'),
+    '14': AppLocalizations.of(context)!.translate('lakron'),
+    '12': AppLocalizations.of(context)!.translate('accident'),
+    '29': AppLocalizations.of(context)!.translate('lapukron'),*/
+
     '02': 'ลากิจ',
     'AB': 'ลากิจหักตังค์',
     '11': 'ลาป่วย',
@@ -84,12 +115,11 @@ class _FormLeavingScreenState extends State<FormLeavingScreen> {
     final Duration difference = dateRang.duration;
     return Scaffold(
       resizeToAvoidBottomInset: false, //ยกเลิก ลดขนาดหน้าจอเมื่อคียร์บอร์ดอัพ
-      appBar: CustomAppBarMenu('บันทึกใบลา'),
+      appBar: CustomAppBarMenu(AppLocalizations.of(context)!.translate('writeLeaveDocument')),
       body: GestureDetector(
         onTap: () => FocusScope.of(context).requestFocus(FocusNode()),
         behavior: HitTestBehavior.opaque,
         child: SafeArea(
-
           child: Container(
             decoration: const BoxDecoration(
               gradient: kBackgroundColor
@@ -109,10 +139,10 @@ class _FormLeavingScreenState extends State<FormLeavingScreen> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: <Widget>[
-                            Text("บันทึกใบลา",
+                            Text(AppLocalizations.of(context)!.translate('leaveDocument'),
                                 style: TextStyle(
                                     color: kTextColor,
-                                    fontSize: getProportionateScreenWidth(14),
+                                    fontSize: getProportionateScreenWidth(12),
                                     fontWeight: FontWeight.bold)),
                             const Spacer(),
                             SelectMoreDayOrOneDay(start),
@@ -135,7 +165,6 @@ class _FormLeavingScreenState extends State<FormLeavingScreen> {
                             _character == SingingCharacter.hour
                                 ? SelectHour()
                                 : Container(),
-                            const Spacer()
                           ],
                         ),
                       ),
@@ -148,7 +177,7 @@ class _FormLeavingScreenState extends State<FormLeavingScreen> {
                   child: Column(
                     children: [
                       DefaultButton(
-                          text: "บันทึกข้อมูล",
+                          text: AppLocalizations.of(context).translate('sendData'),
                           press: () {
                             if (_formKey.currentState!.validate()) {
                               print("เลขที่เอกสาร: ${getRandString()}");
@@ -171,7 +200,7 @@ class _FormLeavingScreenState extends State<FormLeavingScreen> {
 
                               switch(_selectTypeLeav){
                                 case "02":
-                                  _leavingDtail = "ลากิจ";
+                                  //_leavingDtail = "ลากิจ";
                                   _shoDialogDetail(
                                       start,
                                       end,
@@ -292,9 +321,9 @@ class _FormLeavingScreenState extends State<FormLeavingScreen> {
             shape: const RoundedRectangleBorder(
                 borderRadius: BorderRadius.all(Radius.circular(10.0))),
             title: Text(
-              'รายละเอียดการลา',
+              AppLocalizations.of(context).translate('leaveType'),
               style: TextStyle(
-                  fontSize: getProportionateScreenWidth(14), color: kTextColor,fontWeight: FontWeight.bold),
+                  fontSize: getProportionateScreenWidth(12), color: kTextColor,fontWeight: FontWeight.bold),
             ),
             content: Builder(builder: (context) {
               return Container(
@@ -353,9 +382,9 @@ class _FormLeavingScreenState extends State<FormLeavingScreen> {
                 ),
                 onPressed: () => Navigator.pop(context),
                 child: Text(
-                  "ยกเลิก",
+                  AppLocalizations.of(context).translate('cancle'),
                   style: TextStyle(
-                      fontSize: getProportionateScreenWidth(14),
+                      fontSize: getProportionateScreenWidth(12),
                       color: Colors.white),
                 ),
               ),
@@ -371,9 +400,9 @@ class _FormLeavingScreenState extends State<FormLeavingScreen> {
                   Navigator.pop(context);
                 },
                 child: Text(
-                  "บันทึก",
+                  AppLocalizations.of(context).translate('save'),
                   style: TextStyle(
-                      fontSize: getProportionateScreenWidth(14),
+                      fontSize: getProportionateScreenWidth(12),
                       color: Colors.white),
                 ),
               )
@@ -388,16 +417,16 @@ class _FormLeavingScreenState extends State<FormLeavingScreen> {
         ListTile(
           title: SizedBox(
             child: Text(
-            codeToString[_selectTypeLeav].toString(),
+              CodeToString(context, _selectTypeLeav!),
               style: TextStyle(
-                  fontSize: getProportionateScreenWidth(14), color: kTextColor),
+                  fontSize: getProportionateScreenWidth(12), color: kTextColor),
             ),
           ),
           leading: SizedBox(
             child: Text(
-              "ประเภทการลา:",
+              "${AppLocalizations.of(context).translate('leaveType')}:",
               style: TextStyle(
-                  fontSize: getProportionateScreenWidth(14), color: kTextColor),
+                  fontSize: getProportionateScreenWidth(12), color: kTextColor),
             ),
           ),
         ),
@@ -406,14 +435,14 @@ class _FormLeavingScreenState extends State<FormLeavingScreen> {
             child: Text(
               "${DateFormat('dd-MMM-yyyy').format(start)} ",
               style: TextStyle(
-                  fontSize: getProportionateScreenWidth(14), color: kTextColor),
+                  fontSize: getProportionateScreenWidth(12), color: kTextColor),
             ),
           ),
           leading: SizedBox(
             child: Text(
-              "วันที่เริ่มหยุด:",
+              "${AppLocalizations.of(context).translate('startDate')}:",
               style: TextStyle(
-                  fontSize: getProportionateScreenWidth(14), color: kTextColor),
+                  fontSize: getProportionateScreenWidth(12), color: kTextColor),
             ),
           ),
         ),
@@ -422,30 +451,30 @@ class _FormLeavingScreenState extends State<FormLeavingScreen> {
             child: Text(
               "${DateFormat('dd-MMM-yyyy').format(end)}",
               style: TextStyle(
-                  fontSize: getProportionateScreenWidth(14), color: kTextColor),
+                  fontSize: getProportionateScreenWidth(12), color: kTextColor),
             ),
           ),
           leading: SizedBox(
             child: Text(
-              "วันที่หยุดสิ้นสุด:",
+              "${AppLocalizations.of(context).translate('endDate')}:",
               style: TextStyle(
-                  fontSize: getProportionateScreenWidth(14), color: kTextColor),
+                  fontSize: getProportionateScreenWidth(12), color: kTextColor),
             ),
           ),
         ),
         ListTile(
           title: SizedBox(
             child: Text(
-              "${difference.inDays + 1} วัน",
+              "${difference.inDays + 1} ${AppLocalizations.of(context).translate('day')}",
               style: TextStyle(
-                  fontSize: getProportionateScreenWidth(14), color: kTextColor,fontWeight: FontWeight.bold),
+                  fontSize: getProportionateScreenWidth(12), color: kTextColor,fontWeight: FontWeight.bold),
             ),
           ),
           leading: SizedBox(
             child: Text(
-              "รวม:",
+              "${AppLocalizations.of(context).translate('sumDay')}:",
               style: TextStyle(
-                  fontSize: getProportionateScreenWidth(14), color: kTextColor,fontWeight: FontWeight.bold),
+                  fontSize: getProportionateScreenWidth(12), color: kTextColor,fontWeight: FontWeight.bold),
             ),
           ),
         ),
@@ -458,9 +487,9 @@ class _FormLeavingScreenState extends State<FormLeavingScreen> {
               height: 10,
             ),
             Text(
-              'เหตุผลการลา:',
+              '${AppLocalizations.of(context).translate('reason')}:',
               style: TextStyle(
-                  fontSize: getProportionateScreenWidth(14),
+                  fontSize: getProportionateScreenWidth(12),
                   color: kTextColor,
                   fontWeight: FontWeight.bold),
 
@@ -480,7 +509,7 @@ class _FormLeavingScreenState extends State<FormLeavingScreen> {
                 _leavingDtail!,
                 style: TextStyle(
                     color: kTextColor,
-                    fontSize: getProportionateScreenWidth(14)),
+                    fontSize: getProportionateScreenWidth(12)),
               ),
             )
           ],
@@ -496,16 +525,17 @@ class _FormLeavingScreenState extends State<FormLeavingScreen> {
         ListTile(
           title: SizedBox(
             child: Text(
-              codeToString[_selectTypeLeav].toString(),
+              CodeToString(context, _selectTypeLeav!),
+
               style: TextStyle(
-                  fontSize: getProportionateScreenWidth(14), color: kTextColor),
+                  fontSize: getProportionateScreenWidth(12), color: kTextColor),
             ),
           ),
           leading: SizedBox(
               child: Text(
-                "ประเภทลา:",
+                "${AppLocalizations.of(context).translate('leaveType')}:",
                 style: TextStyle(
-                    fontSize: getProportionateScreenWidth(14), color: kTextColor),
+                    fontSize: getProportionateScreenWidth(12), color: kTextColor),
               )),
         ),
         ListTile(
@@ -513,14 +543,14 @@ class _FormLeavingScreenState extends State<FormLeavingScreen> {
             child: Text(
               dateTime,
               style: TextStyle(
-                  fontSize: getProportionateScreenWidth(14), color: kTextColor),
+                  fontSize: getProportionateScreenWidth(12), color: kTextColor),
             ),
           ),
           leading: SizedBox(
             child: Text(
-              "วันที่หยุดงาน:",
+              "${AppLocalizations.of(context).translate('dayOff')}:",
               style: TextStyle(
-                  fontSize: getProportionateScreenWidth(14), color: kTextColor),
+                  fontSize: getProportionateScreenWidth(12), color: kTextColor),
             ),
           ),
         ),
@@ -529,34 +559,35 @@ class _FormLeavingScreenState extends State<FormLeavingScreen> {
             ? ListTile(
                 title: SizedBox(
                     child: Text(
-                  "$fullDay วัน",
+                  "$fullDay ${AppLocalizations.of(context).translate('day')}",
                   style: TextStyle(
-                      fontSize: getProportionateScreenWidth(14),
+                      fontSize: getProportionateScreenWidth(12),
                       color: kTextColor),
                 )),
                 leading: SizedBox(
                     child: Text(
-                  "จำนวนที่ลา:",
+                  "${AppLocalizations.of(context).translate('totalLave')}:",
                   style: TextStyle(
                       color: kTextColor,
-                      fontSize: getProportionateScreenWidth(14)),
+                      fontSize: getProportionateScreenWidth(12)),
                 )),
               )
             : ListTile(
                 title: SizedBox(
                     child: Text(
-                  "$hour ชั่วโมง",
+                  "$hour ${AppLocalizations.of(context).translate('hour')}",
                   style: TextStyle(
                       color: kTextColor,
-                      fontSize: getProportionateScreenWidth(14)),
+                      fontSize: getProportionateScreenWidth(12)),
                 )),
                 leading: SizedBox(
                     child: Text(
-                  "จำนวนที่ลา: ",
+                  "${AppLocalizations.of(context).translate('totalLave')} ",
                   style: TextStyle(
-                      fontSize: getProportionateScreenWidth(14),
+                      fontSize: getProportionateScreenWidth(12),
                       color: kTextColor),
-                )),
+                ),
+                ),
               ),
         _leavingDtail == ""
             ? Container()
@@ -566,14 +597,14 @@ class _FormLeavingScreenState extends State<FormLeavingScreen> {
                   const SizedBox(
                     height: 10,
                   ),
-                  Text(
-                    'เหตุผลการลา:',
+              /*    Text(
+                    '${AppLocalizations.of(context).translate('reason')}:',
                     style: TextStyle(
-                        fontSize: getProportionateScreenWidth(14),
+                        fontSize: getProportionateScreenWidth(12),
                         color: kTextColor,
                     fontWeight: FontWeight.bold),
 
-                  ),
+                  ),*/
                   const SizedBox(
                     height: 5,
                   ),
@@ -589,7 +620,7 @@ class _FormLeavingScreenState extends State<FormLeavingScreen> {
                       _leavingDtail!,
                       style: TextStyle(
                           color: kTextColor,
-                          fontSize: getProportionateScreenWidth(14)),
+                          fontSize: getProportionateScreenWidth(12)),
                     ),
                   )
                 ],
@@ -604,10 +635,10 @@ class _FormLeavingScreenState extends State<FormLeavingScreen> {
         Expanded(
             flex: 2,
             child: Text(
-              "วันที่ลา:",
+              "${AppLocalizations.of(context).translate('startDate')}:",
               style: TextStyle(
                   color: kTextColor,
-                  fontSize: getProportionateScreenWidth(14),
+                  fontSize: getProportionateScreenWidth(12),
                   fontWeight: FontWeight.bold),
             )),
         Expanded(
@@ -628,9 +659,9 @@ class _FormLeavingScreenState extends State<FormLeavingScreen> {
                         height: 5,
                       ),
                       Text(
-                        "    วันที่  : $_dateTime",
+                        "    ${AppLocalizations.of(context).translate('dayOff')}  : $_dateTime",
                         style: TextStyle(
-                            fontSize: getProportionateScreenWidth(14)),
+                            fontSize: getProportionateScreenWidth(12)),
                       ),
                       const SizedBox(
                         height: 5,
@@ -671,21 +702,21 @@ class _FormLeavingScreenState extends State<FormLeavingScreen> {
         Expanded(
             flex: 2,
             child: Text(
-              "วันที่ลา:",
+              "${AppLocalizations.of(context).translate('dayOff')}:",
               style: TextStyle(
                   color: kTextColor,
-                  fontSize: getProportionateScreenWidth(14),
+                  fontSize: getProportionateScreenWidth(12),
                   fontWeight: FontWeight.bold),
             )),
         Expanded(
             flex: 9,
             child: Container(
-              padding: const EdgeInsets.only(top: 10, bottom: 10),
+              padding: const EdgeInsets.only(top: 10, bottom: 10, left: 10, right: 10),
               decoration: BoxDecoration(
                   border: Border.all(color: kTextColor),
                   borderRadius: BorderRadius.circular(26)),
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   Column(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -695,25 +726,25 @@ class _FormLeavingScreenState extends State<FormLeavingScreen> {
                         height: 5,
                       ),
                       Text(
-                        "    เริ่ม  : ${DateFormat('dd-MMM-yyyy').format(start)}",
+                        "${AppLocalizations.of(context).translate('startDate')}  : ${DateFormat('dd-MMM-yyyy').format(start)}",
                         style: TextStyle(
-                            fontSize: getProportionateScreenWidth(14)),
+                            fontSize: getProportionateScreenWidth(12)),
                       ),
                       const SizedBox(
                         height: 5,
                       ),
                       Text(
-                        "สิ้นสุด  : ${DateFormat('dd-MMM-yyyy').format(end)}",
+                        "${AppLocalizations.of(context).translate('endDate')}  : ${DateFormat('dd-MMM-yyyy').format(end)}",
                         style: TextStyle(
-                            fontSize: getProportionateScreenWidth(14)),
+                            fontSize: getProportionateScreenWidth(12)),
                       ),
                       const SizedBox(
                         height: 5,
                       ),
                       Text(
-                        "   รวม  : ${difference.inDays + 1} วัน",
+                        "${AppLocalizations.of(context).translate('sumDay')}  : ${difference.inDays + 1} ${AppLocalizations.of(context).translate('day')}",
                         style: TextStyle(
-                            fontSize: getProportionateScreenWidth(14)),
+                            fontSize: getProportionateScreenWidth(12)),
                       )
                     ],
                   ),
@@ -846,10 +877,10 @@ class _FormLeavingScreenState extends State<FormLeavingScreen> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          'หน่วยลา: ',
+          '${AppLocalizations.of(context).translate('unit')}: ',
           style: TextStyle(
               color: kTextColor,
-              fontSize: getProportionateScreenWidth(14),
+              fontSize: getProportionateScreenWidth(12),
               fontWeight: FontWeight.bold),
         ),
         Row(
@@ -862,9 +893,9 @@ class _FormLeavingScreenState extends State<FormLeavingScreen> {
                   Expanded(
                     child: ListTile(
                       title: Text(
-                        'เต็มวัน',
+                        AppLocalizations.of(context).translate('fullDay'),
                         style: TextStyle(
-                            fontSize: getProportionateScreenWidth(14.0),
+                            fontSize: getProportionateScreenWidth(12.0),
                             color: kTextColor),
                       ),
                       leading: Radio<SingingCharacter>(
@@ -886,9 +917,9 @@ class _FormLeavingScreenState extends State<FormLeavingScreen> {
                       ? Expanded(
                           child: ListTile(
                           title: Text(
-                            'ครึ่งวัน',
+                            AppLocalizations.of(context).translate('halfDay'),
                             style: TextStyle(
-                                fontSize: getProportionateScreenWidth(14.0),
+                                fontSize: getProportionateScreenWidth(12.0),
                                 color: kTextColor),
                           ),
                           leading: Radio<SingingCharacter>(
@@ -908,9 +939,9 @@ class _FormLeavingScreenState extends State<FormLeavingScreen> {
                       : Expanded(
                           child: ListTile(
                           title: Text(
-                            'ชั่วโมง',
+                            AppLocalizations.of(context).translate('hour'),
                             style: TextStyle(
-                                fontSize: getProportionateScreenWidth(14.0),
+                                fontSize: getProportionateScreenWidth(12.0),
                                 color: kTextColor),
                           ),
                           leading: Radio<SingingCharacter>(
@@ -940,10 +971,10 @@ class _FormLeavingScreenState extends State<FormLeavingScreen> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          'รูปแบบการลา: ',
+          '${AppLocalizations.of(context).translate('formatLeave')}: ',
           style: TextStyle(
               color: kTextColor,
-              fontSize: getProportionateScreenWidth(14),
+              fontSize: getProportionateScreenWidth(12),
               fontWeight: FontWeight.bold),
         ),
         Row(
@@ -957,9 +988,9 @@ class _FormLeavingScreenState extends State<FormLeavingScreen> {
                     flex: 2,
                     child: ListTile(
                       title: Text(
-                        ' 1 วัน',
+                        ' 1 ${AppLocalizations.of(context).translate('day')} ',
                         style: TextStyle(
-                            fontSize: getProportionateScreenWidth(14.0),
+                            fontSize: getProportionateScreenWidth(12.0),
                             color: kTextColor),
                       ),
                       leading: Radio<ChooseFormatLeaving>(
@@ -979,9 +1010,9 @@ class _FormLeavingScreenState extends State<FormLeavingScreen> {
                       flex: 3,
                       child: ListTile(
                         title: Text(
-                          'มากกว่า 1 วัน',
+                          AppLocalizations.of(context).translate('moreDay'),
                           style: TextStyle(
-                              fontSize: getProportionateScreenWidth(14.0),
+                              fontSize: getProportionateScreenWidth(12.0),
                               color: kTextColor),
                         ),
                         leading: Radio<ChooseFormatLeaving>(
@@ -1065,10 +1096,10 @@ class _FormLeavingScreenState extends State<FormLeavingScreen> {
         Expanded(
             flex: 2,
             child: Text(
-              "เหตุผล:",
+              "${AppLocalizations.of(context).translate('reason')}:",
               style: TextStyle(
                   color: kTextColor,
-                  fontSize: getProportionateScreenWidth(14),
+                  fontSize: getProportionateScreenWidth(12),
                   fontWeight: FontWeight.bold),
             )),
         Expanded(
@@ -1078,14 +1109,16 @@ class _FormLeavingScreenState extends State<FormLeavingScreen> {
                   color: kTextColor, fontSize: getProportionateScreenWidth(12)),
               validator: (value) {
                 if (value == null || value.isEmpty) {
-                  return "กรุณากรอกเหตุผลกาลา";
+                  return AppLocalizations.
+                      of(context)
+                      .translate('pleaseEnterReason');
                 }
                 _leavingDtail = value;
                 return null;
               },
               maxLines: 3,
-              decoration: const InputDecoration(
-                hintText: 'รายละเอียด',
+              decoration:  InputDecoration(
+                hintText: AppLocalizations.of(context).translate('detail'),
               ),
             ))
       ],
@@ -1098,9 +1131,9 @@ class _FormLeavingScreenState extends State<FormLeavingScreen> {
         Expanded(
           flex: 2,
           child: Text(
-            'ประเภท:',
+            '${AppLocalizations.of(context).translate('leaveType')}:',
             style: TextStyle(
-                fontSize: getProportionateScreenWidth(14),
+                fontSize: getProportionateScreenWidth(12),
                 color: kTextColor,
                 fontWeight: FontWeight.bold),
           ),
@@ -1115,7 +1148,7 @@ class _FormLeavingScreenState extends State<FormLeavingScreen> {
               DropdownMenuItem(
                 value: "02",
                 child: Text(
-                  "ลากิจ",
+                  AppLocalizations.of(context).translate('lagit'),
                   style: TextStyle(
                       fontSize: getProportionateScreenWidth(12),
                       color: kTextColor),
@@ -1131,7 +1164,7 @@ class _FormLeavingScreenState extends State<FormLeavingScreen> {
               DropdownMenuItem(
                 value: "29",
                 child: Text(
-                  "ลาพักผ่อนประจำปี",
+                  AppLocalizations.of(context).translate('lapukron'),
                   style: TextStyle(
                       fontSize: getProportionateScreenWidth(12),
                       color: kTextColor),
@@ -1173,9 +1206,9 @@ class _FormLeavingScreenState extends State<FormLeavingScreen> {
         Expanded(
           flex: 2,
           child: Text(
-            'จำนวน :',
+            '${AppLocalizations.of(context).translate('amount')} :',
             style: TextStyle(
-                fontSize: getProportionateScreenWidth(14),
+                fontSize: getProportionateScreenWidth(12),
                 color: kTextColor,
                 fontWeight: FontWeight.bold),
           ),
@@ -1190,63 +1223,63 @@ class _FormLeavingScreenState extends State<FormLeavingScreen> {
               DropdownMenuItem(
                 value: "1",
                 child: Text(
-                  "1 ชั่วโมง",
+                  "1 ${AppLocalizations.of(context).translate('hour')} ",
                   style: TextStyle(
-                      fontSize: getProportionateScreenWidth(14),
+                      fontSize: getProportionateScreenWidth(12),
                       color: kTextColor),
                 ),
               ),
               DropdownMenuItem(
                 value: "2",
                 child: Text(
-                  "2 ชั่วโมง",
+                  "2 ${AppLocalizations.of(context).translate('hour')}",
                   style: TextStyle(
-                      fontSize: getProportionateScreenWidth(14),
+                      fontSize: getProportionateScreenWidth(12),
                       color: kTextColor),
                 ),
               ),
               DropdownMenuItem(
                 value: "3",
                 child: Text(
-                  "3 ชั่วโมง",
+                  "3 ${AppLocalizations.of(context).translate('hour')}",
                   style: TextStyle(
-                      fontSize: getProportionateScreenWidth(14),
+                      fontSize: getProportionateScreenWidth(12),
                       color: kTextColor),
                 ),
               ),
               DropdownMenuItem(
                 value: "4",
                 child: Text(
-                  "4 ชั่วโมง",
+                  "4 ${AppLocalizations.of(context).translate('hour')}",
                   style: TextStyle(
-                      fontSize: getProportionateScreenWidth(14),
+                      fontSize: getProportionateScreenWidth(12),
                       color: kTextColor),
                 ),
               ),
               DropdownMenuItem(
                 value: "5",
                 child: Text(
-                  "5 ชั่วโมง",
+                  "5 ${AppLocalizations.of(context).translate('hour')}",
                   style: TextStyle(
-                      fontSize: getProportionateScreenWidth(14),
+                      fontSize: getProportionateScreenWidth(12),
                       color: kTextColor),
                 ),
               ),
               DropdownMenuItem(
                 value: "6",
                 child: Text(
-                  "6 ชั่วโมง",
+                  "6 ${AppLocalizations.of(context).translate('hour')}",
                   style: TextStyle(
-                      fontSize: getProportionateScreenWidth(14),
+                      fontSize: getProportionateScreenWidth(12),
                       color: kTextColor),
                 ),
               ),
               DropdownMenuItem(
                 value: "7",
                 child: Text(
-                  "7 ชั่วโมง",
+                  "7 ${AppLocalizations.of(context).translate('hour')}",
                   style: TextStyle(
-                      fontSize: getProportionateScreenWidth(14),
+                      fontSize: getProportionateScreenWidth(12),
                       color: kTextColor),
                 ),
               ),

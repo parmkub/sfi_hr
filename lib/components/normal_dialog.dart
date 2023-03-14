@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:sfiasset/app_localizations.dart';
 import 'package:sfiasset/components/sigout_process.dart';
 import 'package:sfiasset/constans.dart';
 import 'package:sfiasset/size_config.dart';
@@ -92,7 +93,7 @@ Future<void> normalDialogYesNo(BuildContext context, String message ) async {
                       }
                       ,
                       child:  Text(
-                        'ใช่',
+                        AppLocalizations.of(context).translate('yes'),
                         style: TextStyle(fontSize: getProportionateScreenWidth(16.0),color: Colors.white),
                       ),
                     ),
@@ -119,7 +120,7 @@ Future<void> normalDialogYesNo(BuildContext context, String message ) async {
                       ),
                       onPressed: ()=> Navigator.pop(context),
                       child:  Text(
-                        'ไม่ใช่',
+                        AppLocalizations.of(context).translate('no'),
                         style: TextStyle(fontSize: getProportionateScreenWidth(16.0),color: Colors.white),
                       ),
                     ),

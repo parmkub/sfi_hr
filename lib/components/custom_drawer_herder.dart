@@ -60,13 +60,13 @@ class CustomDrawerHeader extends StatelessWidget {
 
   Widget ImageDrower(){
     return  Container(
-      width: getProportionateScreenHeight(200),
+      width: double.infinity,
       child: ClipOval(
         child: FadeInImage(
           placeholder:
           const AssetImage("assets/images/userProfile.png"),
           image: NetworkImage(
-              "http://61.7.142.47:8086/img/sfi/$empCode.jpg",scale: 2.0),
+              "http://61.7.142.47:8086/img/sfi/$empCode.jpg",scale:2),
           imageErrorBuilder: (context, error, stackTrace) {
             return Image.asset("assets/images/userProfile.png",
                 fit: BoxFit.cover);
@@ -76,4 +76,5 @@ class CustomDrawerHeader extends StatelessWidget {
       ),
     );
   }
+
 }

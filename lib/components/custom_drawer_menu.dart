@@ -23,7 +23,7 @@ Card CustomDrawerMenu(
       title: Text(
         menu,
         style: TextStyle(
-            color: kTextColor, fontSize: getProportionateScreenHeight(16.0)),
+            color: kTextColor, fontSize: getProportionateScreenHeight(16.0),fontWeight: FontWeight.w200),
       ),
       onTap: () {
         press();

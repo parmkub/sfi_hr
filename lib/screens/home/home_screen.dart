@@ -4,6 +4,7 @@ import 'package:dio/dio.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:sfiasset/app_localizations.dart';
 import 'package:sfiasset/components/custom_drawer_herder.dart';
 import 'package:sfiasset/components/custom_drawer_menu.dart';
 import 'package:sfiasset/components/normal_dialog.dart';
@@ -78,19 +79,19 @@ class _HomeScreenState extends State<HomeScreen> {
                     decoration: const BoxDecoration(gradient: kBackgroundColor),
                     child: ListView(
                       children: <Widget>[
-                        CustomDrawerMenu(context, "หน้าแรก", Icons.home, () {
-                          PageChang(const BodyHomeNews(), "หน้าแรก");
+                        CustomDrawerMenu(context, AppLocalizations.of(context).translate('home'), Icons.home, () {
+                          PageChang(const BodyHomeNews(), AppLocalizations.of(context).translate('home'));
                           _homePage = true;
                         }),
                         CustomDrawerMenu(
-                            context, "บัตรพนักงาน", Icons.card_membership, () {
+                            context, AppLocalizations.of(context).translate('empCard'), Icons.card_membership, () {
                           Navigator.pop(context);
                           Navigator.pushNamed(context, EmpCardScreen.routName);
                           // PageChang(const BodyInformationEmp(),"บัตรพนักงาน");
                           _homePage = false;
                         }),
                         CustomDrawerMenu(
-                            context, "ปฏิทินบริษัท", Icons.calendar_month_outlined,
+                            context, AppLocalizations.of(context).translate('businessCalendar'), Icons.calendar_month_outlined,
                             () {
                           //PageChang(const BodyCalenda(),"ปฏิทินบริษัท");
                           Navigator.pop(context);
@@ -99,20 +100,20 @@ class _HomeScreenState extends State<HomeScreen> {
                           _homePage = false;
                         }),
                         CustomDrawerMenu(
-                            context, "ทีมงาน", Icons.person_search_outlined, () {
+                            context, AppLocalizations.of(context).translate('myTeam'), Icons.person_search_outlined, () {
                           /*PageChang(const BodyPersonalDepartment(),"ทีมงาน");*/
                           Navigator.pop(context);
                           Navigator.pushNamed(context, TeamScreen.routName);
                           _homePage = false;
                         }),
-                        CustomDrawerMenu(context, "วันหยุด", Icons.beach_access,
+                        CustomDrawerMenu(context, AppLocalizations.of(context).translate('holiday'), Icons.beach_access,
                             () {
                           Navigator.pop(context);
                           Navigator.pushNamed(context, HolidayScreen.routName);
                         }),
                         CheckPosition(positionGroupCode.toString()) == true
                             ? CustomDrawerMenu(
-                                context, "อนุมัติวันหยุด", Icons.approval, () {
+                                context, AppLocalizations.of(context).translate('Approval'), Icons.approval, () {
                                 //PageChang(const BodyApprove(),"อนุมัติวันหยุด");
                                 Navigator.pop(context);
                                 Navigator.pushNamed(
@@ -121,29 +122,29 @@ class _HomeScreenState extends State<HomeScreen> {
                               })
                             : Container(),
                         CustomDrawerMenu(
-                            context, "คู่มือพนักงาน", Icons.menu_book, () {
+                            context, AppLocalizations.of(context).translate('userManual'), Icons.menu_book, () {
                           Navigator.pop(context);
                           Navigator.pushNamed(
                               context, UserManualScreen.routName);
                           _homePage = false;
                         }),
-                        CustomDrawerMenu(context, "ข้อร้องเรียน", Icons.create,
+                        CustomDrawerMenu(context, AppLocalizations.of(context).translate('Appeal'), Icons.create,
                             () {
                           Navigator.pop(context);
                           Navigator.pushNamed(context, AppealScreen.routName);
                           _homePage = false;
                         }),
                         CustomDrawerMenu(
-                            context, "ตำแหน่งงานว่าง", Icons.wc_sharp, () {
+                            context, AppLocalizations.of(context).translate('job'), Icons.wc_sharp, () {
                           Navigator.pop(context);
                           Navigator.pushNamed(context, JobEntryScreen.routName);
                         }),
-                        CustomDrawerMenu(context, "HR-Contacts",
+                        CustomDrawerMenu(context, AppLocalizations.of(context).translate('hrContacts'),
                             Icons.person_search_outlined, () {
                           Navigator.pop(context);
                           Navigator.pushNamed(context, HRTeamScreen.routName);
                         }),
-                        CustomDrawerMenu(context, "นโยบายความเป็นส่วนตัว",
+                        CustomDrawerMenu(context, AppLocalizations.of(context).translate('privatePolicy'),
                             Icons.policy_rounded, () {
                           Navigator.pop(context);
                           Navigator.pushNamed(context, PublicezeScreen.routName,
@@ -155,9 +156,9 @@ class _HomeScreenState extends State<HomeScreen> {
                               });
                         }),
                         CustomDrawerMenu(
-                            context, "ออกจากระบบ", Icons.exit_to_app, () {
+                            context, AppLocalizations.of(context).translate('signOut'), Icons.exit_to_app, () {
                           normalDialogYesNo(
-                              context, 'คุณต้องการออกจากระบบหรือไม่');
+                              context, AppLocalizations.of(context).translate('signOut_Ask'));
                           print('ออกจากระบบ');
                         }),
                       ],
@@ -179,9 +180,9 @@ class _HomeScreenState extends State<HomeScreen> {
       pre_backpress = DateTime.now();
       if (cantExit == true) {
         final snackBar = SnackBar(
-          content: Text('กดอีกครั้งเพื่อออกจากแอพ'),
+          content: Text(AppLocalizations.of(context).translate('backToExit')),
           action: SnackBarAction(
-            label: 'ย้อนกลับ',
+            label: AppLocalizations.of(context).translate('undo'),
             onPressed: () {
               // Some code to undo the change.
             },
@@ -253,7 +254,7 @@ class _HomeScreenState extends State<HomeScreen> {
             indexPage = value;
           });
         },
-        items: <BottomNavigationBarItem>[ButtomNavNews(), ButtomNavActiviy()],
+        items: <BottomNavigationBarItem>[ButtomNavNews(context), ButtomNavActiviy(context)],
       );
 
   Future<void> getUserPeferent() async {

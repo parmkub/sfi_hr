@@ -6,6 +6,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
+import 'package:sfiasset/app_localizations.dart';
 import 'package:sfiasset/constans.dart';
 import 'package:sfiasset/model/leaving_card.dart';
 
@@ -97,7 +98,7 @@ class _BodyHolidayLeavingState extends State<BodyHolidayLeaving> {
                                                   children: [
                                                     Expanded(
                                                       child: Text(
-                                                        'ประเภทการลา: ${ConvertCodeLeaving('${provider.leavingCards[index].aBSENCECODE}')} ',
+                                                        '${AppLocalizations.of(context).translate('leaveType')}: ${ConvertCodeLeaving('${provider.leavingCards[index].aBSENCECODE}')} ',
                                                         style: TextStyle(
                                                             fontSize:
                                                                 getProportionateScreenHeight(
@@ -111,7 +112,7 @@ class _BodyHolidayLeavingState extends State<BodyHolidayLeaving> {
                                                 ),
 
                                                 Text(
-                                                  'จากวันที่: ${provider.leavingCards[index].sTARTDATE}',
+                                                  '${AppLocalizations.of(context).translate('startDate')}: ${provider.leavingCards[index].sTARTDATE}',
                                                   style: TextStyle(
                                                       fontSize:
                                                           getProportionateScreenHeight(
@@ -123,7 +124,7 @@ class _BodyHolidayLeavingState extends State<BodyHolidayLeaving> {
                                                   height: 5,
                                                 ),
                                                 Text(
-                                                  'ถึงวันที่  : ${provider.leavingCards[index].eNDDATE}',
+                                                  '${AppLocalizations.of(context).translate('endDate')}  : ${provider.leavingCards[index].eNDDATE}',
                                                   style: TextStyle(
                                                       fontSize:
                                                           getProportionateScreenHeight(
@@ -235,7 +236,7 @@ class _BodyHolidayLeavingState extends State<BodyHolidayLeaving> {
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         Text(
-          'ลำดับการอนุมัติ',
+          AppLocalizations.of(context).translate('stepApprove'),
           style: TextStyle(
               fontSize: getProportionateScreenWidth(10),
               fontWeight: FontWeight.bold),
@@ -260,19 +261,19 @@ class _BodyHolidayLeavingState extends State<BodyHolidayLeaving> {
                   const SizedBox(
                     width: 5,
                   ),
-                  Text('ผู้ทบทวน',
+                  Text(AppLocalizations.of(context).translate('review'),
                       style: TextStyle(
                           fontSize: getProportionateScreenWidth(10),
                           fontWeight: FontWeight.bold)),
-                  Text('ผู้อนุมัติ',
+                  Text(AppLocalizations.of(context).translate('approve'),
                       style: TextStyle(
                           fontSize: getProportionateScreenWidth(10),
                           fontWeight: FontWeight.bold)),
-                  Text('หมอ',
+                  Text(AppLocalizations.of(context).translate('doctor'),
                       style: TextStyle(
                           fontSize: getProportionateScreenWidth(10),
                           fontWeight: FontWeight.bold)),
-                  Text('เสร็จสิ้น',
+                  Text(AppLocalizations.of(context).translate('finish'),
                       style: TextStyle(
                           fontSize: getProportionateScreenWidth(10),
                           fontWeight: FontWeight.bold)),
@@ -287,7 +288,7 @@ class _BodyHolidayLeavingState extends State<BodyHolidayLeaving> {
                 children: [
                   Column(
                     children: [
-                      Text('ผู้ทบทวน',
+                      Text(AppLocalizations.of(context).translate('review'),
                           style: TextStyle(
                               fontSize: getProportionateScreenWidth(10),
                               fontWeight: FontWeight.bold)),
@@ -299,7 +300,7 @@ class _BodyHolidayLeavingState extends State<BodyHolidayLeaving> {
                   ),
                   Column(
                     children: [
-                      Text('ผู้อนุมัติ',
+                      Text(AppLocalizations.of(context).translate('approve'),
                           style: TextStyle(
                               fontSize: getProportionateScreenWidth(10),
                               fontWeight: FontWeight.bold)),
@@ -314,13 +315,11 @@ class _BodyHolidayLeavingState extends State<BodyHolidayLeaving> {
                   Text('ผู้อนุมัติ',
                       style: TextStyle(
                           fontSize: 12.0, fontWeight: FontWeight.bold)),*/
-                  Text('เสร็จสิ้น',
+                  Text(AppLocalizations.of(context).translate('finish'),
                       style: TextStyle(
                           fontSize: getProportionateScreenWidth(10),
                           fontWeight: FontWeight.bold)),
-                  SizedBox(
-                    height: getProportionateScreenHeight(10),
-                  )
+
                 ],
               )
       ],
@@ -362,12 +361,13 @@ class _BodyHolidayLeavingState extends State<BodyHolidayLeaving> {
 
   String? ConvertCodeLeaving(String date) {
     Map<String, String> dataMap = {
-      '02': 'ลากิจ',
-      'AB': 'ลากิจหักเงิน',
-      '11': 'ลาป่วย',
-      '14': 'ลาคลอด',
-      '12': 'อุบัติเหตุ',
-      '29': 'พักร้อน',
+
+      '02': AppLocalizations.of(context)!.translate('lagit'),
+      'AB': AppLocalizations.of(context)!.translate('lagitDiscount'),
+      '11': AppLocalizations.of(context)!.translate('sick'),
+      '14': AppLocalizations.of(context)!.translate('lakron'),
+      '12': AppLocalizations.of(context)!.translate('accident'),
+      '29': AppLocalizations.of(context)!.translate('lapukron'),
     };
     return dataMap[date];
   }

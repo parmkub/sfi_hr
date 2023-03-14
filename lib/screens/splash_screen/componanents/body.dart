@@ -1,5 +1,6 @@
-// ignore_for_file: avoid_print
+// ignore_for_file: avoid_print, use_build_context_synchronously
 
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:sfiasset/components/default_buttom.dart';
 import 'package:sfiasset/constans.dart';
@@ -19,8 +20,9 @@ class Body extends StatefulWidget {
 }
 
 class _BodyState extends State<Body> {
+
   int currentPage = 0;
-  String? username;
+  String? empCode;
   List<Map<String, String>> splashData = [
     {
       "text": "ระบบ HR SEAFRESH",
@@ -37,28 +39,47 @@ class _BodyState extends State<Body> {
   ];
   @override
   void initState() {
+
     // TODO: implement initState
     checkPreference();
     super.initState();
   }
 
   Future<void> checkPreference() async {
+
     try{
       SharedPreferences preferences = await SharedPreferences.getInstance();
-      username = preferences.get('username') as String?;
-      if(username!.isNotEmpty && username != null){
-        Navigator.pushNamedAndRemoveUntil(context, HomeScreen.routName, (route) => false);
+      empCode = preferences.get('empcode') as String?;
+      if(empCode == null){
+        Navigator.pushNamedAndRemoveUntil(context, SignInScreen.routName, (route) => false);
+      }else{
+        String url = "http://61.7.142.47:8086/sfi-hr/Athens.php?empcode=$empCode";
+        await Dio().get(url).then((value) async {
+          debugPrint('value :==> ${value.data}');
+          if(value.data == 'Null' || value.data == null){
+            Navigator.pushNamedAndRemoveUntil(context, SignInScreen.routName, (route) => false);
+          }else{
+            Navigator.pushNamedAndRemoveUntil(context, HomeScreen.routName, (route) => false);
+
+          }
+        });
       }
+
+
+    /*  if(empCode!.isNotEmpty && empCode != null){
+        Navigator.pushNamedAndRemoveUntil(context, HomeScreen.routName, (route) => false);
+      }*/
     // ignore: empty_catches
     }catch (e){
 
     }
 
-    print('Get user form preferences :==> $username');
+    print('Get user form preferences :==> $empCode');
   }
 
   @override
   Widget build(BuildContext context) {
+
     return SafeArea(
       child: SizedBox(
         width: double.infinity,
@@ -128,4 +149,6 @@ class _BodyState extends State<Body> {
       duration: kAnimationDuration,
     );
   }
+
+
 }

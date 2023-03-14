@@ -5,6 +5,7 @@ import 'dart:convert';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:sfiasset/app_localizations.dart';
 import 'package:sfiasset/model/approve_holiday_model.dart';
 import 'package:sfiasset/providers/approve_holiday_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -62,7 +63,7 @@ class ButtomApproveLeav extends StatelessWidget {
             ),
             onPressed: () {},
             child: Text(
-              "ไม่อนุมัติ",
+              AppLocalizations.of(context)!.translate('noApprove'),
               style: TextStyle(
                   fontSize: getProportionateScreenWidth(13),
                   color: Colors.white),
@@ -101,7 +102,7 @@ class ButtomApproveLeav extends StatelessWidget {
                   documentNo, statusLeave, reviewDocument);
             },
             child: Text(
-              "อนุมัติ",
+              AppLocalizations.of(context).translate('approve'),
               style: TextStyle(
                   fontSize: getProportionateScreenWidth(13),
                   color: Colors.white),

@@ -4,6 +4,7 @@ import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
+import 'package:sfiasset/app_localizations.dart';
 import 'package:sfiasset/constans.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
@@ -136,7 +137,7 @@ class _JobEntryState extends State<JobEntryScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAppBarMenu("ตำแหน่งงานว่าง"),
+      appBar: CustomAppBarMenu(AppLocalizations.of(context)!.translate("job"),),
       body:  Stack(
         children: [
          WebViewWidget(controller: _controller),

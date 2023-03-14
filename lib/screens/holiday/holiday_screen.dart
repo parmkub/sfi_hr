@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:sfiasset/app_localizations.dart';
 import 'package:sfiasset/constans.dart';
 import 'package:sfiasset/model/approve_holiday_model.dart';
 import 'package:sfiasset/model/leaving_card.dart';
@@ -48,7 +49,7 @@ class _HolidayScreenState extends State<HolidayScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAppBarMenu("วันหยุด"),
+      appBar: CustomAppBarMenu(AppLocalizations.of(context).translate('holiday')),
       body: listWidgets[indexPage],
       bottomNavigationBar: showBottomNavigationBar(),
       floatingActionButton: indexPage != 0 || statusData
@@ -73,9 +74,9 @@ class _HolidayScreenState extends State<HolidayScreen> {
           });
         },
         items: <BottomNavigationBarItem>[
-          ButtomNavWritLeaving(),
-          ButtomNavHoliday(),
-          ButtomNavCalendarHoliday(),
+          ButtomNavWritLeaving(context),
+          ButtomNavHoliday(context),
+          ButtomNavCalendarHoliday(context),
         ],
       );
 

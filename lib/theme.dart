@@ -28,8 +28,8 @@ InputDecorationTheme inputDecorationTheme() {
   );
   return InputDecorationTheme(
     contentPadding: const EdgeInsets.symmetric(
-      horizontal: 42,
-      vertical: 20,
+      horizontal: 30,
+      vertical: 16,
     ),
     enabledBorder: outlineInputBorder,
     focusedBorder: outlineInputBorder,

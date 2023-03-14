@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:sfiasset/app_localizations.dart';
 import 'package:sfiasset/model/calendar_hr_model.dart';
 import 'package:sfiasset/model/holiday_show_model.dart';
 import 'package:sfiasset/screens/home/components/mark_color_calendar.dart';
@@ -55,7 +56,7 @@ class _BodyState extends State<Body> {
                   backgroundColor: Colors.white,
                   dateTextStyle: TextStyle(
                       color: Colors.black54,
-                      fontSize: getProportionateScreenWidth(20.0)),
+                      fontSize: getProportionateScreenWidth(12.0)),
                   appointmentTextStyle: TextStyle(
                       color: Colors.black,
                       fontSize: getProportionateScreenWidth(12.0)),
@@ -78,9 +79,9 @@ class _BodyState extends State<Body> {
         ),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: const [
-            MarkColorCalendar(color: 0xFF40E0D0, nameColor: "บริษัทหยุด"),
-            MarkColorCalendar(color: 0xFFFFFF66, nameColor: "กิจกรรม"),
+          children:  [
+            MarkColorCalendar(color: 0xFF40E0D0, nameColor: AppLocalizations.of(context).translate('holiday')),
+            MarkColorCalendar(color: 0xFFFFFF66, nameColor: AppLocalizations.of(context).translate('activity')),
           ],
         )
       ]),

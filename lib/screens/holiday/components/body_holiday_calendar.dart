@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:sfiasset/app_localizations.dart';
 import 'package:sfiasset/constans.dart';
 
 import 'package:sfiasset/model/holiday_calendar_model.dart';
@@ -42,7 +43,9 @@ class _BodyHolidayCalendarState extends State<BodyHolidayCalendar> {
       child: Center(
         child: Column(
           children: <Widget>[
-            BuildCalandar(holidayCalendars: holidayCalendars, holidays: holidays),
+            BuildCalandar(
+                holidayCalendars: holidayCalendars,
+                holidays: holidays),
             const BuildColorDetail()
           ],
         ),
@@ -157,6 +160,7 @@ class _BodyHolidayCalendarState extends State<BodyHolidayCalendar> {
 class BuildColorDetail extends StatelessWidget {
   const BuildColorDetail({
     Key? key,
+
   }) : super(key: key);
 
   @override
@@ -172,32 +176,32 @@ class BuildColorDetail extends StatelessWidget {
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: const [
-                MarkColorCalendar(color: 0xFF0F8644, nameColor: "วันหยุด"),
-                MarkColorCalendar(color: 0xFFFFFF66, nameColor: "วันเลื่อน"),
-                MarkColorCalendar(color: 0xFF094999, nameColor: "พักร้อน")
+              children:  [
+                MarkColorCalendar(color: 0xFF0F8644, nameColor: AppLocalizations.of(context).translate('holiday')),
+                MarkColorCalendar(color: 0xFFFFFF66, nameColor: AppLocalizations.of(context).translate('dayChange')),
+                MarkColorCalendar(color: 0xFF094999, nameColor: AppLocalizations.of(context).translate('lapukron'))
               ],
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: const [
-                MarkColorCalendar(color: 0xFFFF9933, nameColor: "ลากิจ"),
-                MarkColorCalendar(color: 0xFF66CCFF, nameColor: "ลาป่วย"),
-                MarkColorCalendar(color: 0xFF9933CC, nameColor: "ลาคลอด")
+              children:  [
+                MarkColorCalendar(color: 0xFFFF9933, nameColor: AppLocalizations.of(context).translate('lagit')),
+                MarkColorCalendar(color: 0xFF66CCFF, nameColor: AppLocalizations.of(context).translate('sick')),
+                MarkColorCalendar(color: 0xFF9933CC, nameColor: AppLocalizations.of(context).translate('lakron'))
               ],
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: const [
-                MarkColorCalendar(color: 0xFFCC0066, nameColor: "อุบัติเหตุ"),
-                MarkColorCalendar(color: 0xFFFF0000, nameColor: "ขาดงาน"),
-                MarkColorCalendar(color: 0xFFCD853F, nameColor: "อุปสมบท")
+              children:  [
+                MarkColorCalendar(color: 0xFFCC0066, nameColor: AppLocalizations.of(context).translate('accident')),
+                MarkColorCalendar(color: 0xFFFF0000, nameColor: AppLocalizations.of(context).translate('absentFromWork')),
+                MarkColorCalendar(color: 0xFFCD853F, nameColor: AppLocalizations.of(context).translate('ordain'))
               ],
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: const [
-                MarkColorCalendar(color: 0xFF40E0D0, nameColor: "บริษัทปิด"),
+              children:  [
+                MarkColorCalendar(color: 0xFF40E0D0, nameColor: AppLocalizations.of(context).translate('factoryHoliday')),
 
               ],
             ),
@@ -239,11 +243,22 @@ class BuildCalandar extends StatelessWidget {
                  // bool showNavigationArrow = false,   bool showDatePickerButton = false,
                    showNavigationArrow: true,
                   showDatePickerButton: true,
+
                   dataSource:
                       HolidayDataSource(holidays),
-                  monthViewSettings: const MonthViewSettings(
+
+                  monthViewSettings:  MonthViewSettings(
+                      numberOfWeeksInView: 6,
+                    monthCellStyle: MonthCellStyle(
+                        trailingDatesBackgroundColor: Colors.white10,
+                        leadingDatesBackgroundColor: Colors.white10,
+                        textStyle: TextStyle(
+                            color: Colors.black,
+                            fontSize: getProportionateScreenWidth(10),
+                            fontWeight: FontWeight.w300)),
                       appointmentDisplayMode:
                           MonthAppointmentDisplayMode.appointment),
+
 
                 ),
               ),

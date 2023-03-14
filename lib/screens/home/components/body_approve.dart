@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:sfiasset/app_localizations.dart';
 import 'package:sfiasset/constans.dart';
 import 'package:sfiasset/model/approve_holiday_model.dart';
 import 'package:sfiasset/providers/approve_holiday_provider.dart';
@@ -73,32 +74,32 @@ class _BodyApproveState extends State<BodyApprove> {
                                             //   style: buildTextStyle(14),
                                             // ),
                                             Text(
-                                              "ชื่อ: ${provider.ApproveHolidayCard[index].nAME}",
+                                               "${AppLocalizations.of(context).translate('name')}: ${provider.ApproveHolidayCard[index].nAME}",
                                               style: buildTextStyle(14),
                                             ),
                                             Text(
-                                              "รหัสพนักงาน: ${provider.ApproveHolidayCard[index].eMPLOYEECODE}",
+                                              "${AppLocalizations.of(context).translate('empCode')}: ${provider.ApproveHolidayCard[index].eMPLOYEECODE}",
                                               style: buildTextStyle(14),
                                             ),
                                             Text(
-                                                "ประเภทลา: ${ConvertCodeLeaving(provider.ApproveHolidayCard[index].aBSENCECODE.toString())}",
+                                                "${AppLocalizations.of(context).translate('leaveType')}: ${ConvertCodeLeaving(provider.ApproveHolidayCard[index].aBSENCECODE.toString())}",
                                                 style: buildTextStyle(14)),
                                             Text(
-                                              "ตั้งแต่ : ${provider.ApproveHolidayCard[index].mIN}",
+                                              "${AppLocalizations.of(context).translate('startDate')} : ${provider.ApproveHolidayCard[index].mIN}",
                                               style: buildTextStyle(14),
                                             ),
                                             Text(
-                                                "สิ้นสุด : ${provider.ApproveHolidayCard[index].mAX}",
+                                                "${AppLocalizations.of(context).translate('endDate')} : ${provider.ApproveHolidayCard[index].mAX}",
                                                 style: buildTextStyle(14)),
                                             Text(
-                                                "รวม ${provider.ApproveHolidayCard[index].dAY} วัน",
+                                                "${AppLocalizations.of(context).translate('sumDay')} ${provider.ApproveHolidayCard[index].dAY} ${AppLocalizations.of(context).translate('day')}",
                                                 style: buildTextStyle(12)),
                                             provider.ApproveHolidayCard[index]
                                                         .aBSENCEDETAIL ==
                                                     null
                                                 ? Text('')
                                                 : Text(
-                                                    'เนื่องจาก: ${provider.ApproveHolidayCard[index].aBSENCEDETAIL}',
+                                                    '${AppLocalizations.of(context).translate('reason')}: ${provider.ApproveHolidayCard[index].aBSENCEDETAIL}',
                                                     style: buildTextStyle(12))
                                           ],
                                         ),
@@ -191,7 +192,7 @@ class _BodyApproveState extends State<BodyApprove> {
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         Text(
-          'ลำดับการอนุมัติ',
+          AppLocalizations.of(context).translate('stepApprove'),
           style: TextStyle(
               fontSize: getProportionateScreenWidth(14.0),
               fontWeight: FontWeight.bold),
@@ -217,19 +218,19 @@ class _BodyApproveState extends State<BodyApprove> {
                   const SizedBox(
                     width: 5,
                   ),
-                  Text('ทบทวน',
+                  Text(AppLocalizations.of(context).translate('review'),
                       style: TextStyle(
                           fontSize: getProportionateScreenWidth(12.0),
                           fontWeight: FontWeight.bold)),
-                  Text('อนุมัติ',
+                  Text(AppLocalizations.of(context).translate('approve'),
                       style: TextStyle(
                           fontSize: getProportionateScreenWidth(12.0),
                           fontWeight: FontWeight.bold)),
-                  Text('หมอ',
+                  Text(AppLocalizations.of(context).translate('doctor'),
                       style: TextStyle(
                           fontSize: getProportionateScreenWidth(12.0),
                           fontWeight: FontWeight.bold)),
-                  Text('เสร็จสิ้น',
+                  Text(AppLocalizations.of(context).translate('finish'),
                       style: TextStyle(
                           fontSize: getProportionateScreenWidth(12.0),
                           fontWeight: FontWeight.bold)),
@@ -247,7 +248,7 @@ class _BodyApproveState extends State<BodyApprove> {
                   ),
                   Column(
                     children: [
-                      Text('ทบทวน',
+                      Text(AppLocalizations.of(context).translate('review'),
                           style: TextStyle(
                               fontSize: getProportionateScreenWidth(12.0),
                               fontWeight: FontWeight.bold)),
@@ -259,7 +260,7 @@ class _BodyApproveState extends State<BodyApprove> {
                   ),
                   Column(
                     children: [
-                      Text('อนุมัติ',
+                      Text(AppLocalizations.of(context).translate('approve'),
                           style: TextStyle(
                               fontSize: getProportionateScreenWidth(12.0),
                               fontWeight: FontWeight.bold)),
@@ -269,7 +270,7 @@ class _BodyApproveState extends State<BodyApprove> {
                               fontWeight: FontWeight.bold)),
                     ],
                   ),
-                  Text('เสร็จสิ้น',
+                  Text(AppLocalizations.of(context).translate('finish'),
                       style: TextStyle(
                           fontSize: getProportionateScreenWidth(12.0),
                           fontWeight: FontWeight.bold)),
@@ -339,11 +340,12 @@ class _BodyApproveState extends State<BodyApprove> {
 
   String? ConvertCodeLeaving(String date) {
     Map<String, String> dataMap = {
-      '02': 'ลากิจ',
-      '11': 'ลาป่วย',
-      '14': 'ลาคลอด',
-      '12': 'อุบัติเหตุ',
-      '29': 'พักร้อน',
+      '02': AppLocalizations.of(context)!.translate('lagit'),
+      'AB': AppLocalizations.of(context)!.translate('lagitDiscount'),
+      '11': AppLocalizations.of(context)!.translate('sick'),
+      '14': AppLocalizations.of(context)!.translate('lakron'),
+      '12': AppLocalizations.of(context)!.translate('accident'),
+      '29': AppLocalizations.of(context)!.translate('lapukron'),
     };
     return dataMap[date];
   }

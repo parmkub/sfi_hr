@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:sfiasset/app_localizations.dart';
 import 'package:sfiasset/components/custom_drawer_menu.dart';
 import 'package:sfiasset/constans.dart';
 import 'package:sfiasset/model/holiday_medel.dart';
@@ -70,62 +71,62 @@ class _BodyHolidayState extends State<BodyHoliday> {
                   children: [
                     CustomHolidayCard(
                         context,
-                        "วันทำงาน",
+                        AppLocalizations.of(context)!.translate('workDay'),
                         ConverDate(holidayModels[0].wORKINGDAY.toString()),
                         "assets/images/Working-bro.png",
                         () {}),
                     CustomHolidayCard(
                         context,
-                        "พักร้อน",
-                        "${ConverDate(holidayModels[0].pUKRONH.toString())}/${holidayModels[0].sUMMERDAY} วัน",
+                        AppLocalizations.of(context)!.translate('lapukron'),
+                        "${ConverDate(holidayModels[0].pUKRONH.toString())}/${holidayModels[0].sUMMERDAY} ${AppLocalizations.of(context).translate('day')}",
                         "assets/images/pakroh.png",
                         () {}),
                     CustomHolidayCard(
                         context,
-                        "เข้างานสาย",
+                        AppLocalizations.of(context)!.translate('worklate'),
                         "${ConverDate(holidayModels[0].sAI.toString())
-                                .split(" ")[0]} ครั้ง",
+                                .split(" ")[0]} ${AppLocalizations.of(context).translate('timeLate')}",
                         "assets/images/Deadline-pana.png",
                         () {}),
                     CustomHolidayCard(
                         context,
-                        "ลากิจ-จ่าย",
+                        AppLocalizations.of(context)!.translate('lagit'),
                         ConverDate(holidayModels[0].lAGITJAY.toString()),
                         "assets/images/lagit-jay.png",
                         () {}),
                     CustomHolidayCard(
                         context,
-                        "ลากิจ-ไม่จ่าย",
+                        AppLocalizations.of(context)!.translate('lagitDiscount'),
                         ConverDate(holidayModels[0].lAGITNOTJAY.toString()),
                         "assets/images/lagit-njay.png",
                         () {}),
                     CustomHolidayCard(
                         context,
-                        "ลาป่วย-จ่าย",
+                        AppLocalizations.of(context)!.translate('sick'),
                         ConverDate(holidayModels[0].lAPOUYJAY.toString()),
                         "assets/images/sick-jay.png",
                         () {}),
                     CustomHolidayCard(
                         context,
-                        "ลาป่วย-ไม่จ่าย",
+                        AppLocalizations.of(context)!.translate('sickDiscount'),
                         ConverDate(holidayModels[0].lAPOUYNOTJAY.toString()),
                         "assets/images/sick-not-jay.png",
                         () {}),
                     CustomHolidayCard(
                         context,
-                        "ลาคลอด-จ่าย",
+                        AppLocalizations.of(context)!.translate('lakron'),
                         ConverDate(holidayModels[0].lACRODJAY.toString()),
                         "assets/images/Midwives-jay.png",
                         () {}),
                     CustomHolidayCard(
                         context,
-                        "ลาคลอด-ไม่จ่าย",
+                        AppLocalizations.of(context)!.translate('lakronDiscount'),
                         ConverDate(holidayModels[0].lACRODNETJAY.toString()),
                         "assets/images/Midwives-not-Jay.png",
                         () {}),
                     CustomHolidayCard(
                         context,
-                        "ขาดงาน",
+                        AppLocalizations.of(context)!.translate('absentFromWork'),
                         ConverDate(holidayModels[0].kADHANG.toString()),
                         "assets/images/Working late.png",
                         () {}),
@@ -136,7 +137,7 @@ class _BodyHolidayState extends State<BodyHoliday> {
             decoration: const BoxDecoration(gradient: kBackgroundColor),
             child: Center(
               child: Text(
-                "ไม่มีข้อมูลสถิติ เนื่องจากตำแหน่งสูงกว่าผู้จัดการส่วน",
+                AppLocalizations.of(context)!.translate('noData'),
                 style: TextStyle(fontSize: getProportionateScreenWidth(16)),
               ),
             ));
@@ -147,16 +148,16 @@ class _BodyHolidayState extends State<BodyHoliday> {
     if (date != "null") {
       if (date.split(' ').length > 4) {
         convertTxt =
-            date.split(' ')[0] + " วัน " + date.split(' ')[2] + " ชั่วโมง";
+            "${date.split(' ')[0]} ${AppLocalizations.of(context).translate("day")} ${date.split(' ')[2]} ${AppLocalizations.of(context).translate("hour")}";
       } else {
         if (date.contains("Day")) {
-          convertTxt = date.split(' ')[0] + " วัน";
+          convertTxt = "${date.split(' ')[0]} ${AppLocalizations.of(context).translate("day")}";
         } else {
-          convertTxt = date.split(' ')[0] + " ชั่วโมง";
+          convertTxt = "${date.split(' ')[0]} ${AppLocalizations.of(context).translate("hour")}";
         }
       }
     } else {
-      convertTxt = "0 วัน";
+      convertTxt = "0 ${AppLocalizations.of(context).translate("day")}";
     }
 
     return convertTxt;

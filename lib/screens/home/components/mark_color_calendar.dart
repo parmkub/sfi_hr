@@ -18,15 +18,15 @@ class MarkColorCalendar extends StatelessWidget {
       child: Row(
         children: [
           Container(
-            height: 6,
-            width: 40.0,
+            height: getProportionateScreenWidth(6),
+            width: getProportionateScreenWidth(30),
             decoration: BoxDecoration(
               color:  Color(color),
               borderRadius: BorderRadius.circular(3),
             ),
           ),
           const SizedBox(width: 5,),
-          Text(nameColor,style: TextStyle(fontSize: 12.0),),
+          Text(nameColor,style: TextStyle(fontSize: getProportionateScreenWidth(12)),),
         ],
       ),
     );

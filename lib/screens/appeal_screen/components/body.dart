@@ -1,5 +1,10 @@
+// ignore_for_file: use_build_context_synchronously
+
+import 'dart:convert';
+
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:sfiasset/app_localizations.dart';
 import 'package:sfiasset/components/normal_dialog.dart';
 import 'package:sfiasset/constans.dart';
 import 'package:sfiasset/size_config.dart';
@@ -28,7 +33,7 @@ class _BodyAppealState extends State<BodyAppeal> {
             children: [
               Center(
                 child: Text(
-                  'ข้อร้องเรียน',
+                  AppLocalizations.of(context).translate('Appeal'),
                   style: TextStyle(fontSize:  getProportionateScreenWidth(14), fontWeight: FontWeight.bold),
                 ),
               ),
@@ -44,13 +49,13 @@ class _BodyAppealState extends State<BodyAppeal> {
                           },
                           validator: (value) {
                             if (value!.isEmpty) {
-                              return 'กรุณากรอกข้อร้องเรียน';
+                              return AppLocalizations.of(context).translate('Appeal_insert');
                             }
                             return null;
                           },
                           maxLines: 20,
                           decoration: InputDecoration(
-                            hintText: 'กรุณากร้อกข้อรองเรียน',
+                            hintText: AppLocalizations.of(context).translate('Appeal_insert'),
                             hintStyle: TextStyle(color: Colors.grey),
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(10),
@@ -63,8 +68,7 @@ class _BodyAppealState extends State<BodyAppeal> {
                             if (_formKey.currentState!.validate()) {
                               _formKey.currentState!.save();
                               debugPrint('detail = $detail');
-                              ShowDialog(context, 'คุณต้องการส่งข้อร้องเรียนใช่หรือไม่ ชื่อของท่านจะไม่ถูกบันทึกในการร้องเรียนครั้งนี้');
-
+                              ShowDialog(context, AppLocalizations.of(context).translate('Appeal_Ask'));
 
                             }
                           },
@@ -72,7 +76,7 @@ class _BodyAppealState extends State<BodyAppeal> {
                             backgroundColor: MaterialStateProperty.all<Color>(kPrimaryColor),
                           ),
                           child:  Text(
-                            'ส่งข้อร้องเรียน',
+                            AppLocalizations.of(context).translate('Appeal_send'),
                             style: TextStyle(color: Colors.white,fontSize: getProportionateScreenWidth(14)),
                           ),
                         ),
@@ -88,6 +92,22 @@ class _BodyAppealState extends State<BodyAppeal> {
     );
   }
 
+  Future<void> sendMail() async {
+    String url = 'http://61.7.142.47:3002/appeal?reason=$detail';
+    var response = await Dio().get(url);
+   // debugPrint('response = $response');
+    int resultStatus = response.data['RespCode'];
+    debugPrint('resultStatus = $resultStatus');
+
+    if (resultStatus == 200) {
+      normalDialog(context, AppLocalizations.of(context).translate('Appeal_success'));
+      _formKey.currentState!.reset();
+    } else {
+      normalDialog(context, AppLocalizations.of(context).translate('Appeal_fail'));
+    }
+
+  }
+
   Future<void> InsetData() async {
     String url = 'http://61.7.142.47:8086/sfi-hr/insertAppeal.php';
     var formData = FormData.fromMap({
@@ -96,10 +116,10 @@ class _BodyAppealState extends State<BodyAppeal> {
     var response = await Dio().post(url, data: formData);
     debugPrint('response = $response');
      if (response.toString() == 'true') {
-        normalDialog(context, 'ส่งข้อรองเรียนเรียบร้อยแล้ว');
+        normalDialog(context, AppLocalizations.of(context).translate('Appeal_success'));
         _formKey.currentState!.reset();
       } else {
-        normalDialog(context, 'ส่งข้อรองเรียนไม่สำเร็จ');
+        normalDialog(context, AppLocalizations.of(context).translate('Appeal_fail'));
       }
 
   }
@@ -134,13 +154,14 @@ class _BodyAppealState extends State<BodyAppeal> {
             child: TextButton(
                 onPressed: () {
                   Navigator.pop(context);
-                  InsetData();
+                  //InsetData();
+                  sendMail();
                 },
                 style: ButtonStyle(
                   backgroundColor: MaterialStateProperty.all<Color>(Colors.green),
                 ),
                 child:  Text(
-                  'ใช่',
+                  AppLocalizations.of(context).translate('yes'),
                   style: TextStyle(fontSize: getProportionateScreenWidth(14),color: Colors.white),
                 )
             ),),
@@ -156,7 +177,7 @@ class _BodyAppealState extends State<BodyAppeal> {
                     backgroundColor: MaterialStateProperty.all<Color>(Colors.red),
                   ),
                   child:  Text(
-                    'ไม่ไช่',
+                    AppLocalizations.of(context).translate('no'),
                     style: TextStyle(fontSize: getProportionateScreenWidth(14),color: Colors.white),
                   )
               ),

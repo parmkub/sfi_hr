@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:provider/provider.dart';
+import 'package:sfiasset/app_localizations.dart';
 import 'package:sfiasset/providers/approve_holiday_provider.dart';
 import 'package:sfiasset/providers/leaving_provider.dart';
 import 'package:sfiasset/routs.dart';
@@ -27,6 +29,26 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'HR 4.0',
       theme: theme(),
+      supportedLocales: const <Locale>[
+        Locale('en', 'US'),//English
+        Locale('th', 'TH'),//Thai
+        Locale('mm','MM'),
+        Locale('jp','JP')//Japan
+      ],
+      localizationsDelegates: const [
+        AppLocalizations.delegate,
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+      ],
+      localeResolutionCallback: (locale, supportedLocales) {
+        for (final supportedLocale in supportedLocales) {
+          if (supportedLocale.languageCode == locale?.languageCode &&
+              supportedLocale.countryCode == locale?.countryCode) {
+            return supportedLocale;
+          }
+        }
+        return supportedLocales.first;
+      },
       initialRoute: SplashScreen.routName,
       routes: routs,
     );

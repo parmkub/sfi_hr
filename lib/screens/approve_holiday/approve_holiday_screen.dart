@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:sfiasset/app_localizations.dart';
 import 'package:sfiasset/constans.dart';
 
 import '../home/components/body_approve.dart';
@@ -15,7 +16,7 @@ class _ApproveHolidayScreenState extends State<ApproveHolidayScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAppBarMenu("อนุมัติวันหยุด"),
+      appBar: CustomAppBarMenu(AppLocalizations.of(context).translate('Approval')),
       body: BodyApprove(),
     );
   }

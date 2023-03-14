@@ -93,9 +93,9 @@ class _BodyCardState extends State<BodyCard> {
             if (EmployeeData.nATIONALITYCODE.toString() == "TH") {
               bgImage = "assets/images/emp_chp3.jpg";
             } else if (EmployeeData.nATIONALITYCODE.toString() == "B") {
-              bgImage = "assets/images/emp_chp2.jpg";
-            } else if (EmployeeData.nATIONALITYCODE.toString() == "K") {
               bgImage = "assets/images/emp_chp1.jpg";
+            } else if (EmployeeData.nATIONALITYCODE.toString() == "K") {
+              bgImage = "assets/images/emp_chp2.jpg";
             } else {
               bgImage = "assets/images/emp_chp4.jpg";
             }
@@ -104,9 +104,7 @@ class _BodyCardState extends State<BodyCard> {
       }
     } catch (e) {}
 
-    empCode = preferences.getString('empcode')!.substring(0, 2) +
-        '-' +
-        preferences.getString('empcode')!.substring(2);
+    empCode = '${preferences.getString('empcode')!.substring(0, 2)}-${preferences.getString('empcode')!.substring(2)}';
   }
 
   Widget FrontCard() {
@@ -309,13 +307,13 @@ class _BodyCardState extends State<BodyCard> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        "1.บัตรน้ใช้เฉพาะผู้มีชื่อเป็นเจ้าของบัตรเท่านั้น",
+                        "1.บัตรนี้ใช้เฉพาะผู้มีชื่อเป็นเจ้าของบัตรเท่านั้น",
                         style: TextStyle(
                             fontSize: getProportionateScreenHeight(20),
                             color: kTextColor),
                       ),
                       Text(
-                        "2.แสดงบัตรทุกครั้งทีี่ติดต่อกับหน่วยงานของบริษัท",
+                        "2.แสดงบัตรทุกครั้งที่ติดต่อกับหน่วยงานของบริษัท",
                         style: TextStyle(
                             fontSize: getProportionateScreenHeight(20),
                             color: kTextColor),
