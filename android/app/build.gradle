@@ -73,7 +73,7 @@ android {
         release {
             signingConfig signingConfigs.release
             ndk {
-                debugSymbolLevel 'symbol_table'
+                debugSymbolLevel 'SYMBOL_TABLE'
             }
         }
     }

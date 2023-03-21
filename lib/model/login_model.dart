@@ -1,6 +1,7 @@
 class LoginModel {
   String? uSERID;
   String? uSERNAME;
+  String? nAME;
   String? eMPCODE;
   String? pOSITIONGROUP;
   String? pOSITIONFGROUPNAME;
@@ -11,6 +12,7 @@ class LoginModel {
   LoginModel(
       { required this.uSERID,
         required this.uSERNAME,
+        required this.nAME,
         required this.eMPCODE,
         required this.pOSITIONGROUP,
         required this.pOSITIONFGROUPNAME,
@@ -21,6 +23,7 @@ class LoginModel {
   LoginModel.fromJson(Map<String, dynamic> json) {
     uSERID = json['USERID'];
     uSERNAME = json['USERNAME'];
+    nAME = json['NAME'];
     eMPCODE = json['EMPCODE'];
     pOSITIONGROUP = json['POSITIONGROUP'];
     pOSITIONFGROUPNAME = json['POSITIONGROUPNAME'];
@@ -33,6 +36,7 @@ class LoginModel {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['USERID'] = this.uSERID;
     data['USERNAME'] = this.uSERNAME;
+    data['NAME'] = this.nAME;
     data['EMPCODE'] = this.eMPCODE;
     data['POSITIONGROUP'] = this.pOSITIONGROUP;
     data['POSITIONGROUPNAME'] = this.pOSITIONFGROUPNAME;

@@ -62,6 +62,7 @@ class HolidayModel {
   String? hOLIDAY2ENDDATE;
   String? gROUPEMPLOYEE;
   String? pOSITIONFGROUPNAME;
+  String? hOLIDAYTOTAL;
 
   HolidayModel(
       {this.pERIODNAME,
@@ -126,7 +127,8 @@ class HolidayModel {
         this.hOLIDAY2STARTDATE,
         this.hOLIDAY2ENDDATE,
         this.gROUPEMPLOYEE,
-        this.pOSITIONFGROUPNAME});
+        this.pOSITIONFGROUPNAME,
+        this.hOLIDAYTOTAL});
 
   HolidayModel.fromJson(Map<String, dynamic> json) {
     pERIODNAME = json['PERIOD_NAME'];
@@ -192,6 +194,7 @@ class HolidayModel {
     hOLIDAY2ENDDATE = json['HOLIDAY_2END_DATE'];
     gROUPEMPLOYEE = json['GROUP_EMPLOYEE'];
     pOSITIONFGROUPNAME = json['POSITION_F_GROUP_NAME'];
+    hOLIDAYTOTAL = json['HOLIDAY_TOTAL'];
   }
 
   Map<String, dynamic> toJson() {
@@ -259,6 +262,7 @@ class HolidayModel {
     data['HOLIDAY_2END_DATE'] = hOLIDAY2ENDDATE;
     data['GROUP_EMPLOYEE'] = gROUPEMPLOYEE;
     data['POSITION_F_GROUP_NAME'] = pOSITIONFGROUPNAME;
+    data['HOLIDAT_TOTAL'] = hOLIDAYTOTAL;
     return data;
   }
 }

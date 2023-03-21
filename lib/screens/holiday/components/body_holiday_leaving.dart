@@ -87,12 +87,12 @@ class _BodyHolidayLeavingState extends State<BodyHolidayLeaving> {
                                               crossAxisAlignment:
                                                   CrossAxisAlignment.start,
                                               children: [
-                                                // Text(
-                                                //   'เลขที่เอกสาร  : ${provider.leavingCards[index].aBSENCEDOCUMENT}',
-                                                //   style: const TextStyle(
-                                                //       fontSize: 14.0,
-                                                //       fontWeight: FontWeight.bold),
-                                                // ),
+                                                Text(
+                                                   '${AppLocalizations.of(context).translate('leaveNo')}  : ${provider.leavingCards[index].aBSENCEDOCUMENT}',
+                                                   style:  TextStyle(
+                                                      fontSize: getProportionateScreenHeight(14),
+                                                      fontWeight: FontWeight.bold),
+                                                 ),
 
                                                 Row(
                                                   children: [

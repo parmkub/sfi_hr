@@ -51,6 +51,11 @@ class _FormLeavingScreenState extends State<FormLeavingScreen> {
 
   String? _leavingDtail;
 
+  var bossName;
+
+  bool pass = true;
+
+
   String CodeToString(BuildContext context,String title)  {
     String _resual = "";
     Map<String, String> codeToString = {
@@ -89,23 +94,22 @@ class _FormLeavingScreenState extends State<FormLeavingScreen> {
     '12': 'ลาเนื่องจากอุบัติเหตุ'
   };
 
-  int? _fullDay = 1, _haffDay = 4, _hour = 0;
+  int? _fullDay = 0, _hour = 0;
   final int? _statusApprove = 0;
 
   String? _token;
 
-  int uSEPAKRON =0;
+  int useLeaved = 0;
 
-  int countPaKron = 0;
-
-  int dIFFPAKRON =0;
+  double dIFFPAKRON =0;
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    getDataUser();
     getPakronTableMobile();
+    getPakron();
+
   }
 
   @override
@@ -145,9 +149,9 @@ class _FormLeavingScreenState extends State<FormLeavingScreen> {
                                     fontSize: getProportionateScreenWidth(12),
                                     fontWeight: FontWeight.bold)),
                             const Spacer(),
-                            SelectMoreDayOrOneDay(start),
-                            const Spacer(),
                             SelectTypeLeaving(),
+                            const Spacer(),
+                            SelectMoreDayOrOneDay(start),
                             const Spacer(),
                             chooseLeaveingFormat == 1
                                 ? PickDate()
@@ -195,7 +199,6 @@ class _FormLeavingScreenState extends State<FormLeavingScreen> {
                                 _dateTime =
                                     DateFormat('dd-MMM-yyyy').format(start);
                               }
-
                               print("รหัสการลา absence_code: $_selectTypeLeav");
 
                               switch(_selectTypeLeav){
@@ -213,9 +216,31 @@ class _FormLeavingScreenState extends State<FormLeavingScreen> {
                                       chooseLeaveingFormat);
                                   break;
                                 case "29":
-                                 if(dIFFPAKRON <= countPaKron) {
-                                  normalDialog(context, 'ไม่สามารถลาพักร้อนได้เนื่องจากท่านใช้สิทธิ์หมดแล้ว');
+                                  if(pass) {
+                                    print(
+                                        'จำนวนชั่วโมงลาที่ใช่ไปแล้ว $useLeaved ชม');
+                                    if (chooseLeaveingFormat == 1) {
+                                      useLeaved =
+                                          useLeaved + _hour! + (_fullDay! * 8)!;
+                                      print(
+                                          'จำนวนชั่วโมงที่ต้องการลารวม $useLeaved ชม');
+                                    } else if (chooseLeaveingFormat == 2) {
+                                      print(
+                                          'จำนวนวันที่ต้องการลา555 ${difference
+                                              .inDays + 1} วัน');
+                                      useLeaved = useLeaved +
+                                          ((difference.inDays + 1) * 8);
+                                      //print('จำนวนชั่วโมงที่ต้องการลารวมมากว่า1วัน $useLeaved ชม');
+                                    }
+
+                                    print(
+                                        'จำนวนวันลาที่ใช้รวมแล้ว $useLeaved ชม');
+                                  }
+
+                                 if( useLeaved > dIFFPAKRON) {
+                                  normalDialog(context, AppLocalizations.of(context).translate('leaveNotEnough'));
                                  }else{
+                                   print('จำนวนวันลาที่เหลือ $dIFFPAKRON ชม');
                                    _shoDialogDetail(
                                        start,
                                        end,
@@ -230,7 +255,6 @@ class _FormLeavingScreenState extends State<FormLeavingScreen> {
                                   break;
 
                               }
-
 
 
                               // ScaffoldMessenger.of(context).showSnackBar(
@@ -248,58 +272,77 @@ class _FormLeavingScreenState extends State<FormLeavingScreen> {
     );
   }
 
-  Future<void> getDataUser() async {
+  Future<void> getPakron() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
+    _token = preferences.getString('token');
     _empCode = preferences.getString('empcode');
-    _documentNo = getRandString();
+    //print('empcode : $_empCode');
 
     String url = "http://61.7.142.47:8086/sfi-hr/select_pakron.php?empcode=$_empCode";
-    Response response = await Dio().get(url);
+
     try {
+      Response response = await Dio().get(url);
       var result = jsonDecode(response.data);
       if (result != null) {
-        debugPrint('resultGetleavingPakeron : $result');
-        for (var map in result) {
-          TotalPakronModel totalPakronModel = TotalPakronModel.fromJson(map);
-           dIFFPAKRON = int.parse(totalPakronModel.dIFFPAKRON.toString())*8;
-        }
+       // debugPrint('resultGetleavingPakeron : $result');
+         var resultPakron = result[0];
+          dIFFPAKRON = (double.parse(resultPakron['DIFF_PAKRON']))*8;
+         print('จำนวนวันลาพักร้อนที่เหลือ $dIFFPAKRON ชม');
       }
     } catch (e) {}
-    print("รหัสเอกสาร: $_documentNo");
-    print("เหลือพักร้อนใน Table หลัก: ${int.parse(dIFFPAKRON.toString()) } ชั่วโมง");
+
 
   }
 
   Future<void> getPakronTableMobile() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     String? _empCode = preferences.getString('empcode');
+    //print('empcode : $_empCode');
     String url =
         "http://61.7.142.47:8086/sfi-hr/select_leav_document.php?empcode=$_empCode";
-    Response response = await Dio().get(url);
     int day = 0;
+    int hour = 0;
+
+   try {
+     Response response = await Dio().get(url);
+      var result = jsonDecode(response.data);
+      if (result != null) {
+        for (var map in result) {
+          LeavingCard leavingCard = LeavingCard.fromJson(map);
+          if (leavingCard.aBSENCECODE.toString() == '29' && leavingCard.aBSENCESTATUS.toString() != '2') {
+            day = day + int.parse(leavingCard.aBSENCEDAY.toString());
+            hour = hour + int.parse(leavingCard.aBSENCEHOUR.toString());
+            print('จำนวนวัน >>$day');
+          }
+        }
+      }
+     useLeaved = day*8 + hour;
+
+     print('จำนวนชั่วโมงที่ลาใน Table Mobile : $useLeaved ชั่วโมง');
+
+   }catch(e){}
+
+   /* int day = 0;
     int hour = 0;
     try {
       var result = jsonDecode(response.data);
       if (result != null) {
         for (var map in result) {
           LeavingCard leavingCard = LeavingCard.fromJson(map);
-
-          if(leavingCard.aBSENCECODE.toString()=='29'){
-            if(int.parse(leavingCard.cOUNTDATE.toString())>1){
-               day = (int.parse(leavingCard.aBSENCEDAY.toString())*int.parse(leavingCard.cOUNTDATE.toString()))*8;
-            }else{
-              day = int.parse(leavingCard.aBSENCEDAY.toString())*8;
+          if (leavingCard.aBSENCECODE.toString() == '29') {
+            if (leavingCard.aBSENCEDAY.toString() == '1') {
+              day = day++;
             }
-
-            hour = int.parse(leavingCard.aBSENCEHOUR.toString());
-            countPaKron = countPaKron + day + hour;
+            if (leavingCard.aBSENCEHOUR != null) {
+              hour = hour + int.parse(leavingCard.aBSENCEHOUR.toString());
+            }
           }
-
         }
-
-        debugPrint('พักร้อนใน Table Mobile : ${countPaKron} ชั่วโมง');
-      }
-    } catch (e) {}
+        print('จำนวนวันที่ลาใน Table Mobile : $day วัน');
+        print('จำนวนชั่วโมงที่ลาใน Table Mobile : $hour ชั่วโมง');
+        print('พักร้อนใน Table Mobile : ${countPaKron} ชั่วโมง');*/
+    /*  }
+    } catch (e) {}*/
   }
 
 
@@ -397,6 +440,7 @@ class _FormLeavingScreenState extends State<FormLeavingScreen> {
                 ),
                 onPressed: () {
                   InsertData(chooseLeaveingFormat, difference);
+                  sendNotify();
                   Navigator.pop(context);
                 },
                 child: Text(
@@ -716,7 +760,7 @@ class _FormLeavingScreenState extends State<FormLeavingScreen> {
                   border: Border.all(color: kTextColor),
                   borderRadius: BorderRadius.circular(26)),
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
                   Column(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -769,7 +813,7 @@ class _FormLeavingScreenState extends State<FormLeavingScreen> {
     const _chars =
         'AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz1234567890';
     String randomString =
-        List.generate(10, (index) => _chars[r.nextInt(_chars.length)]).join();
+        List.generate(6, (index) => _chars[r.nextInt(_chars.length)]).join();
     // String randomString =
     //     String.fromCharCodes(List.generate(16, (index) => r.nextInt(33) + 89));
     return randomString;
@@ -787,12 +831,72 @@ class _FormLeavingScreenState extends State<FormLeavingScreen> {
     }
     setState(() {
       dateRang = newDateRange;
+      print( 'pickDateRange >>> :$dateRang');
     });
+  }
+  Future<void> sendNotify() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? departCode = prefs.getString('departcode');
+    String? diviCode = prefs.getString('divicode');
+    String? sectCode = prefs.getString('sectcode');
+    String? name = prefs.getString('name');
+
+    String url = "http://61.7.142.47:8086/sfi-hr/getTokenBoss.php";
+    var formData = FormData.fromMap({
+      'departCode': departCode,
+      'diviCode': diviCode,
+      'sectCode': sectCode,
+    });
+    await Dio().post(url,data: formData).then((value) async {
+      String url = "http://61.7.142.47:8086/sfi-hr/apiNotification.php";
+      var result = jsonDecode(value.data);
+      print('จำนวนหัวหน้า ${result.length}คน');
+      for(int i = 0; i < result.length; i++){
+       /* print(result[i]['NAME']);
+        print(result[i]['TOKEN']);*/
+        bossName = result[i]['NAME'];
+        var formDataNoti = FormData.fromMap({
+          'title': 'แจ้งลาของ ${name}',
+          'token': result[i]['TOKEN'],
+          'message': 'ขออนุมัติลา ${name}',
+          'screen': 'approveLeave',
+        });
+        await Future.delayed(Duration(seconds: 3),(){
+          Dio().post(url, data: formDataNoti).then((value) {
+            var result = jsonDecode(value.data);
+            if (result['success'] == 1) {
+              print('ส่งแจ้งเตือนให้หัวหน้า ${bossName} ได้');
+            } else {
+              print('ไม่สามารถส่งแจ้งเตือนได้');
+            }
+          });
+        }) ;
+      }
+    });
+
+    /*String url = "http://61.7.142.47:8086/sfi-hr/apiNotification.php";
+    var formData = FormData.fromMap({
+      'departCode': departCode,
+      'diviCode': diviCode,
+      'sectCode': sectCode,
+      'name': name,
+    });
+   await Dio().post(url, data: formData).then((value) {
+     var result = jsonDecode(value.data);
+
+     if (result['success'] == 1) {
+       print('ส่งแจ้งเตือนได้');
+     } else {
+       print('ไม่สามารถส่งแจ้งเตือนได้');
+     }
+    });*/
+
   }
 
   Future<void> InsertData(int formatWrit, var difference) async {
-    int daysOfWrith = difference.inDays + 1;
-    print("จำนวนวันที่ต้องบันทึก ${daysOfWrith.toString()}");
+    _documentNo = getRandString();
+    int daysOfWrite = difference.inDays + 1;
+    print("จำนวนวันที่ต้องบันทึก ${daysOfWrite.toString()}");
     print("รูปแบบการบันทึก: $formatWrit");
     var formData = FormData.fromMap({
       'absence_document': _documentNo,
@@ -803,7 +907,8 @@ class _FormLeavingScreenState extends State<FormLeavingScreen> {
       'absence_hour': _hour,
       'absence_status': _statusApprove,
       'absence_detail': _leavingDtail,
-      'dayCount': daysOfWrith
+      'dayCount': daysOfWrite,
+      'absence_token': _token,
     });
 
     String url = "http://61.7.142.47:8086/sfi-hr/insertLeaving.php";
@@ -822,18 +927,9 @@ class _FormLeavingScreenState extends State<FormLeavingScreen> {
         if (result != null) {
           for (var map in result) {
             LeavingCard leavingCard = LeavingCard.fromJson(map);
-
-            //   setState(() {
-
             provider.addLeavingCard(leavingCard);
-            if(leavingCard.aBSENCECODE.toString()=='29'){
-              countPaKron = countPaKron + 1;
+            print('ดึงข้อมูลการ์ดใหม่');
 
-            };
-            print('ในForm ดึงข้อมูลการ์ดลาพักร้อนเท่ากับ : ${countPaKron} วัน');
-            print('ดึงข้อมูลการ์ด');
-            // LeavingModels.add(leavingCard);
-            //  });
           }
         }
       } catch (e) {}
@@ -905,7 +1001,6 @@ class _FormLeavingScreenState extends State<FormLeavingScreen> {
                           setState(() {
                             _character = valude;
                             _fullDay = 1;
-                            _haffDay = 0;
                             _hour = 0;
                             print("เลือก: $_character");
                           });
@@ -929,7 +1024,6 @@ class _FormLeavingScreenState extends State<FormLeavingScreen> {
                               setState(() {
                                 _character = valude;
                                 _fullDay = 0;
-                                _haffDay = 0;
                                 _hour = 4;
                                 print("เลือก: $_character");
                               });
@@ -1189,6 +1283,15 @@ class _FormLeavingScreenState extends State<FormLeavingScreen> {
               _selectTypeLeav = val!;
               if (_selectTypeLeav != "02") {
                 _leavingDtail = "";
+              }
+              if(_selectTypeLeav == "29") {
+                _character = SingingCharacter.day;
+                _fullDay = 1;
+                _hour = 0;
+              }else{
+                _character = SingingCharacter.hour;
+                _fullDay = 0;
+                _hour = 4;
               }
 
               print("ประเภทการลา:" + _selectTypeLeav!);

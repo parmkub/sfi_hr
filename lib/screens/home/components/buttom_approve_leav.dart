@@ -19,6 +19,7 @@ class ButtomApproveLeav extends StatelessWidget {
   String statusLeave;
   String reviewDocument;
   String ApproveDocument;
+  String empCode;
   BuildContext context;
 
   var url;
@@ -30,6 +31,7 @@ class ButtomApproveLeav extends StatelessWidget {
       required this.statusLeave,
       required this.reviewDocument,
       required this.ApproveDocument,
+      required this.empCode,
       required this.context})
       : super(key: key);
 
@@ -137,9 +139,10 @@ class ButtomApproveLeav extends StatelessWidget {
       print('อัพเดทข้อมูลสถานะลาเรียบร้อย');
       print("สถานะอัพเดท 55555: $IntstatusLeaving");
       print("เลขที่เอกสาร $documentNo");
-      getApproveHoliday();
       debugPrint('ประเภทเอกสาร: $absencdCode');
       InsertAbsenceTable(IntstatusLeaving, absencdCode);
+      SendNotify(empCode);
+      getApproveHoliday();
     } else {
       print('อัพเดทสถานะการลาล้มเหลว');
     }
@@ -162,6 +165,45 @@ class ButtomApproveLeav extends StatelessWidget {
         print('อัพเดทข้อมูลลา Table Absence ล้มเหลว');
       }
     }
+  }
+
+  Future<void> SendNotify(String empCode) async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    String? name = preferences.getString('name');
+    String? stepName = '';
+    print('สถานะผู้ทบทวน :$statusLeave');
+    if(statusLeave == '0'){
+      stepName = 'ทบทวน';
+    }else{
+      stepName = 'อนุมัติ';
+    }
+    await Dio()
+        .get("http://61.7.142.47:8086/sfi-hr/getToken.php?empcode=$empCode")
+        .then((value)  async {
+      var resultToken = jsonDecode(value.data);
+      var token = resultToken[0]['TOKEN'];
+      print('token from API: $token');
+
+      if (resultToken != null || resultToken != 'null') {
+        String url = "http://61.7.142.47:8086/sfi-hr/apiNotification.php";
+        FormData formData = FormData.fromMap({
+          "token": token,
+          "title": 'อนุมัติใบลาเลขที่ $documentNo',
+          "message":'ใบลาของคุณได้รับการ$stepNameโดยคุณ $name',
+        });
+        Response response = await Dio().post(url, data: formData);
+        var result = jsonDecode(response.data);
+        //print('สถานะการส่งแจ้งเตือน: ${result['success']}');
+
+          if (result['success'] == 1) {
+            print('ส่งแจ้งเตือนได้');
+          } else {
+            print('ไม่สามารถส่งแจ้งเตือนได้');
+          }
+      } else {
+        print('ไม่มี token ในระบบ');
+      }
+    });
   }
 
   Future<void> sendMailToHR() async {

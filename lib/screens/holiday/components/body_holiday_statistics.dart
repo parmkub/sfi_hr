@@ -78,7 +78,7 @@ class _BodyHolidayState extends State<BodyHoliday> {
                     CustomHolidayCard(
                         context,
                         AppLocalizations.of(context)!.translate('lapukron'),
-                        "${ConverDate(holidayModels[0].pUKRONH.toString())}/${holidayModels[0].sUMMERDAY} ${AppLocalizations.of(context).translate('day')}",
+                        "${ConverDate(holidayModels[0].pUKRONH.toString())}/${holidayModels[0].hOLIDAYTOTAL} ${AppLocalizations.of(context).translate('day')}",
                         "assets/images/pakroh.png",
                         () {}),
                     CustomHolidayCard(

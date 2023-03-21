@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:sfiasset/model/team_model.dart';
 import 'package:sfiasset/screens/appeal_screen/appeal_screen.dart';
 import 'package:sfiasset/screens/approve_holiday/approve_holiday_screen.dart';
+import 'package:sfiasset/screens/connect_loss/connect_loss_screen.dart';
 import 'package:sfiasset/screens/emp_card/emp_card_screen.dart';
 import 'package:sfiasset/screens/holiday/form_leaving_screen.dart';
 import 'package:sfiasset/screens/holiday/holiday_screen.dart';
@@ -39,5 +40,6 @@ final Map<String, WidgetBuilder> routs = {
   HRTeamScreen.routName : (context)=> const HRTeamScreen(),
   TeamStatics.routName : (context)=>   TeamStatics(teamModel: ModalRoute.of(context)!.settings.arguments as TeamModel),
   AppealScreen.routName : (context)=> const AppealScreen(),
+  ConnectLossScreen.routName : (context)=> const ConnectLossScreen(),
   // FixScreen.routName : (context)=>FixScreen(),
 };

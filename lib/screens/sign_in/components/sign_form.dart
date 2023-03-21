@@ -1,4 +1,4 @@
-// ignore_for_file: avoid_print, duplicate_ignore
+// ignore_for_file: avoid_print, duplicate_ignore, use_build_context_synchronously
 
 import 'dart:convert';
 
@@ -76,28 +76,30 @@ class _SignFormState extends State<SignForm> {
             SizedBox(
               height: getProportionateScreenHeight(20),
             ),
+            TextButton(
+                onPressed: (){
+                  Navigator.pushNamed(context, PublicezeScreen.routName,
+                      arguments: {
+                        'id': '26',
+                        'webViewType': 'pdf',
+                        'publicizeDetail':
+                        'http://61.7.142.47:8880/sfiblog/upload/pdf/policy.pdf'
+                      });
+                },
+                child: Text(AppLocalizations.of(context).translate('privatePolicy') ,style: TextStyle(color: kTextColor,fontSize: getProportionateScreenWidth(16)),)),
             Row(
-mainAxisAlignment: MainAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Checkbox(value: isChecked, onChanged: (bool? value){
                   setState(() {
                     isChecked = value!;
                   });
                 }),
-                TextButton(
-                  onPressed: (){
-                    Navigator.pushNamed(context, PublicezeScreen.routName,
-                        arguments: {
-                          'id': '26',
-                          'webViewType': 'pdf',
-                          'publicizeDetail':
-                          'http://61.7.142.47:8880/sfiblog/upload/pdf/policy.pdf'
-                        });
-                },
-                  child: Text(AppLocalizations.of(context).translate('acceptPolicy') ,style: TextStyle(color: Colors.black),))
+                Text(AppLocalizations.of(context).translate('acceptPolicy'),style: TextStyle(color:kPrimaryColor,fontSize: getProportionateScreenWidth(14)),)
 
               ],
-            )
+            ),
+            Text('Version 1.0.0.8',style: TextStyle(color: kTextColor,fontSize: getProportionateScreenWidth(8)),)
           ],
         ));
   }
@@ -109,7 +111,7 @@ mainAxisAlignment: MainAxisAlignment.center,
 
     Response response = await Dio().get(url);
     if(response.toString()=='Null'){
-      normalDialog(context, 'ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง');
+      normalDialog(context, AppLocalizations.of(context).translate('empCodeFail'));
     }else{
       var result = jsonDecode(response.data);
       // ignore: avoid_print
@@ -118,7 +120,7 @@ mainAxisAlignment: MainAxisAlignment.center,
         loginModel =  LoginModel.fromJson(map);
         String? _username = loginModel!.uSERNAME;
         if(_username != username){
-          normalDialog(context, 'ชื่อผู้ใช้ผิดพลาด กรุณากรอกชื่อผู้ใช้ใหม่');
+          normalDialog(context, AppLocalizations.of(context).translate('userFail'));
         }else{
           // ignore: avoid_print
           print('ล๊อกอินสำเร็จ');
@@ -199,6 +201,7 @@ mainAxisAlignment: MainAxisAlignment.center,
     if(loginModel.sECTCODE==null  && loginModel.dIVICODE==null){
       preferences.setString('userid', loginModel.uSERID!);
       preferences.setString('username', loginModel.uSERNAME!);
+      preferences.setString('name', loginModel.nAME!);
       preferences.setString('empcode', loginModel.eMPCODE!);
       preferences.setString('positionGroup', loginModel.pOSITIONGROUP!);
       preferences.setString('positionName', loginModel.pOSITIONFGROUPNAME!);
@@ -209,6 +212,7 @@ mainAxisAlignment: MainAxisAlignment.center,
     }else if(loginModel.sECTCODE==null){
       preferences.setString('userid', loginModel.uSERID!);
       preferences.setString('username', loginModel.uSERNAME!);
+      preferences.setString('name', loginModel.nAME!);
       preferences.setString('empcode', loginModel.eMPCODE!);
       preferences.setString('positionGroup', loginModel.pOSITIONGROUP!);
       preferences.setString('positionName', loginModel.pOSITIONFGROUPNAME!);
@@ -219,6 +223,7 @@ mainAxisAlignment: MainAxisAlignment.center,
     }else{
       preferences.setString('userid', loginModel.uSERID!);
       preferences.setString('username', loginModel.uSERNAME!);
+      preferences.setString('name', loginModel.nAME!);
       preferences.setString('empcode', loginModel.eMPCODE!);
       preferences.setString('positionGroup', loginModel.pOSITIONGROUP!);
       preferences.setString('positionName', loginModel.pOSITIONFGROUPNAME!);
@@ -228,6 +233,7 @@ mainAxisAlignment: MainAxisAlignment.center,
     }
     print("Loging USERID ==>>>..>>>>>>>>> : ${loginModel.uSERID}");
 
+    // ignore: use_build_context_synchronously
     Navigator.pushNamedAndRemoveUntil(context, routName, (route) => false);
 
   }

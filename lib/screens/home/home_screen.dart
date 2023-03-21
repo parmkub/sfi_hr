@@ -273,7 +273,8 @@ class _HomeScreenState extends State<HomeScreen> {
     await Firebase.initializeApp().whenComplete(() {
       FirebaseMessaging.instance.getToken().then((value) async {
         String? token = value;
-        print("Token:>>>>>>>>>>>>>>>>>$token");
+        //print("Token:>>>>>>>>>>>>>>>>>$token");
+        preferences.setString('token', token!);
 
         var formData = FormData.fromMap({
           'empCode': empCode!.split('-')[0] + empCode!.split('-')[1],
@@ -282,7 +283,7 @@ class _HomeScreenState extends State<HomeScreen> {
         });
         await Dio()
             .post(url, data: formData)
-            .then((value) => print("อัพเดทข้อมูลเรียบร้อย"));
+            .then((value) => print("อัพเด Token เรียบร้อย"));
       });
     });
     await FirebaseMessaging.instance
@@ -292,7 +293,7 @@ class _HomeScreenState extends State<HomeScreen> {
     FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
       print('A new onMessageOpenedApp event was published!');
       print('Message data: ${message.data}');
-      if (message.data['screen'] == 'approve_holiday') {
+      if (message.data['screen'] == 'approveLeave') {
         Navigator.pushNamed(context, ApproveHolidayScreen.routName);
       } else if (message.data['screen'] == 'activity') {
         Navigator.pushNamed(context, HomeScreen.routName);
@@ -302,6 +303,9 @@ class _HomeScreenState extends State<HomeScreen> {
           'webViewType': message.data['webViewType'],
           'publicizeDetail': message.data['publicizeDetail']
         });
+      }else if (message.data['screen'] == 'leave_screen') {
+        Navigator.pop(context);
+        Navigator.pushNamed(context, HolidayScreen.routName);
       }
     });
   }

@@ -4,6 +4,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:sfiasset/components/default_buttom.dart';
 import 'package:sfiasset/constans.dart';
+import 'package:sfiasset/screens/connect_loss/connect_loss_screen.dart';
 import 'package:sfiasset/screens/home/home_screen.dart';
 import 'package:sfiasset/screens/sign_in/sign_in_screen.dart';
 import 'package:sfiasset/screens/splash_screen/componanents/splash_content.dart';
@@ -37,34 +38,56 @@ class _BodyState extends State<Body> {
       "image": "assets/images/Splash3.png"
     },
   ];
+
+  int? statusConnect;
   @override
   void initState() {
 
     // TODO: implement initState
-    checkPreference();
+    checkConnect();
     super.initState();
   }
 
-  Future<void> checkPreference() async {
 
+  Future<void> checkConnect() async {
+    try {
+      String url = "http://61.7.142.47:8086/dashboard/";
+      await Dio().get(url).then((value) async {
+        statusConnect = value.statusCode;
+        if (statusConnect == 200) {
+         checkPreference();
+        }
+      });
+    } catch (e) {
+      Navigator.pushNamedAndRemoveUntil(
+          context, ConnectLossScreen.routName, (route) => false);
+      print('error :==> $e');
+    }
+  }
+
+  Future<void> checkPreference() async {
     try{
       SharedPreferences preferences = await SharedPreferences.getInstance();
       empCode = preferences.get('empcode') as String?;
-      if(empCode == null){
-        Navigator.pushNamedAndRemoveUntil(context, SignInScreen.routName, (route) => false);
-      }else{
+      if(empCode!.isNotEmpty || empCode != null){
         String url = "http://61.7.142.47:8086/sfi-hr/Athens.php?empcode=$empCode";
         await Dio().get(url).then((value) async {
-          debugPrint('value :==> ${value.data}');
-          if(value.data == 'Null' || value.data == null){
-            Navigator.pushNamedAndRemoveUntil(context, SignInScreen.routName, (route) => false);
-          }else{
-            Navigator.pushNamedAndRemoveUntil(context, HomeScreen.routName, (route) => false);
+          statusConnect = value.statusCode;
 
-          }
+            if (value.data == 'Null' || value.data == null) {
+              Navigator.pushNamedAndRemoveUntil(
+                  context, SignInScreen.routName, (route) => false);
+            } else {
+              Navigator.pushNamedAndRemoveUntil(
+                  context, HomeScreen.routName, (route) => false);
+            }
+          /*debugPrint('value :==> ${value.data}');*/
         });
-      }
 
+      }else{
+        Navigator.pushNamedAndRemoveUntil(
+            context, SignInScreen.routName, (route) => false);
+      }
 
     /*  if(empCode!.isNotEmpty && empCode != null){
         Navigator.pushNamedAndRemoveUntil(context, HomeScreen.routName, (route) => false);
@@ -122,7 +145,10 @@ class _BodyState extends State<Body> {
                     DefaultButton(
                       text: 'Continue',
                       press: () {
-                        Navigator.pushNamed(context, SignInScreen.routName);
+
+                          Navigator.pushNamed(context, SignInScreen.routName);
+
+
                       },
                     ),
                     const Spacer()

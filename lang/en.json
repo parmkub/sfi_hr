@@ -1,4 +1,7 @@
 {
+  "connetLoss": "Connection loss",
+  "connetAgain": "Try again",
+
   "singIn": "Sign IN",
   "continue": "Continue",
   "typePassword": "Please type your password",
@@ -10,6 +13,8 @@
   "empcode": "Employee code",
   "acceptPolicy": "Accept Public Policy",
   "checkPolicy": "Please check the policy",
+  "userFail": "Username or password is incorrect",
+  "empCodeFail": "Employee code is incorrect",
 
   "home": "Home",
   "watchAll": "Watch All",
@@ -22,6 +27,7 @@
 
   "holiday": "Holiday",
   "leaveDocument": "Leave Document",
+  "leaveNo": "Document No.",
   "writeLeaveDocument": "Write Leave Document",
   "Approval": "Approval",
   "review": "Review",
@@ -70,7 +76,7 @@
   "ordain": "Ordain",
   "factoryHoliday": "Factory Holiday",
   "totalLave": "Total Leave",
-
+  "leaveNotEnough": "You can't take a vacation because your vacation is over or you don't have enough.",
 
 
   "userManual": "User Manual",

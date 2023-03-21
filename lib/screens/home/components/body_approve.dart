@@ -74,7 +74,7 @@ class _BodyApproveState extends State<BodyApprove> {
                                             //   style: buildTextStyle(14),
                                             // ),
                                             Text(
-                                               "${AppLocalizations.of(context).translate('name')}: ${provider.ApproveHolidayCard[index].nAME}",
+                                              "${AppLocalizations.of(context).translate('name')}: ${provider.ApproveHolidayCard[index].nAME}",
                                               style: buildTextStyle(14),
                                             ),
                                             Text(
@@ -378,6 +378,7 @@ class _BodyApproveState extends State<BodyApprove> {
             provider.ApproveHolidayCard[index].aBSENCEREVIWE.toString(),
         ApproveDocument:
             provider.ApproveHolidayCard[index].aBSENCEAPPROVE.toString(),
+        empCode: provider.ApproveHolidayCard[index].eMPLOYEECODE.toString(),
       );
     } else if (positionName != 'sect_code' &&
         int.parse(
@@ -395,6 +396,7 @@ class _BodyApproveState extends State<BodyApprove> {
             provider.ApproveHolidayCard[index].aBSENCEREVIWE.toString(),
         ApproveDocument:
             provider.ApproveHolidayCard[index].aBSENCEAPPROVE.toString(),
+        empCode: provider.ApproveHolidayCard[index].eMPLOYEECODE.toString(),
       );
     } else {
       _showButtomeApprove = Container();
