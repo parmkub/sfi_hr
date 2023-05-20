@@ -94,7 +94,7 @@ class _FormLeavingScreenState extends State<FormLeavingScreen> {
     '12': 'ลาเนื่องจากอุบัติเหตุ'
   };
 
-  int? _fullDay = 0, _hour = 0;
+  int? _fullDay = 1, _hour = 0;
   final int? _statusApprove = 0;
 
   String? _token;
@@ -309,10 +309,14 @@ class _FormLeavingScreenState extends State<FormLeavingScreen> {
       if (result != null) {
         for (var map in result) {
           LeavingCard leavingCard = LeavingCard.fromJson(map);
-          if (leavingCard.aBSENCECODE.toString() == '29' && leavingCard.aBSENCESTATUS.toString() != '2') {
+          if (leavingCard.aBSENCECODE.toString() == '29'
+              && leavingCard.aBSENCESTATUS.toString() != '2'
+              && leavingCard.sTATUSAPPROVE.toString() != 'disapprove') {
+
             day = day + int.parse(leavingCard.aBSENCEDAY.toString());
             hour = hour + int.parse(leavingCard.aBSENCEHOUR.toString());
             print('จำนวนวัน >>$day');
+
           }
         }
       }

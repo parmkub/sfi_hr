@@ -7,7 +7,6 @@ import 'package:sfiasset/app_localizations.dart';
 import 'package:sfiasset/constans.dart';
 import 'package:sfiasset/model/approve_holiday_model.dart';
 import 'package:sfiasset/model/leaving_card.dart';
-import 'package:sfiasset/model/total_pakron_model.dart';
 import 'package:sfiasset/providers/approve_holiday_provider.dart';
 import 'package:sfiasset/providers/leaving_provider.dart';
 import 'package:sfiasset/screens/holiday/components/body_holiday_statistics.dart';
@@ -59,7 +58,6 @@ class _HolidayScreenState extends State<HolidayScreen> {
               hoverColor: kSecondaryColor,
               child: const Icon(Icons.add),
               onPressed: () {
-                // Navigator.pop(context);
                 Navigator.pushNamed(context, FormLeavingScreen.routName);
               },
             ),
@@ -134,8 +132,7 @@ class _HolidayScreenState extends State<HolidayScreen> {
     String? positionGroup = preferences.getString('positionGroup');
     print('ตำแหน่งกลุ่ม:${positionGroup!}');
     setState(() {
-
-
+      //ถ้ามีตำแหน่ง 051,052,061,071,072 ไม่ให้แสดงปุ่มบันทึกวันลา
     if (positionGroup == '051' || positionGroup == '052' ||
         positionGroup == '061' || positionGroup == '071' ||
         positionGroup == '072') {

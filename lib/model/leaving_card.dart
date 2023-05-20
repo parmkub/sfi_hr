@@ -15,6 +15,7 @@ class LeavingCard {
   String? aBSENCEDETAIL;
   String? aBSENCEDOCUMENT;
   String? cREATIONDATE;
+  String? sTATUSAPPROVE;
 
   LeavingCard(
       {
@@ -33,7 +34,8 @@ class LeavingCard {
         this.aBSENCETOKEN,
         this.aBSENCEDETAIL,
         this.aBSENCEDOCUMENT,
-        this.cREATIONDATE});
+        this.cREATIONDATE,
+        this.sTATUSAPPROVE,});
 
   LeavingCard.fromJson(Map<String, dynamic> json) {
     sTARTDATE = json['START_DATE'];
@@ -52,6 +54,8 @@ class LeavingCard {
     aBSENCEDETAIL = json['ABSENCE_DETAIL'];
     aBSENCEDOCUMENT = json['ABSENCE_DOCUMENT'];
     cREATIONDATE = json['CREATION_DATE'];
+    sTATUSAPPROVE = json['STATUS_APPROVE'];
+
   }
 
   Map<String, dynamic> toJson() {
@@ -72,6 +76,7 @@ class LeavingCard {
     data['ABSENCE_DETAIL'] = aBSENCEDETAIL;
     data['ABSENCE_DOCUMENT'] = aBSENCEDOCUMENT;
     data['CREATION_DATE'] = cREATIONDATE;
+    data['STATUS_APPROVE'] = sTATUSAPPROVE;
     return data;
   }
 }

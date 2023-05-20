@@ -99,7 +99,7 @@ class _SignFormState extends State<SignForm> {
 
               ],
             ),
-            Text('Version 1.0.0.8',style: TextStyle(color: kTextColor,fontSize: getProportionateScreenWidth(8)),)
+            Text('Version 1.0.0.10',style: TextStyle(color: Colors.grey,fontSize: getProportionateScreenWidth(8)),)
           ],
         ));
   }

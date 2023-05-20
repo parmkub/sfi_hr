@@ -6,6 +6,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sfiasset/app_localizations.dart';
+import 'package:sfiasset/constans.dart';
 import 'package:sfiasset/model/approve_holiday_model.dart';
 import 'package:sfiasset/providers/approve_holiday_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -23,6 +24,12 @@ class ButtomApproveLeav extends StatelessWidget {
   BuildContext context;
 
   var url;
+
+  final _formKey = GlobalKey<FormState>();
+  String reason = "";
+
+  String statusApprove = "";
+
   ButtomApproveLeav(
       {Key? key,
       required this.name,
@@ -42,30 +49,18 @@ class ButtomApproveLeav extends StatelessWidget {
           child: Padding(
         padding: const EdgeInsets.all(10.0),
         child: SizedBox(
-          child: /*FlatButton(
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(20),
-                    ),
-                    color: Colors.red,
-                    onPressed: () {
-
-                    },
-                    child: Text(
-                      "ไม่อนุมัติ",
-                      style: TextStyle(
-                          fontSize: getProportionateScreenWidth(13), color: Colors.white),
-                    ),
-                  ),*/
-              TextButton(
+          child: TextButton(
             style: TextButton.styleFrom(
               backgroundColor: Colors.red,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(20),
               ),
             ),
-            onPressed: () {},
+            onPressed: () {
+              _showDialog();
+            },
             child: Text(
-              AppLocalizations.of(context)!.translate('noApprove'),
+              AppLocalizations.of(context).translate('noApprove'),
               style: TextStyle(
                   fontSize: getProportionateScreenWidth(13),
                   color: Colors.white),
@@ -115,15 +110,31 @@ class ButtomApproveLeav extends StatelessWidget {
     ]);
   }
 
+  Future<void> disapprove() async{
+    String url ="http://61.7.142.47:8086/sfi-hr/updateDisapprove.php";
+    FormData formData = FormData.fromMap({
+      "absenceDocument": documentNo,
+      "reason": reason,
+    });
+    Response response = await Dio().post(url,data: formData);
+    if(response.toString() == 'true'){
+      print('อัพเดทข้อมูลสถานะลาเรียบร้อย');
+  }else{
+      print('ไม่สามารถบันทึกข้อมูลไม่อนุมัติการลาได้');
+    }
+    getApproveHoliday();
+  }
+
   Future<void> UpdateStatusApproveLeaving(
       String _documentNo, _statusLeaving, _reviewDocument) async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
-    String? empcode = preferences.getString('empcode');
+    String? empcode = preferences.getString('empcode'); //รหัสพนักงานผู้อนุมัติ
     String? columeApprove;
 
     if (_statusLeaving == '1') {
       print("_statusLeaving : $_statusLeaving");
       columeApprove = 'ABSENCE_APPROVE';
+
     } else {
       columeApprove = 'absence_review';
     }
@@ -134,7 +145,6 @@ class ButtomApproveLeav extends StatelessWidget {
     String url = "http://61.7.142.47:8086/sfi-hr/updateStatusApproveLeaving.php"
         "?absenceDocument=$_documentNo&statusApprove=${IntstatusLeaving.toString()}&empCode=$empcode&columeApprove=$columeApprove";
     Response response = await Dio().get(url);
-
     if (response.toString() == 'true') {
       print('อัพเดทข้อมูลสถานะลาเรียบร้อย');
       print("สถานะอัพเดท 55555: $IntstatusLeaving");
@@ -142,10 +152,10 @@ class ButtomApproveLeav extends StatelessWidget {
       debugPrint('ประเภทเอกสาร: $absencdCode');
       InsertAbsenceTable(IntstatusLeaving, absencdCode);
       SendNotify(empCode);
-      getApproveHoliday();
     } else {
       print('อัพเดทสถานะการลาล้มเหลว');
     }
+    getApproveHoliday();
   }
 
   Future<void> InsertAbsenceTable(int statusApprove, String asenceCode) async {
@@ -172,14 +182,14 @@ class ButtomApproveLeav extends StatelessWidget {
     String? name = preferences.getString('name');
     String? stepName = '';
     print('สถานะผู้ทบทวน :$statusLeave');
-    if(statusLeave == '0'){
+    if (statusLeave == '0') {
       stepName = 'ทบทวน';
-    }else{
+    } else {
       stepName = 'อนุมัติ';
     }
     await Dio()
         .get("http://61.7.142.47:8086/sfi-hr/getToken.php?empcode=$empCode")
-        .then((value)  async {
+        .then((value) async {
       var resultToken = jsonDecode(value.data);
       var token = resultToken[0]['TOKEN'];
       print('token from API: $token');
@@ -189,17 +199,17 @@ class ButtomApproveLeav extends StatelessWidget {
         FormData formData = FormData.fromMap({
           "token": token,
           "title": 'อนุมัติใบลาเลขที่ $documentNo',
-          "message":'ใบลาของคุณได้รับการ$stepNameโดยคุณ $name',
+          "message": 'ใบลาของคุณได้รับการ$stepNameโดยคุณ $name',
         });
         Response response = await Dio().post(url, data: formData);
         var result = jsonDecode(response.data);
         //print('สถานะการส่งแจ้งเตือน: ${result['success']}');
 
-          if (result['success'] == 1) {
-            print('ส่งแจ้งเตือนได้');
-          } else {
-            print('ไม่สามารถส่งแจ้งเตือนได้');
-          }
+        if (result['success'] == 1) {
+          print('ส่งแจ้งเตือนได้');
+        } else {
+          print('ไม่สามารถส่งแจ้งเตือนได้');
+        }
       } else {
         print('ไม่มี token ในระบบ');
       }
@@ -266,5 +276,99 @@ class ButtomApproveLeav extends StatelessWidget {
         }
       }
     } catch (e) {}
+  }
+
+  Future<void> _showDialog() async {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: false, // user must tap button!
+      builder: (BuildContext context) {
+        return AlertDialog(
+          shape: const RoundedRectangleBorder(
+              borderRadius: BorderRadius.all(Radius.circular(10.0))),
+          title: Text(
+            AppLocalizations.of(context)!.translate('disapprove'),
+            style: TextStyle(
+                fontSize: getProportionateScreenWidth(14),
+                color: kTextColor,
+                fontWeight: FontWeight.bold),
+          ),
+          content: Builder(
+            builder: (context) {
+              return Form(
+                key: _formKey,
+                  child: SizedBox(
+                height: getProportionateScreenHeight(300),
+                width: getProportionateScreenWidth(240),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+
+                    SizedBox(
+                      height: getProportionateScreenHeight(10),
+                    ),
+                    TextFormField(
+                      style: TextStyle(
+                          fontSize: getProportionateScreenWidth(14),
+                          color: kTextColor),
+                      decoration: InputDecoration(
+                        hintText: AppLocalizations.of(context).translate('pleaseEnterReason'),
+                        hintStyle: TextStyle(
+                            fontSize: getProportionateScreenWidth(14),
+                            color: kTextColor),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(5),
+                        ),
+                      ),
+                      maxLines: 10,
+                      validator: (value) {
+                        if (value!.isEmpty) {
+                          return  AppLocalizations.of(context).translate('pleaseEnterReason');
+                        }
+                         reason = value;
+                        return null;
+                      },
+                    ),
+                  ],
+                ),
+              ));
+            },
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: Text(
+                'ยกเลิก',
+                style: TextStyle(
+                    fontSize: getProportionateScreenWidth(14),
+                    fontWeight: FontWeight.bold),
+              ),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+            TextButton(
+              child: Text(
+                'ตกลง',
+                style: TextStyle(
+                    fontSize: getProportionateScreenWidth(14),
+                    fontWeight: FontWeight.bold),
+              ),
+              onPressed: () {
+                if (_formKey.currentState!.validate()) {
+                  print('เหตุผลที่ไม่อนุมัติ: $reason');
+                  disapprove();
+                  Navigator.of(context).pop();
+
+                }
+                //UpdateStatusApproveLeaving(documentNo,statusLeave,reviewDocument);
+              },
+            ),
+            SizedBox(
+              height: getProportionateScreenHeight(10),
+            )
+          ],
+        );
+      },
+    );
   }
 }

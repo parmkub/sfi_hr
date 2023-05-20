@@ -1,6 +1,7 @@
 // ignore_for_file: non_constant_identifier_names, deprecated_member_use, avoid_print, empty_catches
 
 import 'dart:convert';
+import 'dart:ffi';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
@@ -152,7 +153,8 @@ class _BodyHolidayLeavingState extends State<BodyHolidayLeaving> {
                                           ))
                                     ],
                                   ),
-                                  buildStepIndicator(
+                                  provider.leavingCards[index].sTATUSAPPROVE == "disapprove" ? Container(height: getProportionateScreenWidth(40),)
+                                  : buildStepIndicator(
                                       provider.leavingCards[index].aBSENCECODE
                                           .toString(),
                                       provider.leavingCards[index].aBSENCESTATUS
@@ -168,19 +170,13 @@ class _BodyHolidayLeavingState extends State<BodyHolidayLeaving> {
                                           .toString()) >
                                       0
                                   ? Container()
-                                  : Positioned(
+                                  : provider.leavingCards[index].sTATUSAPPROVE == "disapprove" ? Container():Positioned(
                                       top: -25,
                                       right: -25,
                                       child: SizedBox(
                                         width: 80,
                                         height: 80,
-                                        child: /*FlatButton(
-                                    onPressed: () {
-                                      DeleatLeavingCard(provider.leavingCards[index].aBSENCEDOCUMENT.toString());
-                                    },
-                                    child: SvgPicture.asset('assets/icons/Trash.svg',color: Colors.white,),
-                                  ),*/
-                                            TextButton(
+                                        child:TextButton(
                                           onPressed: () {
                                             DeleatLeavingCard(provider
                                                 .leavingCards[index]
@@ -193,7 +189,19 @@ class _BodyHolidayLeavingState extends State<BodyHolidayLeaving> {
                                           ),
                                         ),
                                       ),
-                                    )
+                                    ),
+
+                                   int.parse(provider.leavingCards[index].aBSENCESTATUS.toString()) > 1
+                                  ?  TagStatus(
+                                  Icon(Icons.check_circle_outline,color:const Color(0xFF13DA03), size: getProportionateScreenWidth(80) ,),
+                                  "Approved",
+                                  0xFF13DA03 )
+                                  : provider.leavingCards[index].sTATUSAPPROVE == "disapprove"
+                                      ? TagStatus(Icon(Icons.cancel_outlined,color: const Color(0xFFEC0B36),size: getProportionateScreenWidth(80),),
+                                  "Disapproved",
+                                  0xFFEC0B36 )
+                                      : Container()
+
                             ],
                           ),
                         )),
@@ -205,6 +213,41 @@ class _BodyHolidayLeavingState extends State<BodyHolidayLeaving> {
         ],
       ),
     );
+  }
+
+  Positioned TagStatus(Icon icon, String text, int color) {
+    return Positioned(
+                                top: getProportionateScreenWidth(40),
+                                right: getProportionateScreenWidth(14),
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(2),
+                                    color: Colors.white38,
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: Colors.black.withOpacity(0.1),
+                                        spreadRadius: 1,
+                                        blurRadius: 1,
+                                        offset: const Offset(0, 1),
+                                      ),
+                                    ],
+                                  ),
+                                  width: getProportionateScreenWidth(120),
+                                  height: getProportionateScreenWidth(120),
+                                  child: Column(
+                                    children:  [
+                                      icon,
+                                      Text(
+                                        text,
+                                        style: TextStyle(
+                                            color:  Color(color),
+                                            fontSize: getProportionateScreenWidth(14),
+                                            fontWeight: FontWeight.bold),
+                                      )
+                                    ],
+                                  ),
+                                )
+                            );
   }
 
   Future<void> DeleatLeavingCard(String Document) async {

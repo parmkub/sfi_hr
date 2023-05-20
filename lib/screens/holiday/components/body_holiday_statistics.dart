@@ -146,9 +146,16 @@ class _BodyHolidayState extends State<BodyHoliday> {
   String ConverDate(String date) {
     String convertTxt;
     if (date != "null") {
-      if (date.split(' ').length > 4) {
+      print("ช่องว่าง ${date.split(' ').length}");
+      if (date.split(' ').length > 5) {
         convertTxt =
-            "${date.split(' ')[0]} ${AppLocalizations.of(context).translate("day")} ${date.split(' ')[2]} ${AppLocalizations.of(context).translate("hour")}";
+            "${date.split(' ')[0]} ${AppLocalizations.of(context).translate("day")} "
+                "${date.split(' ')[2]} ${AppLocalizations.of(context).translate("hour")}"
+                  " ${date.split(' ')[4]} ${AppLocalizations.of(context).translate("minute")}";
+      }else if (date.split(' ').length > 4  ) {
+        convertTxt =
+        "${date.split(' ')[0]} ${AppLocalizations.of(context).translate("day")} "
+            "${date.split(' ')[2]} ${AppLocalizations.of(context).translate("hour")}";
       } else {
         if (date.contains("Day")) {
           convertTxt = "${date.split(' ')[0]} ${AppLocalizations.of(context).translate("day")}";

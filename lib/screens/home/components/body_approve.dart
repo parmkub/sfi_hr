@@ -1,3 +1,5 @@
+// ignore_for_file: unused_local_variable, avoid_print, non_constant_identifier_names, empty_catches, no_leading_underscores_for_local_identifiers
+
 import 'dart:convert';
 
 import 'package:dio/dio.dart';
@@ -49,8 +51,8 @@ class _BodyApproveState extends State<BodyApprove> {
               return ListView.builder(
                   itemCount: provider.ApproveHolidayCard.length,
                   itemBuilder: (context, index) => Padding(
-                      padding: const EdgeInsets.all(5.0),
-                      child: Card(
+                        padding: const EdgeInsets.all(5.0),
+                        child: Card(
                           color: Color(ColorTypeLeaving(provider
                                   .ApproveHolidayCard[index].aBSENCECODE
                                   .toString())!
@@ -91,13 +93,19 @@ class _BodyApproveState extends State<BodyApprove> {
                                             Text(
                                                 "${AppLocalizations.of(context).translate('endDate')} : ${provider.ApproveHolidayCard[index].mAX}",
                                                 style: buildTextStyle(14)),
-                                            Text(
-                                                "${AppLocalizations.of(context).translate('sumDay')} ${provider.ApproveHolidayCard[index].dAY} ${AppLocalizations.of(context).translate('day')}",
-                                                style: buildTextStyle(12)),
+                                            provider.ApproveHolidayCard[index]
+                                                        .aBSENCEDAY ==
+                                                    "0"
+                                                ? Text(
+                                                    "${AppLocalizations.of(context).translate('sumDay')}  ${provider.ApproveHolidayCard[index].aBSENCEHOUR} ${AppLocalizations.of(context).translate('hour')}",
+                                                    style: buildTextStyle(12))
+                                                : Text(
+                                                    "${AppLocalizations.of(context).translate('sumDay')}  ${provider.ApproveHolidayCard[index].aBSENCEDAY} ${AppLocalizations.of(context).translate('day')}",
+                                                    style: buildTextStyle(12)),
                                             provider.ApproveHolidayCard[index]
                                                         .aBSENCEDETAIL ==
                                                     null
-                                                ? Text('')
+                                                ? const Text('')
                                                 : Text(
                                                     '${AppLocalizations.of(context).translate('reason')}: ${provider.ApproveHolidayCard[index].aBSENCEDETAIL}',
                                                     style: buildTextStyle(12))
@@ -113,7 +121,7 @@ class _BodyApproveState extends State<BodyApprove> {
                                               color: Colors.blueGrey, width: 3),
                                           borderRadius: const BorderRadius.all(
                                               Radius.circular(5.0))),
-                                      margin: EdgeInsets.all(10.0),
+                                      margin: const EdgeInsets.all(10.0),
                                       child: FadeInImage(
                                         placeholder: const AssetImage(
                                             "assets/images/userProfile.png"),
@@ -128,23 +136,51 @@ class _BodyApproveState extends State<BodyApprove> {
                                         fit: BoxFit.cover,
                                       ),
                                     ),
-                                  )
+                                  ),
+
                                 ],
                               ),
-                              buildStepIndicator(
-                                  provider.ApproveHolidayCard[index].aBSENCECODE
-                                      .toString(),
-                                  provider
-                                      .ApproveHolidayCard[index].aBSENCESTATUS
-                                      .toString(),
-                                  provider.ApproveHolidayCard[index].rEVIEWS
-                                      .toString(),
-                                  provider.ApproveHolidayCard[index].aPPROVES
-                                      .toString()),
-                              ShowButtomApprove(provider, index),
+                              provider.ApproveHolidayCard[index]
+                                          .sTATUSAPPROVE ==
+                                      'disapprove'
+                                  ? Container(
+                                width: getProportionateScreenWidth(80),
+                                height: getProportionateScreenHeight(30),
+                                decoration: BoxDecoration(
+                                    color: Colors.red,
+                                    borderRadius: BorderRadius.circular(10)),
+                                child: Center(
+                                  child: Text(
+                                      AppLocalizations.of(context).translate('disapprove'),
+                                      style: TextStyle(
+                                          color: Colors.white,
+                                          fontSize: getProportionateScreenWidth(16),
+                                          fontWeight: FontWeight.bold)
+                                  ),
+                                ),
+
+                              )
+                                  : Container(
+                                      child: Column(children: [
+                                        buildStepIndicator(
+                                            provider.ApproveHolidayCard[index]
+                                                .aBSENCECODE
+                                                .toString(),
+                                            provider.ApproveHolidayCard[index]
+                                                .aBSENCESTATUS
+                                                .toString(),
+                                            provider.ApproveHolidayCard[index]
+                                                .rEVIEWS
+                                                .toString(),
+                                            provider.ApproveHolidayCard[index]
+                                                .aPPROVES
+                                                .toString()),
+                                        ShowButtomApprove(provider, index),
+                                      ]),
+                                    ),
                               const SizedBox(
                                 height: 10,
-                              )
+                              ),
 
                               // positionName == 'sect_code' && provider.ApproveHolidayCard[index].aBSENCESTATUS == '0'?
                               // ButtomApproveLeav(context: context,documentNo:
@@ -170,7 +206,10 @@ class _BodyApproveState extends State<BodyApprove> {
                               // reviewDocument: provider.ApproveHolidayCard[index].aBSENCEREVIWE.toString(),
                               // ApproveDocument: provider.ApproveHolidayCard[index].aBSENCEAPPROVE.toString(),)
                             ],
-                          ))));
+                          ),
+
+                        ),
+                      ));
             }),
           )
         ],
@@ -185,8 +224,8 @@ class _BodyApproveState extends State<BodyApprove> {
     } else {
       nbStape = 3;
     }
-    print("ประเภท:" + leavType);
-    print("สเตตัสอนุมัติ:" + leavStatus);
+    print("ประเภท:$leavType");
+    print("สเตตัสอนุมัติ:$leavStatus");
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.center,
@@ -243,7 +282,7 @@ class _BodyApproveState extends State<BodyApprove> {
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  SizedBox(
+                  const SizedBox(
                     width: 5,
                   ),
                   Column(
@@ -332,6 +371,41 @@ class _BodyApproveState extends State<BodyApprove> {
     } catch (e) {}
   }
 
+  Positioned TagStatus(Icon icon, String text, int color) {
+    return Positioned(
+
+        top: getProportionateScreenWidth(40),
+        right: getProportionateScreenWidth(14),
+        child: Container(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(2),
+            color: Colors.white38,
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.1),
+                spreadRadius: 1,
+                blurRadius: 1,
+                offset: const Offset(0, 1),
+              ),
+            ],
+          ),
+          width: getProportionateScreenWidth(120),
+          height: getProportionateScreenWidth(120),
+          child: Column(
+            children: [
+              icon,
+              Text(
+                text,
+                style: TextStyle(
+                    color: Color(color),
+                    fontSize: getProportionateScreenWidth(14),
+                    fontWeight: FontWeight.bold),
+              )
+            ],
+          ),
+        ));
+  }
+
   TextStyle buildTextStyle(double fontsize) {
     return TextStyle(
         fontSize: getProportionateScreenWidth(fontsize),
@@ -340,12 +414,12 @@ class _BodyApproveState extends State<BodyApprove> {
 
   String? ConvertCodeLeaving(String date) {
     Map<String, String> dataMap = {
-      '02': AppLocalizations.of(context)!.translate('lagit'),
-      'AB': AppLocalizations.of(context)!.translate('lagitDiscount'),
-      '11': AppLocalizations.of(context)!.translate('sick'),
-      '14': AppLocalizations.of(context)!.translate('lakron'),
-      '12': AppLocalizations.of(context)!.translate('accident'),
-      '29': AppLocalizations.of(context)!.translate('lapukron'),
+      '02': AppLocalizations.of(context).translate('lagit'),
+      'AB': AppLocalizations.of(context).translate('lagitDiscount'),
+      '11': AppLocalizations.of(context).translate('sick'),
+      '14': AppLocalizations.of(context).translate('lakron'),
+      '12': AppLocalizations.of(context).translate('accident'),
+      '29': AppLocalizations.of(context).translate('lapukron'),
     };
     return dataMap[date];
   }

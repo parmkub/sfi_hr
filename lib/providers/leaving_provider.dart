@@ -12,7 +12,7 @@ class LeavingProvider with ChangeNotifier{
   }
 
   addLeavingCard(LeavingCard statement){
-    leavingCards.insert(0, statement);
+    leavingCards.insert(0, statement); //เพิ่มข้อมูลลงไปในตำแหน่งแรก
     notifyListeners();
   }
 

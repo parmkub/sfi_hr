@@ -20,6 +20,7 @@ class ApproveHoliday {
   String? cREATIONDATE;
   String? aBSENCEREVIWE;
   String? aBSENCEAPPROVE;
+  String? sTATUSAPPROVE;
 
   ApproveHoliday(
       {this.mAX,
@@ -39,7 +40,10 @@ class ApproveHoliday {
         this.aBSENCETOKEN,
         this.aBSENCEDETAIL,
         this.aBSENCEDOCUMENT,
-        this.cREATIONDATE,this.aBSENCEREVIWE,this.aBSENCEAPPROVE});
+        this.cREATIONDATE,
+        this.aBSENCEREVIWE,
+        this.aBSENCEAPPROVE,
+        this.sTATUSAPPROVE});
 
   ApproveHoliday.fromJson(Map<String, dynamic> json) {
     mAX = json['MAX'];
@@ -62,6 +66,7 @@ class ApproveHoliday {
     cREATIONDATE = json['CREATION_DATE'];
     aBSENCEREVIWE = json['ABSENCE_REVIEW'];
     aBSENCEAPPROVE = json['ABSENCE_APPROVE'];
+    sTATUSAPPROVE = json['STATUS_APPROVE'];
   }
 
   Map<String, dynamic> toJson() {
@@ -86,6 +91,7 @@ class ApproveHoliday {
     data['CREATION_DATE'] = cREATIONDATE;
     data['ABSENCE_REVIEW'] = aBSENCEREVIWE;
     data['ABSENCE_APPROVE'] = aBSENCEAPPROVE;
+    data['STATUS_APPROVE'] = sTATUSAPPROVE;
     return data;
   }
 }

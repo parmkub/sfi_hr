@@ -1,7 +1,11 @@
 // ignore_for_file: avoid_print, use_build_context_synchronously
 
+import 'dart:convert';
+
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:in_app_update/in_app_update.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 import 'package:sfiasset/components/default_buttom.dart';
 import 'package:sfiasset/constans.dart';
 import 'package:sfiasset/screens/connect_loss/connect_loss_screen.dart';
@@ -12,7 +16,6 @@ import 'package:sfiasset/size_config.dart';
 
 import 'package:shared_preferences/shared_preferences.dart';
 
-
 class Body extends StatefulWidget {
   const Body({Key? key}) : super(key: key);
 
@@ -21,33 +24,30 @@ class Body extends StatefulWidget {
 }
 
 class _BodyState extends State<Body> {
+  // ignore: prefer_final_fields
+  GlobalKey<ScaffoldState> _scaffoldKey =  GlobalKey();
+  String version = '';
+  int? newVersionCode, simpleVersionCode;
 
   int currentPage = 0;
   String? empCode;
   List<Map<String, String>> splashData = [
-    {
-      "text": "ระบบ HR SEAFRESH",
-      "image": "assets/images/Splash1.png"
-    },
-    {
-      "text": "รู้หมดเรื่อง HR",
-      "image": "assets/images/Splash2.png"
-    },
-    {
-      "text": "HR CARE",
-      "image": "assets/images/Splash3.png"
-    },
+    {"text": "ระบบ HR SEAFRESH", "image": "assets/images/Splash1.png"},
+    {"text": "รู้หมดเรื่อง HR", "image": "assets/images/Splash2.png"},
+    {"text": "HR CARE", "image": "assets/images/Splash3.png"},
   ];
 
   int? statusConnect;
+
+
   @override
   void initState() {
-
     // TODO: implement initState
+
+    checkVersionApp();
     checkConnect();
     super.initState();
   }
-
 
   Future<void> checkConnect() async {
     try {
@@ -55,7 +55,7 @@ class _BodyState extends State<Body> {
       await Dio().get(url).then((value) async {
         statusConnect = value.statusCode;
         if (statusConnect == 200) {
-         checkPreference();
+          checkPreference();
         }
       });
     } catch (e) {
@@ -66,45 +66,42 @@ class _BodyState extends State<Body> {
   }
 
   Future<void> checkPreference() async {
-    try{
+    try {
       SharedPreferences preferences = await SharedPreferences.getInstance();
       empCode = preferences.get('empcode') as String?;
-      if(empCode!.isNotEmpty || empCode != null){
-        String url = "http://61.7.142.47:8086/sfi-hr/Athens.php?empcode=$empCode";
+      if (empCode!.isNotEmpty || empCode != null) {
+        String url =
+            "http://61.7.142.47:8086/sfi-hr/Athens.php?empcode=$empCode";
         await Dio().get(url).then((value) async {
           statusConnect = value.statusCode;
 
-            if (value.data == 'Null' || value.data == null) {
-              Navigator.pushNamedAndRemoveUntil(
-                  context, SignInScreen.routName, (route) => false);
-            } else {
-              Navigator.pushNamedAndRemoveUntil(
-                  context, HomeScreen.routName, (route) => false);
-            }
+          if (value.data == 'Null' || value.data == null) {
+            Navigator.pushNamedAndRemoveUntil(
+                context, SignInScreen.routName, (route) => false);
+          } else {
+            Navigator.pushNamedAndRemoveUntil(
+                context, HomeScreen.routName, (route) => false);
+          }
           /*debugPrint('value :==> ${value.data}');*/
         });
-
-      }else{
+      } else {
         Navigator.pushNamedAndRemoveUntil(
             context, SignInScreen.routName, (route) => false);
       }
 
-    /*  if(empCode!.isNotEmpty && empCode != null){
+      /*  if(empCode!.isNotEmpty && empCode != null){
         Navigator.pushNamedAndRemoveUntil(context, HomeScreen.routName, (route) => false);
       }*/
-    // ignore: empty_catches
-    }catch (e){
-
-    }
+      // ignore: empty_catches
+    } catch (e) {}
 
     print('Get user form preferences :==> $empCode');
   }
 
   @override
   Widget build(BuildContext context) {
-
     return SafeArea(
-      child: SizedBox(
+      child: newVersionCode == null || simpleVersionCode == null? Center(child: showProgress(),): SizedBox(
         width: double.infinity,
         child: Column(
           children: <Widget>[
@@ -136,20 +133,31 @@ class _BodyState extends State<Body> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: List.generate(
                         splashData.length,
-                            (index) => buildDot(index),
+                        (index) => buildDot(index),
                       ),
                     ),
                     const Spacer(
                       flex: 3,
                     ),
+                    newVersionCode! > simpleVersionCode!
+                        ? DefaultButton(
+                            text: 'Update App Now',
+                            press: () {
+                              checkVersionApp();
+                            },
+                          )
+                        :
                     DefaultButton(
                       text: 'Continue',
                       press: () {
-
-                          Navigator.pushNamed(context, SignInScreen.routName);
-
-
+                        Navigator.pushNamed(context, SignInScreen.routName);
                       },
+                    ),
+
+                    const Spacer(),
+                    Text(
+                      'Version $version.$simpleVersionCode',
+                      style: const TextStyle(color: Colors.grey),
                     ),
                     const Spacer()
                   ],
@@ -160,7 +168,6 @@ class _BodyState extends State<Body> {
         ),
       ),
     );
-
   }
 
   AnimatedContainer buildDot(int index) {
@@ -176,5 +183,36 @@ class _BodyState extends State<Body> {
     );
   }
 
+  Future<void> checkVersionApp() async {
 
+
+    await InAppUpdate.checkForUpdate().then((info) async {
+      setState(() {
+        newVersionCode = int.parse(info.availableVersionCode.toString());
+        print('BuildNewVersionCode :==> $newVersionCode');
+      });
+      await PackageInfo.fromPlatform().then((info) => {
+        setState(() {
+          version = info.version;
+          simpleVersionCode = int.parse(info.buildNumber) ;
+          print('version :==> $version');
+          print('BuildSimpleVersionCode :==> $simpleVersionCode');
+
+          if(newVersionCode! > simpleVersionCode!){
+            InAppUpdate.performImmediateUpdate();
+          }
+        }),
+      });
+      // ignore: argument_type_not_assignable_to_error_handler
+    }).catchError((){
+      showSnack('ไม่สามารถตรวจสอบเวอร์ชั่นได้');
+    });
+  }
+
+  void showSnack(String text) {
+    if (_scaffoldKey.currentContext != null) {
+      ScaffoldMessenger.of(_scaffoldKey.currentContext!)
+          .showSnackBar(SnackBar(content: Text(text)));
+    }
+  }
 }
