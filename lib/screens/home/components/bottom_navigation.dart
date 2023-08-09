@@ -11,3 +11,13 @@ BottomNavigationBarItem ButtomNavNews(BuildContext context) {
   return  BottomNavigationBarItem(
       icon:  Icon(Icons.newspaper,size: getProportionateScreenWidth(25),), label: AppLocalizations.of(context).translate('news'));
 }
+
+BottomNavigationBarItem ButtomNavApproveHoliday(BuildContext context) {
+  return  BottomNavigationBarItem(
+      icon:  Icon(Icons.beach_access,size: getProportionateScreenWidth(25),), label: AppLocalizations.of(context).translate('leaveCard'));
+}
+
+BottomNavigationBarItem ButtomNavApproveChangHoliday(BuildContext context) {
+  return  BottomNavigationBarItem(
+      icon:  Icon(Icons.change_circle,size: getProportionateScreenWidth(25),), label: AppLocalizations.of(context).translate('leaveChange'));
+}

@@ -1,7 +1,6 @@
 // ignore_for_file: non_constant_identifier_names, deprecated_member_use, avoid_print, empty_catches
 
 import 'dart:convert';
-import 'dart:ffi';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
@@ -46,6 +45,7 @@ class _BodyHolidayLeavingState extends State<BodyHolidayLeaving> {
             child:
                 Consumer(builder: (context, LeavingProvider provider, child) {
               return ListView.builder(
+                controller: ScrollController(),
                 itemCount: provider.leavingCards.length,
                 itemBuilder: (context, index) => Padding(
                   padding: const EdgeInsets.only(
@@ -91,6 +91,7 @@ class _BodyHolidayLeavingState extends State<BodyHolidayLeaving> {
                                                 Text(
                                                    '${AppLocalizations.of(context).translate('leaveNo')}  : ${provider.leavingCards[index].aBSENCEDOCUMENT}',
                                                    style:  TextStyle(
+                                                     color: Colors.white,
                                                       fontSize: getProportionateScreenHeight(14),
                                                       fontWeight: FontWeight.bold),
                                                  ),
@@ -101,6 +102,7 @@ class _BodyHolidayLeavingState extends State<BodyHolidayLeaving> {
                                                       child: Text(
                                                         '${AppLocalizations.of(context).translate('leaveType')}: ${ConvertCodeLeaving('${provider.leavingCards[index].aBSENCECODE}')} ',
                                                         style: TextStyle(
+                                                            color: Colors.white,
                                                             fontSize:
                                                                 getProportionateScreenHeight(
                                                                     14),
@@ -115,6 +117,7 @@ class _BodyHolidayLeavingState extends State<BodyHolidayLeaving> {
                                                 Text(
                                                   '${AppLocalizations.of(context).translate('startDate')}: ${provider.leavingCards[index].sTARTDATE}',
                                                   style: TextStyle(
+                                                      color: Colors.white,
                                                       fontSize:
                                                           getProportionateScreenHeight(
                                                               14),
@@ -127,6 +130,7 @@ class _BodyHolidayLeavingState extends State<BodyHolidayLeaving> {
                                                 Text(
                                                   '${AppLocalizations.of(context).translate('endDate')}  : ${provider.leavingCards[index].eNDDATE}',
                                                   style: TextStyle(
+                                                      color: Colors.white,
                                                       fontSize:
                                                           getProportionateScreenHeight(
                                                               14),
@@ -193,11 +197,11 @@ class _BodyHolidayLeavingState extends State<BodyHolidayLeaving> {
 
                                    int.parse(provider.leavingCards[index].aBSENCESTATUS.toString()) > 1
                                   ?  TagStatus(
-                                  Icon(Icons.check_circle_outline,color:const Color(0xFF13DA03), size: getProportionateScreenWidth(80) ,),
+                                  Icon(Icons.check_circle_outline,color:Colors.green.withOpacity(0.75), size: getProportionateScreenWidth(80) ,),
                                   "Approved",
                                   0xFF13DA03 )
                                   : provider.leavingCards[index].sTATUSAPPROVE == "disapprove"
-                                      ? TagStatus(Icon(Icons.cancel_outlined,color: const Color(0xFFEC0B36),size: getProportionateScreenWidth(80),),
+                                      ? TagStatus(Icon(Icons.cancel_outlined,color: Colors.red.withOpacity(0.75),size: getProportionateScreenWidth(80),),
                                   "Disapproved",
                                   0xFFEC0B36 )
                                       : Container()
@@ -267,13 +271,9 @@ class _BodyHolidayLeavingState extends State<BodyHolidayLeaving> {
 
   Widget buildStepIndicator(
       String leavType, String leavStatus, String review, String approve) {
-    if (leavType == "11") {
-      nbStape = 4;
-    } else {
-      nbStape = 3;
-    }
-    print("ประเภท:" + leavType);
-    print("สเตตัสอนุมัติ:" + leavStatus);
+
+    print("ประเภท:$leavType");
+    print("สเตตัสอนุมัติ:$leavStatus");
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.center,
@@ -281,6 +281,7 @@ class _BodyHolidayLeavingState extends State<BodyHolidayLeaving> {
         Text(
           AppLocalizations.of(context).translate('stepApprove'),
           style: TextStyle(
+              color: Colors.white,
               fontSize: getProportionateScreenWidth(10),
               fontWeight: FontWeight.bold),
         ),
@@ -306,18 +307,22 @@ class _BodyHolidayLeavingState extends State<BodyHolidayLeaving> {
                   ),
                   Text(AppLocalizations.of(context).translate('review'),
                       style: TextStyle(
+                          color: Colors.white,
                           fontSize: getProportionateScreenWidth(10),
                           fontWeight: FontWeight.bold)),
                   Text(AppLocalizations.of(context).translate('approve'),
                       style: TextStyle(
+                          color: Colors.white,
                           fontSize: getProportionateScreenWidth(10),
                           fontWeight: FontWeight.bold)),
                   Text(AppLocalizations.of(context).translate('doctor'),
                       style: TextStyle(
+                          color: Colors.white,
                           fontSize: getProportionateScreenWidth(10),
                           fontWeight: FontWeight.bold)),
                   Text(AppLocalizations.of(context).translate('finish'),
                       style: TextStyle(
+                          color: Colors.white,
                           fontSize: getProportionateScreenWidth(10),
                           fontWeight: FontWeight.bold)),
                   const SizedBox(
@@ -333,10 +338,12 @@ class _BodyHolidayLeavingState extends State<BodyHolidayLeaving> {
                     children: [
                       Text(AppLocalizations.of(context).translate('review'),
                           style: TextStyle(
+                              color: Colors.white,
                               fontSize: getProportionateScreenWidth(10),
                               fontWeight: FontWeight.bold)),
                       Text(review,
                           style: TextStyle(
+                              color: Colors.white,
                               fontSize: getProportionateScreenWidth(10),
                               fontWeight: FontWeight.bold)),
                     ],
@@ -345,10 +352,12 @@ class _BodyHolidayLeavingState extends State<BodyHolidayLeaving> {
                     children: [
                       Text(AppLocalizations.of(context).translate('approve'),
                           style: TextStyle(
+                              color: Colors.white,
                               fontSize: getProportionateScreenWidth(10),
                               fontWeight: FontWeight.bold)),
                       Text(approve,
                           style: TextStyle(
+                              color: Colors.white,
                               fontSize: getProportionateScreenWidth(10),
                               fontWeight: FontWeight.bold)),
                     ],
@@ -360,6 +369,7 @@ class _BodyHolidayLeavingState extends State<BodyHolidayLeaving> {
                           fontSize: 12.0, fontWeight: FontWeight.bold)),*/
                   Text(AppLocalizations.of(context).translate('finish'),
                       style: TextStyle(
+                          color: Colors.white,
                           fontSize: getProportionateScreenWidth(10),
                           fontWeight: FontWeight.bold)),
 
@@ -405,12 +415,12 @@ class _BodyHolidayLeavingState extends State<BodyHolidayLeaving> {
   String? ConvertCodeLeaving(String date) {
     Map<String, String> dataMap = {
 
-      '02': AppLocalizations.of(context)!.translate('lagit'),
-      'AB': AppLocalizations.of(context)!.translate('lagitDiscount'),
-      '11': AppLocalizations.of(context)!.translate('sick'),
-      '14': AppLocalizations.of(context)!.translate('lakron'),
-      '12': AppLocalizations.of(context)!.translate('accident'),
-      '29': AppLocalizations.of(context)!.translate('lapukron'),
+      '02': AppLocalizations.of(context).translate('lagit'),
+      'AB': AppLocalizations.of(context).translate('lagitDiscount'),
+      '11': AppLocalizations.of(context).translate('sick'),
+      '14': AppLocalizations.of(context).translate('lakron'),
+      '12': AppLocalizations.of(context).translate('accident'),
+      '29': AppLocalizations.of(context).translate('lapukron'),
     };
     return dataMap[date];
   }

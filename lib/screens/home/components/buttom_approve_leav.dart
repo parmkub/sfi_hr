@@ -158,6 +158,7 @@ class ButtomApproveLeav extends StatelessWidget {
     getApproveHoliday();
   }
 
+
   Future<void> InsertAbsenceTable(int statusApprove, String asenceCode) async {
     if (statusApprove == 2) {
       print('จาก InsertAbsenceTableDocument: $documentNo');
@@ -218,7 +219,7 @@ class ButtomApproveLeav extends StatelessWidget {
 
   Future<void> sendMailToHR() async {
     String url =
-        "http://61.7.142.47:3002/sendemail?documentNo=$documentNo&name=$name";
+        "http://61.7.142.47:3002/sendemail?documentNo=$documentNo&name=$name&typeDocument";
     Response response = await Dio().get(url);
     String _massess = '';
     try {

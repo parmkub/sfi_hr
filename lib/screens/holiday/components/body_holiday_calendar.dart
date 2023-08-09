@@ -1,16 +1,16 @@
-import 'dart:convert';
+// ignore_for_file: use_build_context_synchronously, sort_child_properties_last, unrelated_type_equality_checks, empty_catches, non_constant_identifier_names
 
+import 'dart:convert';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:sfiasset/app_localizations.dart';
 import 'package:sfiasset/constans.dart';
-
 import 'package:sfiasset/model/holiday_calendar_model.dart';
 import 'package:sfiasset/model/holiday_show_model.dart';
-import 'package:sfiasset/screens/home/components/mark_color_calendar.dart';
 import 'package:sfiasset/size_config.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:syncfusion_flutter_calendar/calendar.dart';
+import 'build_calandar.dart';
+import 'build_color_detail.dart';
 
 class BodyHolidayCalendar extends StatefulWidget {
   const BodyHolidayCalendar({Key? key}) : super(key: key);
@@ -26,41 +26,63 @@ class _BodyHolidayCalendarState extends State<BodyHolidayCalendar> {
 
   String hour = "";
 
+  String detail = "";
+
+  String? empCode;
+  String? token;
+
 
   @override
   void initState() {
+    getPerferences();
     getDataHoliday();
     // TODO: implement initState
     super.initState();
+
   }
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration: const BoxDecoration(
-        gradient: kBackgroundColor
-      ),
+      decoration: const BoxDecoration(gradient: kBackgroundColor),
       child: Center(
-        child: Column(
-          children: <Widget>[
-            BuildCalandar(
-                holidayCalendars: holidayCalendars,
-                holidays: holidays),
-            const BuildColorDetail()
-          ],
-        ),
+        child: holidayCalendars.isEmpty
+            ? const CircularProgressIndicator()
+            : Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: <Widget>[
+                  BuildCalandar(
+                    holidayCalendars: holidayCalendars,
+                    holidays: holidays,
+                    emplopyeeCode: empCode!,
+                    token: token!,
+                  ),
+                  Text(
+                      AppLocalizations.of(context).translate(
+                          'long press to chang holiday'), //กดค้างเพื่อเลือนวันหยุด
+                      style: TextStyle(
+                          fontSize: getProportionateScreenWidth(12),
+                          fontWeight: FontWeight.bold,
+                          color: Colors.black)),
+                  const BuildColorDetail(),
+                ],
+              ),
       ),
     );
   }
+  Future<void> getPerferences() async {
 
+  }
 
   Future<void> getDataHoliday() async {
-    SharedPreferences preferences = await SharedPreferences.getInstance();
-    String? empCode = preferences.getString('empcode');
+    await SharedPreferences.getInstance().then((value) async{
+        empCode = value.getString('empcode');
+        token = value.getString('token');
 
-    var color;
+    int color = 0;
     String url =
         "http://61.7.142.47:8086/sfi-hr/select_holiday_calanda.php?empcode=$empCode";
+    //print(url);
     int numRow = 0;
     Response response = await Dio().get(url);
     try {
@@ -71,46 +93,75 @@ class _BodyHolidayCalendarState extends State<BodyHolidayCalendar> {
           setState(() {
             holidayCalendars.add(holidayCalendar);
           });
-          numRow ++;
+          numRow++;
         }
       }
-      print(holidayCalendars.length);
-      if(numRow == holidayCalendars.length ){
+      if (numRow == holidayCalendars.length) {
         for (int i = 0; i < holidayCalendars.length; i++) {
-          if(holidayCalendars[i].aBSENCECODE == "29"){
-            if(holidayCalendars[i].aBSENCECOMMENT == "2"){
+          if (holidayCalendars[i].aBSENCECODE == "29") {
+            if (holidayCalendars[i].aBSENCECOMMENT == "2") {
               //วันเลือน
-              color = 0xFFFFFF66;
-            }else{
+              color = 0xFFFFFF66; //สีเหลือง
+              detail = AppLocalizations.of(context)
+                  .translate('dayChange'); //วันเลื่อน
+            } else {
               //พักร้อน
-              color = 0xFF094999;
+              color = 0xFF094999; //สีน้ำเงิน
+              detail = AppLocalizations.of(context).translate('lapukron');
             }
 
-            //01 คือวันหยุดปรกติของรายเดือน 88 คือวันหยุดปรกติของรายวัน
-          }else if(holidayCalendars[i].aBSENCECODE == "01" || holidayCalendars[i].aBSENCECODE == "88"){
-            if(holidayCalendars[i].aBSENCECOMMENT == "2"){
-              color = 0xFFFFFF66;
-            }else{
-              color = 0xFF0F8644;
+            //01 คือวันหยุดปรกติของรายเดือน 88 คือวันหยุดปรกติของรายวั
+          } else if (holidayCalendars[i].aBSENCECODE == "01" ||
+              holidayCalendars[i].aBSENCECODE == "88") {
+            if (holidayCalendars[i].mOVEFROMDATE == null) {
+              detail =
+                  AppLocalizations.of(context).translate('holiday'); //วันหยุด
+            } else {
+              detail = "F ${holidayCalendars[i].mOVEFROMDATE!} ";
             }
-          }else if(holidayCalendars[i].aBSENCECODE == "02"){
+            if (holidayCalendars[i].aBSENCECOMMENT == "2") {
+              color = 0xFFFFFF66; //สีเหลือง
+            } else {
+              color = 0xFF0F8644; //สีเขียว
+            }
+          } else if (holidayCalendars[i].aBSENCECODE == "02") {
             color = 0xFFFF9933;
-          }else if(holidayCalendars[i].aBSENCECODE == "11"){
+            if (holidayCalendars[i].aBSENCEHOUR == null ||
+                holidayCalendars[i].aBSENCEHOUR == "0") {
+              detail = "";
+            } else {
+              detail =
+                  "ลากิจ ${holidayCalendars[i].aBSENCEHOUR!} ${AppLocalizations.of(context).translate('hour')}";
+            }
+          } else if (holidayCalendars[i].aBSENCECODE == "11") {
             color = 0xFF66CCFF;
-          }else if(holidayCalendars[i].aBSENCECODE == "Ba"){
+            detail = AppLocalizations.of(context).translate('sick'); //ลาป่วย
+          } else if (holidayCalendars[i].aBSENCECODE == "Ba") {
+            detail = AppLocalizations.of(context)
+                .translate('sickDiscount'); //ลาป่วยเกิน
             color = 0xFF66CCFF;
-          }else if(holidayCalendars[i].aBSENCECODE == "14"){
+          } else if (holidayCalendars[i].aBSENCECODE == "14") {
             color = 0xFF9933CC;
-          }else if(holidayCalendars[i].aBSENCECODE == "Bd"){
+            detail =
+                AppLocalizations.of(context).translate('lakron'); //ลาคลอดบุตร
+          } else if (holidayCalendars[i].aBSENCECODE == "Bd") {
             color = 0xFF9933CC;
-          }else if(holidayCalendars[i].aBSENCECODE == "12"){
+            detail = AppLocalizations.of(context)
+                .translate('lakronDiscount'); //ลาคลอดบุตรเกิน
+          } else if (holidayCalendars[i].aBSENCECODE == "12") {
             color = 0xFFCC0066;
-          }else if(holidayCalendars[i].aBSENCECODE == "25"){
+            detail = AppLocalizations.of(context)
+                .translate('accident'); //ลาอุบัติเหตุ
+          } else if (holidayCalendars[i].aBSENCECODE == "25") {
             color = 0xFFCD853F;
-          }else if(holidayCalendars[i].aBSENCECODE == "Ac"){
+            detail = AppLocalizations.of(context).translate('ordain'); //ลาบวช
+          } else if (holidayCalendars[i].aBSENCECODE == "Ac") {
             color = 0xFFFF0000;
-          }else if(holidayCalendars[i].aBSENCECODE == "AG"){
+            detail = AppLocalizations.of(context)
+                .translate('absentFromWork'); // ขาดงาน
+          } else if (holidayCalendars[i].aBSENCECODE == "AG") {
             color = 0xFF40E0D0;
+            detail = AppLocalizations.of(context).translate('factoryHoliday');
           }
 
           String year = today.toString().split("-")[0];
@@ -118,153 +169,59 @@ class _BodyHolidayCalendarState extends State<BodyHolidayCalendar> {
           String month = holidayCalendars[i].aBSENCEDATE!.split("-")[1];
           // String hour = "${holidayCalendars[i].aBSENCEHOUR} ชั่วโมง";
           int? monthIn = ConvertMonth(month);
-          print("วัน $date");
-          print("เดือน $monthIn");
-          print("ปี $year");
 
-          if(holidayCalendars[i].aBSENCEHOUR == null || holidayCalendars[i].aBSENCEHOUR == "0"){
-            hour = "";
-
-          }else{
-            hour = "${holidayCalendars[i].aBSENCEHOUR} ชั่วโมง";
-          }
-          holidays.add(Holiday(DateTime(int.parse(year), monthIn!,date ), DateTime(int.parse(year), monthIn,date), hour,
-              Color(color), false));
-
+          holidays.add(Holiday(
+              DateTime(int.parse(year), monthIn!, date),
+              DateTime(int.parse(year), monthIn, date),
+              detail,
+              Color(color),
+              false));
+          detail = "";
         }
       }
-
     } catch (e) {}
+    });
   }
-  
-  String ConvertMonthThai(var date){
-    print("ปฏิทินประจำเดือน>>>>$date");
 
-    List<String> dataMonth = ['มกราคม','กุมภาพันธ์','มีนาคม','เมษายน','พฤษภาคม',
-      'มิถุนายน','กรกฏาคม','สิงหาคม','กันยายน','พฤษจิกายน','ธันวาคม'];
+
+  String ConvertMonthThai(var date) {
+
+    List<String> dataMonth = [
+      'มกราคม',
+      'กุมภาพันธ์',
+      'มีนาคม',
+      'เมษายน',
+      'พฤษภาคม',
+      'มิถุนายน',
+      'กรกฏาคม',
+      'สิงหาคม',
+      'กันยายน',
+      'พฤษจิกายน',
+      'ธันวาคม'
+    ];
     String data;
     String convertData;
     data = date.toString().split("-")[1].toString();
-    convertData = dataMonth[int.parse(data)-1];
+    convertData = dataMonth[int.parse(data) - 1];
 
-    return  convertData;
+    return convertData;
   }
 
-  int? ConvertMonth(String date){
-    Map<String,int> dataMap = {'JAN':1,'FEB':2,'MAR':3,'APR':4,'MAY':5,'JUN':6,
-      'JUL':7,'AUG':8,'SEP':9,'SEP':10,'OCT':10,'NOV':11,'DEC':12};
-    return   dataMap[date];
-  }
-}
-
-class BuildColorDetail extends StatelessWidget {
-  const BuildColorDetail({
-    Key? key,
-
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Expanded(
-      flex: 1,
-      child: Container(
-        margin: EdgeInsets.all(10.0),
-        child: Column(
-          children: [
-            const SizedBox(
-              height: 10.0,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children:  [
-                MarkColorCalendar(color: 0xFF0F8644, nameColor: AppLocalizations.of(context).translate('holiday')),
-                MarkColorCalendar(color: 0xFFFFFF66, nameColor: AppLocalizations.of(context).translate('dayChange')),
-                MarkColorCalendar(color: 0xFF094999, nameColor: AppLocalizations.of(context).translate('lapukron'))
-              ],
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children:  [
-                MarkColorCalendar(color: 0xFFFF9933, nameColor: AppLocalizations.of(context).translate('lagit')),
-                MarkColorCalendar(color: 0xFF66CCFF, nameColor: AppLocalizations.of(context).translate('sick')),
-                MarkColorCalendar(color: 0xFF9933CC, nameColor: AppLocalizations.of(context).translate('lakron'))
-              ],
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children:  [
-                MarkColorCalendar(color: 0xFFCC0066, nameColor: AppLocalizations.of(context).translate('accident')),
-                MarkColorCalendar(color: 0xFFFF0000, nameColor: AppLocalizations.of(context).translate('absentFromWork')),
-                MarkColorCalendar(color: 0xFFCD853F, nameColor: AppLocalizations.of(context).translate('ordain'))
-              ],
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children:  [
-                MarkColorCalendar(color: 0xFF40E0D0, nameColor: AppLocalizations.of(context).translate('factoryHoliday')),
-
-              ],
-            ),
-
-
-            //DefaultButton(text: "บันทึกวันหยุดประจำเดือน", press: () {})
-          ],
-        ),
-      ),
-    );
+  int? ConvertMonth(String date) {
+    Map<String, int> dataMap = {
+      'JAN': 1,
+      'FEB': 2,
+      'MAR': 3,
+      'APR': 4,
+      'MAY': 5,
+      'JUN': 6,
+      'JUL': 7,
+      'AUG': 8,
+      'SEP': 9,
+      'OCT': 10,
+      'NOV': 11,
+      'DEC': 12
+    };
+    return dataMap[date];
   }
 }
-
-class BuildCalandar extends StatelessWidget {
-  const BuildCalandar({
-    Key? key,
-    required this.holidayCalendars,
-    required this.holidays,
-  }) : super(key: key);
-
-  final List<HolidayCalendar> holidayCalendars;
-  final List<Holiday> holidays;
-
-  @override
-  Widget build(BuildContext context) {
-    return Expanded(
-      flex: 4,
-      child: holidayCalendars.isEmpty
-          ? Center(
-              child: showProgress(),
-            )
-          : Card(
-              elevation: 5.0,
-              margin: const EdgeInsets.all(10.0),
-              child: Padding(
-                padding: const EdgeInsets.all(10.0),
-                child: SfCalendar(
-                  view: CalendarView.month,
-                 // bool showNavigationArrow = false,   bool showDatePickerButton = false,
-                   showNavigationArrow: true,
-                  showDatePickerButton: true,
-
-                  dataSource:
-                      HolidayDataSource(holidays),
-
-                  monthViewSettings:  MonthViewSettings(
-                      numberOfWeeksInView: 6,
-                    monthCellStyle: MonthCellStyle(
-                        trailingDatesBackgroundColor: Colors.white10,
-                        leadingDatesBackgroundColor: Colors.white10,
-                        textStyle: TextStyle(
-                            color: Colors.black,
-                            fontSize: getProportionateScreenWidth(10),
-                            fontWeight: FontWeight.w300)),
-                      appointmentDisplayMode:
-                          MonthAppointmentDisplayMode.appointment),
-
-
-                ),
-              ),
-            ),
-    );
-  }
-}
-
-

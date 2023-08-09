@@ -1,4 +1,4 @@
-// ignore_for_file: unused_local_variable, avoid_print, non_constant_identifier_names, empty_catches, no_leading_underscores_for_local_identifiers
+// ignore_for_file: unused_local_variable, avoid_print, non_constant_identifier_names, empty_catches, no_leading_underscores_for_local_identifiers, use_build_context_synchronously
 
 import 'dart:convert';
 
@@ -8,6 +8,7 @@ import 'package:provider/provider.dart';
 import 'package:sfiasset/app_localizations.dart';
 import 'package:sfiasset/constans.dart';
 import 'package:sfiasset/model/approve_holiday_model.dart';
+import 'package:sfiasset/model/holiday_medel.dart';
 import 'package:sfiasset/providers/approve_holiday_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:steps_indicator/steps_indicator.dart';
@@ -28,6 +29,9 @@ class _BodyApproveState extends State<BodyApprove> {
   String? url;
 
   String? positionName, positionCode;
+
+  List<HolidayModel> holidayModels = [];
+  bool statusData = true;
 
   @override
   void initState() {
@@ -51,179 +55,317 @@ class _BodyApproveState extends State<BodyApprove> {
               return ListView.builder(
                   itemCount: provider.ApproveHolidayCard.length,
                   itemBuilder: (context, index) => Padding(
-                        padding: const EdgeInsets.all(5.0),
-                        child: Card(
-                          color: Color(ColorTypeLeaving(provider
+                        padding: const EdgeInsets.fromLTRB(5.0,0,5,0),
+                        child: Stack(
+                          children: [
+
+                            Card(
+                              color: Color(ColorTypeLeaving(provider
                                   .ApproveHolidayCard[index].aBSENCECODE
                                   .toString())!
-                              .toInt()),
-                          //Color(0xB2F39BA1),
-                          elevation: 5,
-                          child: Column(
-                            children: [
-                              Row(
+                                  .toInt()),
+                              //Color(0xB2F39BA1),
+                              elevation: 5,
+                              child: Column(
                                 children: [
-                                  Expanded(
-                                      flex: 4,
-                                      child: Padding(
-                                        padding: const EdgeInsets.all(20),
-                                        child: Column(
-                                          crossAxisAlignment:
+                                  Row(
+                                    children: [
+                                      Expanded(
+                                          flex: 4,
+                                          child: Padding(
+                                            padding: const EdgeInsets.fromLTRB(10, 5, 10, 0),
+                                            child: Column(
+                                              crossAxisAlignment:
                                               CrossAxisAlignment.start,
-                                          children: [
-                                            // Text(
-                                            //   "ชื่อ: ${provider.ApproveHolidayCard[index].aBSENCEDOCUMENT}",
-                                            //   style: buildTextStyle(14),
-                                            // ),
-                                            Text(
-                                              "${AppLocalizations.of(context).translate('name')}: ${provider.ApproveHolidayCard[index].nAME}",
-                                              style: buildTextStyle(14),
-                                            ),
-                                            Text(
-                                              "${AppLocalizations.of(context).translate('empCode')}: ${provider.ApproveHolidayCard[index].eMPLOYEECODE}",
-                                              style: buildTextStyle(14),
-                                            ),
-                                            Text(
-                                                "${AppLocalizations.of(context).translate('leaveType')}: ${ConvertCodeLeaving(provider.ApproveHolidayCard[index].aBSENCECODE.toString())}",
-                                                style: buildTextStyle(14)),
-                                            Text(
-                                              "${AppLocalizations.of(context).translate('startDate')} : ${provider.ApproveHolidayCard[index].mIN}",
-                                              style: buildTextStyle(14),
-                                            ),
-                                            Text(
-                                                "${AppLocalizations.of(context).translate('endDate')} : ${provider.ApproveHolidayCard[index].mAX}",
-                                                style: buildTextStyle(14)),
-                                            provider.ApproveHolidayCard[index]
-                                                        .aBSENCEDAY ==
+                                              children: [
+                                                // Text(
+                                                //   "ชื่อ: ${provider.ApproveHolidayCard[index].aBSENCEDOCUMENT}",
+                                                //   style: buildTextStyle(14),
+                                                // ),
+                                                Text(
+                                                  "${AppLocalizations.of(context).translate('name')}: ${provider.ApproveHolidayCard[index].nAME}",
+                                                  style: buildTextStyle(14),
+                                                ),
+                                                Text(
+                                                  "${AppLocalizations.of(context).translate('empCode')}: ${provider.ApproveHolidayCard[index].eMPLOYEECODE}",
+                                                  style: buildTextStyle(14),
+                                                ),
+                                                Text(
+                                                    "${AppLocalizations.of(context).translate('leaveType')}: ${ConvertCodeLeaving(provider.ApproveHolidayCard[index].aBSENCECODE.toString())}",
+                                                    style: buildTextStyle(14)),
+                                                Text(
+                                                  "${AppLocalizations.of(context).translate('startDate')} : ${provider.ApproveHolidayCard[index].mIN}",
+                                                  style: buildTextStyle(14),
+                                                ),
+                                                Text(
+                                                    "${AppLocalizations.of(context).translate('endDate')} : ${provider.ApproveHolidayCard[index].mAX}",
+                                                    style: buildTextStyle(14)),
+                                                provider.ApproveHolidayCard[index]
+                                                    .aBSENCEDAY ==
                                                     "0"
-                                                ? Text(
+                                                    ? provider.ApproveHolidayCard[index].aBSENCEHOUR == ".3" || provider.ApproveHolidayCard[index].aBSENCEHOUR == ".4" ? Text(
+                                                    "${AppLocalizations.of(context).translate('sumDay')}  30 ${AppLocalizations.of(context).translate('minute')}",
+                                                    style: buildTextStyle(12)):Text(
                                                     "${AppLocalizations.of(context).translate('sumDay')}  ${provider.ApproveHolidayCard[index].aBSENCEHOUR} ${AppLocalizations.of(context).translate('hour')}",
                                                     style: buildTextStyle(12))
-                                                : Text(
+                                                    : Text(
                                                     "${AppLocalizations.of(context).translate('sumDay')}  ${provider.ApproveHolidayCard[index].aBSENCEDAY} ${AppLocalizations.of(context).translate('day')}",
                                                     style: buildTextStyle(12)),
-                                            provider.ApproveHolidayCard[index]
-                                                        .aBSENCEDETAIL ==
+                                                provider.ApproveHolidayCard[index]
+                                                    .aBSENCEDETAIL ==
                                                     null
-                                                ? const Text('')
-                                                : Text(
+                                                    ? const Text('')
+                                                    : Text(
                                                     '${AppLocalizations.of(context).translate('reason')}: ${provider.ApproveHolidayCard[index].aBSENCEDETAIL}',
-                                                    style: buildTextStyle(12))
-                                          ],
+                                                    style: buildTextStyle(12)),
+                                              ],
+                                            ),
+                                          )),
+                                      Expanded(
+                                        flex: 2,
+                                        child: Container(
+                                          height: getProportionateScreenWidth(100),
+                                          child: GestureDetector(
+                                            onTap: () {
+                                              getDataHoliday(provider.ApproveHolidayCard[index].eMPLOYEECODE.toString(),provider.ApproveHolidayCard[index].nAME.toString());
+                                            },
+                                            child: FadeInImage(
+                                              placeholder: const AssetImage(
+                                                  "assets/images/userProfile.png"),
+                                              image: NetworkImage(
+                                                "http://61.7.142.47:8086/img/sfi/${provider.ApproveHolidayCard[index].eMPLOYEECODE!.substring(0, 2)}-${provider.ApproveHolidayCard[index].eMPLOYEECODE!.substring(2)}.jpg",
+                                              ),
+                                              imageErrorBuilder:
+                                                  (context, error, stackTrace) {
+                                                return Image.asset(
+                                                    "assets/images/userProfile.png");
+                                              },
+                                              fit: BoxFit.fitHeight,
+                                            ),
+                                          ),
                                         ),
-                                      )),
-                                  Expanded(
-                                    flex: 2,
-                                    child: Container(
-                                      height: getProportionateScreenHeight(150),
-                                      decoration: BoxDecoration(
-                                          border: Border.all(
-                                              color: Colors.blueGrey, width: 3),
-                                          borderRadius: const BorderRadius.all(
-                                              Radius.circular(5.0))),
-                                      margin: const EdgeInsets.all(10.0),
-                                      child: FadeInImage(
-                                        placeholder: const AssetImage(
-                                            "assets/images/userProfile.png"),
-                                        image: NetworkImage(
-                                          "http://61.7.142.47:8086/img/sfi/${provider.ApproveHolidayCard[index].eMPLOYEECODE!.substring(0, 2)}-${provider.ApproveHolidayCard[index].eMPLOYEECODE!.substring(2)}.jpg",
-                                        ),
-                                        imageErrorBuilder:
-                                            (context, error, stackTrace) {
-                                          return Image.asset(
-                                              "assets/images/userProfile.png");
-                                        },
-                                        fit: BoxFit.cover,
+                                      ),
+
+                                    ],
+                                  ),
+                                  provider.ApproveHolidayCard[index]
+                                      .sTATUSAPPROVE ==
+                                      'disapprove'
+                                      ? Container(
+                                    width: getProportionateScreenWidth(80),
+                                    height: getProportionateScreenHeight(30),
+                                    decoration: BoxDecoration(
+                                        color: Colors.red,
+                                        borderRadius: BorderRadius.circular(10)),
+                                    child: Center(
+                                      child: Text(
+                                          AppLocalizations.of(context).translate('disapprove'),
+                                          style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: getProportionateScreenWidth(16),
+                                              fontWeight: FontWeight.bold)
                                       ),
                                     ),
+
+                                  )
+                                      : Container(
+                                    child: Column(children: [
+                                      buildStepIndicator(
+                                          provider.ApproveHolidayCard[index]
+                                              .aBSENCECODE
+                                              .toString(),
+                                          provider.ApproveHolidayCard[index]
+                                              .aBSENCESTATUS
+                                              .toString(),
+                                          provider.ApproveHolidayCard[index]
+                                              .rEVIEWS
+                                              .toString(),
+                                          provider.ApproveHolidayCard[index]
+                                              .aPPROVES
+                                              .toString()),
+                                      ShowButtomApprove(provider, index),
+                                    ]),
+                                  ),
+                                  const SizedBox(
+                                    height: 5,
                                   ),
 
+                                  // positionName == 'sect_code' && provider.ApproveHolidayCard[index].aBSENCESTATUS == '0'?
+                                  // ButtomApproveLeav(context: context,documentNo:
+                                  // provider.ApproveHolidayCard[index].aBSENCEDOCUMENT.toString(),
+                                  //   statusLeave: provider.ApproveHolidayCard[index].aBSENCESTATUS.toString(),
+                                  //   reviewDocument: provider.ApproveHolidayCard[index].aBSENCEREVIWE.toString(),
+                                  //   ApproveDocument: provider.ApproveHolidayCard[index].aBSENCEAPPROVE.toString(),): Container(),
+                                  //
+                                  // positionName != 'sect_code' && int.parse(provider.ApproveHolidayCard[index].aBSENCESTATUS.toString())> 0 ?
+                                  // ButtomApproveLeav(context: context,documentNo:
+                                  // provider.ApproveHolidayCard[index].aBSENCEDOCUMENT.toString(),
+                                  //   statusLeave: provider.ApproveHolidayCard[index].aBSENCESTATUS.toString(),
+                                  //   reviewDocument: provider.ApproveHolidayCard[index].aBSENCEREVIWE.toString(),
+                                  //   ApproveDocument: provider.ApproveHolidayCard[index].aBSENCEAPPROVE.toString(),):
+                                  // Container(height: 10,)
+
+                                  // provider.ApproveHolidayCard[index].aBSENCESTATUS == '2' &&
+                                  //     provider.ApproveHolidayCard[index].aBSENCECODE != '11'?
+                                  // Container(height: 10,) :
+                                  // ButtomApproveLeav(context: context,documentNo:
+                                  // provider.ApproveHolidayCard[index].aBSENCEDOCUMENT.toString(),
+                                  //   statusLeave: provider.ApproveHolidayCard[index].aBSENCESTATUS.toString(),
+                                  // reviewDocument: provider.ApproveHolidayCard[index].aBSENCEREVIWE.toString(),
+                                  // ApproveDocument: provider.ApproveHolidayCard[index].aBSENCEAPPROVE.toString(),)
                                 ],
                               ),
-                              provider.ApproveHolidayCard[index]
-                                          .sTATUSAPPROVE ==
-                                      'disapprove'
-                                  ? Container(
-                                width: getProportionateScreenWidth(80),
-                                height: getProportionateScreenHeight(30),
-                                decoration: BoxDecoration(
-                                    color: Colors.red,
-                                    borderRadius: BorderRadius.circular(10)),
-                                child: Center(
-                                  child: Text(
-                                      AppLocalizations.of(context).translate('disapprove'),
-                                      style: TextStyle(
-                                          color: Colors.white,
-                                          fontSize: getProportionateScreenWidth(16),
-                                          fontWeight: FontWeight.bold)
-                                  ),
-                                ),
 
-                              )
-                                  : Container(
-                                      child: Column(children: [
-                                        buildStepIndicator(
-                                            provider.ApproveHolidayCard[index]
-                                                .aBSENCECODE
-                                                .toString(),
-                                            provider.ApproveHolidayCard[index]
-                                                .aBSENCESTATUS
-                                                .toString(),
-                                            provider.ApproveHolidayCard[index]
-                                                .rEVIEWS
-                                                .toString(),
-                                            provider.ApproveHolidayCard[index]
-                                                .aPPROVES
-                                                .toString()),
-                                        ShowButtomApprove(provider, index),
-                                      ]),
-                                    ),
-                              const SizedBox(
-                                height: 10,
+                            ),
+                            provider.ApproveHolidayCard[index].aBSENCECODE == '11' ?
+                            Positioned(
+                              top: getProportionateScreenWidth(120),
+                              left: getProportionateScreenWidth(5),
+                              child: IconButton(
+
+                                onPressed: () {
+                                  showModalBottomSheet(context: context, builder: (context){
+                                    return Container(
+                                      child: SingleChildScrollView(
+                                        child: Image.asset("assets/images/sick-jay.png"),
+                                      )
+                                    );
+                                  });
+                                },
+                                icon: const Icon(Icons.attachment_sharp,color: Colors.black,),
                               ),
-
-                              // positionName == 'sect_code' && provider.ApproveHolidayCard[index].aBSENCESTATUS == '0'?
-                              // ButtomApproveLeav(context: context,documentNo:
-                              // provider.ApproveHolidayCard[index].aBSENCEDOCUMENT.toString(),
-                              //   statusLeave: provider.ApproveHolidayCard[index].aBSENCESTATUS.toString(),
-                              //   reviewDocument: provider.ApproveHolidayCard[index].aBSENCEREVIWE.toString(),
-                              //   ApproveDocument: provider.ApproveHolidayCard[index].aBSENCEAPPROVE.toString(),): Container(),
-                              //
-                              // positionName != 'sect_code' && int.parse(provider.ApproveHolidayCard[index].aBSENCESTATUS.toString())> 0 ?
-                              // ButtomApproveLeav(context: context,documentNo:
-                              // provider.ApproveHolidayCard[index].aBSENCEDOCUMENT.toString(),
-                              //   statusLeave: provider.ApproveHolidayCard[index].aBSENCESTATUS.toString(),
-                              //   reviewDocument: provider.ApproveHolidayCard[index].aBSENCEREVIWE.toString(),
-                              //   ApproveDocument: provider.ApproveHolidayCard[index].aBSENCEAPPROVE.toString(),):
-                              // Container(height: 10,)
-
-                              // provider.ApproveHolidayCard[index].aBSENCESTATUS == '2' &&
-                              //     provider.ApproveHolidayCard[index].aBSENCECODE != '11'?
-                              // Container(height: 10,) :
-                              // ButtomApproveLeav(context: context,documentNo:
-                              // provider.ApproveHolidayCard[index].aBSENCEDOCUMENT.toString(),
-                              //   statusLeave: provider.ApproveHolidayCard[index].aBSENCESTATUS.toString(),
-                              // reviewDocument: provider.ApproveHolidayCard[index].aBSENCEREVIWE.toString(),
-                              // ApproveDocument: provider.ApproveHolidayCard[index].aBSENCEAPPROVE.toString(),)
-                            ],
-                          ),
-
-                        ),
+                            ):
+                            Container(),
+                          ],
+                        )
                       ));
             }),
+
           )
         ],
       ),
     );
   }
 
+  Future<Object> getDataHoliday(String empCode, String name) async {
+    holidayModels.clear();
+    String url =
+        "http://61.7.142.47:8086/sfi-hr/select_leave.php?empcode=$empCode";
+    Response response = await Dio().get(url);
+    try {
+      var result = jsonDecode(response.data);
+      if (result != null) {
+        print("มีข้อมูลสถิติ");
+        for (var map in result) {
+          HolidayModel holidayModel = HolidayModel.fromJson(map);
+            holidayModels.add(holidayModel);
+        }
+        return showDialog(context: context, builder: (context){
+          return AlertDialog(
+            backgroundColor: kDefaultIconLightColor,
+            title: Text("ประวัติการลา$name"),
+            content: Container(
+              height: getProportionateScreenHeight(300),
+              width: getProportionateScreenWidth(300),
+              child: SingleChildScrollView(
+                child: Container(
+                    child: Column(
+                      children: [
+                        ListReport(AppLocalizations.of(context)!.translate('workDay'), ConverDate(holidayModels[0].wORKINGDAY.toString()), "assets/images/Working-bro.png"),
+                        ListReport(AppLocalizations.of(context)!.translate('lapukron'), "${ConverDate(holidayModels[0].pUKRONH.toString())}/${holidayModels[0].hOLIDAYTOTAL} ${AppLocalizations.of(context).translate('day')}", "assets/images/pakroh.png"),
+                        ListReport(AppLocalizations.of(context)!.translate('worklate'), "${ConverDate(holidayModels[0].sAI.toString())
+                            .split(" ")[0]} ${AppLocalizations.of(context).translate('timeLate')}", "assets/images/Deadline-pana.png"),
+                        ListReport(AppLocalizations.of(context)!.translate('lagit'), ConverDate(holidayModels[0].lAGITJAY.toString()), "assets/images/lagit-jay.png"),
+                        ListReport(AppLocalizations.of(context)!.translate('lagitDiscount'), ConverDate(holidayModels[0].lAGITNOTJAY.toString()), "assets/images/lagit-njay.png"),
+                        ListReport(AppLocalizations.of(context)!.translate('sick'),  ConverDate(holidayModels[0].lAPOUYJAY.toString()), "assets/images/sick-jay.png"),
+                        ListReport(AppLocalizations.of(context)!.translate('sickDiscount'), ConverDate(holidayModels[0].lAPOUYNOTJAY.toString()), "assets/images/sick-not-jay.png"),
+                        ListReport(AppLocalizations.of(context)!.translate('lakron'),  ConverDate(holidayModels[0].lACRODJAY.toString()), "assets/images/Midwives-jay.png"),
+                        ListReport(AppLocalizations.of(context)!.translate('lakronDiscount'), ConverDate(holidayModels[0].lACRODNETJAY.toString()), "assets/images/Midwives-not-Jay.png"),
+                        ListReport(AppLocalizations.of(context)!.translate('absentFromWork'), ConverDate(holidayModels[0].kADHANG.toString()), "assets/images/Working late.png"),
+                      ],
+                    )
+                ),
+              )
+            ),
+            actions: [
+              TextButton(onPressed: (){
+                Navigator.pop(context);
+              }, child: Text(AppLocalizations.of(context)!.translate('close')))
+            ],
+          );
+        });
+      } else{
+        return  showDialog(context: context, builder: (context){
+          return AlertDialog(
+            title: Text("ประวัติการลา"),
+            content: Container(
+              height: getProportionateScreenHeight(300),
+              width: getProportionateScreenWidth(300),
+              child: Container(
+                child: Card(
+                  child: Column(
+                    children: [
+                      Text("ไม่พบข้อมูลการลา"),
+                      Text('รหัสพนักงาน $empCode'),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+            actions: [
+              TextButton(onPressed: (){
+                Navigator.pop(context);
+              }, child: Text("ปิด"))
+            ],
+          );
+        });
+      }
+    } catch (e) {
+    }
+    return Container();
+
+  }
+  String ConverDate(String date) {
+    String convertTxt;
+    if (date != "null") {
+      print("ช่องว่าง ${date.split(' ').length}");
+      if (date.split(' ').length > 5) {
+        convertTxt =
+        "${date.split(' ')[0]} ${AppLocalizations.of(context).translate("day")} "
+            "${date.split(' ')[2]} ${AppLocalizations.of(context).translate("hour")}"
+            " ${date.split(' ')[4]} ${AppLocalizations.of(context).translate("minute")}";
+      }else if (date.split(' ').length > 4  ) {
+        convertTxt =
+        "${date.split(' ')[0]} ${AppLocalizations.of(context).translate("day")} "
+            "${date.split(' ')[2]} ${AppLocalizations.of(context).translate("hour")}";
+      } else {
+        if (date.contains("Day")) {
+          convertTxt = "${date.split(' ')[0]} ${AppLocalizations.of(context).translate("day")}";
+        } else {
+          convertTxt = "${date.split(' ')[0]} ${AppLocalizations.of(context).translate("hour")}";
+        }
+      }
+    } else {
+      convertTxt = "0 ${AppLocalizations.of(context).translate("day")}";
+    }
+
+    return convertTxt;
+  }
+
+  Widget ListReport(String title, String subtitle, String leading) => Card(
+    elevation: 5,
+    child: ListTile(
+      title: Text(title),
+      subtitle:  Text(subtitle),
+      leading: Image.asset(leading),
+    ),
+  );
+
   Widget buildStepIndicator(
       String leavType, String leavStatus, String review, String approve) {
-    if (leavType == "11") {
-      nbStape = 4;
-    } else {
+
       nbStape = 3;
-    }
+
     print("ประเภท:$leavType");
     print("สเตตัสอนุมัติ:$leavStatus");
 
@@ -240,84 +382,55 @@ class _BodyApproveState extends State<BodyApprove> {
           height: 5,
         ),
         StepsIndicator(
-          doneLineThickness: 4,
+          doneLineThickness: 3,
           enableLineAnimation: true,
           enableStepAnimation: true,
           selectedStep: StepValude(leavType, leavStatus),
-          lineLength: nbStape == 4
+          lineLength: nbStape == 3
               ? getProportionateScreenWidth(55.0)
               : getProportionateScreenWidth(75),
           nbSteps: nbStape!,
         ),
-        nbStape == 4
-            ? Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const SizedBox(
-                    width: 5,
-                  ),
-                  Text(AppLocalizations.of(context).translate('review'),
-                      style: TextStyle(
-                          fontSize: getProportionateScreenWidth(12.0),
-                          fontWeight: FontWeight.bold)),
-                  Text(AppLocalizations.of(context).translate('approve'),
-                      style: TextStyle(
-                          fontSize: getProportionateScreenWidth(12.0),
-                          fontWeight: FontWeight.bold)),
-                  Text(AppLocalizations.of(context).translate('doctor'),
-                      style: TextStyle(
-                          fontSize: getProportionateScreenWidth(12.0),
-                          fontWeight: FontWeight.bold)),
-                  Text(AppLocalizations.of(context).translate('finish'),
-                      style: TextStyle(
-                          fontSize: getProportionateScreenWidth(12.0),
-                          fontWeight: FontWeight.bold)),
-                  SizedBox(
-                    height: getProportionateScreenHeight(10.0),
-                  )
-                ],
-              )
-            : Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const SizedBox(
-                    width: 5,
-                  ),
-                  Column(
-                    children: [
-                      Text(AppLocalizations.of(context).translate('review'),
-                          style: TextStyle(
-                              fontSize: getProportionateScreenWidth(12.0),
-                              fontWeight: FontWeight.bold)),
-                      Text(review,
-                          style: TextStyle(
-                              fontSize: getProportionateScreenWidth(12.0),
-                              fontWeight: FontWeight.bold)),
-                    ],
-                  ),
-                  Column(
-                    children: [
-                      Text(AppLocalizations.of(context).translate('approve'),
-                          style: TextStyle(
-                              fontSize: getProportionateScreenWidth(12.0),
-                              fontWeight: FontWeight.bold)),
-                      Text(approve,
-                          style: TextStyle(
-                              fontSize: getProportionateScreenWidth(12.0),
-                              fontWeight: FontWeight.bold)),
-                    ],
-                  ),
-                  Text(AppLocalizations.of(context).translate('finish'),
-                      style: TextStyle(
-                          fontSize: getProportionateScreenWidth(12.0),
-                          fontWeight: FontWeight.bold)),
-                  SizedBox(
-                    height: getProportionateScreenWidth(10.0),
-                  )
-                ],
-              )
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const SizedBox(
+              width: 5,
+            ),
+            Column(
+              children: [
+                Text(AppLocalizations.of(context).translate('review'),
+                    style: TextStyle(
+                        fontSize: getProportionateScreenWidth(12.0),
+                        fontWeight: FontWeight.bold)),
+                Text(review,
+                    style: TextStyle(
+                        fontSize: getProportionateScreenWidth(12.0),
+                        fontWeight: FontWeight.bold)),
+              ],
+            ),
+            Column(
+              children: [
+                Text(AppLocalizations.of(context).translate('approve'),
+                    style: TextStyle(
+                        fontSize: getProportionateScreenWidth(12.0),
+                        fontWeight: FontWeight.bold)),
+                Text(approve,
+                    style: TextStyle(
+                        fontSize: getProportionateScreenWidth(12.0),
+                        fontWeight: FontWeight.bold)),
+              ],
+            ),
+            Text(AppLocalizations.of(context).translate('finish'),
+                style: TextStyle(
+                    fontSize: getProportionateScreenWidth(12.0),
+                    fontWeight: FontWeight.bold)),
+            SizedBox(
+              height: getProportionateScreenWidth(10.0),
+            )
+          ],
+        )
       ],
     );
   }
@@ -497,4 +610,5 @@ class _BodyApproveState extends State<BodyApprove> {
 
     return steValude;
   }
+
 }

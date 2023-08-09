@@ -1,4 +1,4 @@
-// ignore_for_file: avoid_print, must_be_immutable, non_constant_identifier_names, duplicate_ignore
+// ignore_for_file: avoid_print, must_be_immutable, non_constant_identifier_names, duplicate_ignore, use_build_context_synchronously, library_private_types_in_public_api
 
 import 'package:dio/dio.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -18,6 +18,8 @@ import 'package:sfiasset/screens/home/components/body_home_news.dart';
 import 'package:sfiasset/screens/home/publicize_screen/publicize_screen.dart';
 import 'package:sfiasset/screens/hr_team/hr_team_screen.dart';
 import 'package:sfiasset/screens/jobEntry/job_entry_screen.dart';
+import 'package:sfiasset/screens/sign_in/sign_in_screen.dart';
+import 'package:sfiasset/screens/splash_screen/splash_screen.dart';
 import 'package:sfiasset/screens/team/team_screen.dart';
 import 'package:sfiasset/screens/user_manual/user_manual_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -34,21 +36,23 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  static String? empCode, name, positionName, positionGroupCode;
+  static String? empCode, empCodeOrigin, name, positionName, positionGroupCode;
   // ignore: prefer_typing_uninitialized_variables
   var currentPage;
   GlobalKey globalKey = GlobalKey();
 
   String? token;
-  String _title = "หน้าแรก";
+  /*String _title = "หน้าแรก";
 
-  bool _homePage = true;
+  bool _homePage = true;*/
 
   List<Widget> listWidgets = [const BodyHomeNews(), const BodyHomeActivity()];
 
   var indexPage = 0;
 
   DateTime pre_backpress = DateTime.now();
+
+  String? versionInstore, versionInApp;
 
   @override
   void initState() {
@@ -79,87 +83,117 @@ class _HomeScreenState extends State<HomeScreen> {
                     decoration: const BoxDecoration(gradient: kBackgroundColor),
                     child: ListView(
                       children: <Widget>[
-                        CustomDrawerMenu(context, AppLocalizations.of(context).translate('home'), Icons.home, () {
-                          PageChang(const BodyHomeNews(), AppLocalizations.of(context).translate('home'));
-                          _homePage = true;
+                        CustomDrawerMenu(
+                            context,
+                            AppLocalizations.of(context).translate('home'),
+                            Icons.home, () {
+                          PageChang(const BodyHomeNews());
                         }),
                         CustomDrawerMenu(
-                            context, AppLocalizations.of(context).translate('empCard'), Icons.card_membership, () {
+                            context,
+                            AppLocalizations.of(context).translate('empCard'),
+                            Icons.card_membership, () {
                           Navigator.pop(context);
                           Navigator.pushNamed(context, EmpCardScreen.routName);
                           // PageChang(const BodyInformationEmp(),"บัตรพนักงาน");
-                          _homePage = false;
                         }),
                         CustomDrawerMenu(
-                            context, AppLocalizations.of(context).translate('businessCalendar'), Icons.calendar_month_outlined,
-                            () {
+                            context,
+                            AppLocalizations.of(context)
+                                .translate('businessCalendar'),
+                            Icons.calendar_month_outlined, () {
                           //PageChang(const BodyCalenda(),"ปฏิทินบริษัท");
                           Navigator.pop(context);
                           Navigator.pushNamed(
                               context, HolidayFactoryScreen.routName);
-                          _homePage = false;
                         }),
                         CustomDrawerMenu(
-                            context, AppLocalizations.of(context).translate('myTeam'), Icons.person_search_outlined, () {
+                            context,
+                            AppLocalizations.of(context).translate('myTeam'),
+                            Icons.person_search_outlined, () {
                           /*PageChang(const BodyPersonalDepartment(),"ทีมงาน");*/
                           Navigator.pop(context);
                           Navigator.pushNamed(context, TeamScreen.routName);
-                          _homePage = false;
                         }),
-                        CustomDrawerMenu(context, AppLocalizations.of(context).translate('holiday'), Icons.beach_access,
-                            () {
+                        CustomDrawerMenu(
+                            context,
+                            AppLocalizations.of(context).translate('holiday'),
+                            Icons.beach_access, () {
                           Navigator.pop(context);
                           Navigator.pushNamed(context, HolidayScreen.routName);
                         }),
                         CheckPosition(positionGroupCode.toString()) == true
                             ? CustomDrawerMenu(
-                                context, AppLocalizations.of(context).translate('Approval'), Icons.approval, () {
+                                context,
+                                AppLocalizations.of(context)
+                                    .translate('Approval'),
+                                Icons.approval, () {
                                 //PageChang(const BodyApprove(),"อนุมัติวันหยุด");
                                 Navigator.pop(context);
                                 Navigator.pushNamed(
                                     context, ApproveHolidayScreen.routName);
-                                _homePage = false;
                               })
                             : Container(),
                         CustomDrawerMenu(
-                            context, AppLocalizations.of(context).translate('userManual'), Icons.menu_book, () {
+                            context,
+                            AppLocalizations.of(context)
+                                .translate('userManual'),
+                            Icons.menu_book, () {
                           Navigator.pop(context);
                           Navigator.pushNamed(
                               context, UserManualScreen.routName);
-                          _homePage = false;
-                        }),
-                        CustomDrawerMenu(context, AppLocalizations.of(context).translate('Appeal'), Icons.create,
-                            () {
-                          Navigator.pop(context);
-                          Navigator.pushNamed(context, AppealScreen.routName);
-                          _homePage = false;
                         }),
                         CustomDrawerMenu(
-                            context, AppLocalizations.of(context).translate('job'), Icons.wc_sharp, () {
+                            context,
+                            AppLocalizations.of(context).translate('Appeal'),
+                            Icons.create, () {
+                          Navigator.pop(context);
+                          Navigator.pushNamed(context, AppealScreen.routName);
+                        }),
+                        CustomDrawerMenu(
+                            context,
+                            AppLocalizations.of(context).translate('job'),
+                            Icons.wc_sharp, () {
                           Navigator.pop(context);
                           Navigator.pushNamed(context, JobEntryScreen.routName);
                         }),
-                        CustomDrawerMenu(context, AppLocalizations.of(context).translate('hrContacts'),
-                            Icons.person_search_outlined, () {
+                        CustomDrawerMenu(
+                            context,
+                            AppLocalizations.of(context)
+                                .translate('newsHR'),
+                            Icons.newspaper, () {
                           Navigator.pop(context);
                           Navigator.pushNamed(context, HRTeamScreen.routName);
                         }),
-                        CustomDrawerMenu(context, AppLocalizations.of(context).translate('privatePolicy'),
+                        CustomDrawerMenu(
+                            context,
+                            AppLocalizations.of(context)
+                                .translate('privatePolicy'),
                             Icons.policy_rounded, () {
                           Navigator.pop(context);
-                          Navigator.pushNamed(context, PublicezeScreen.routName,
+                          /*Navigator.pushNamed(context, PublicezeScreen.routName,
                               arguments: {
                                 'id': '26',
                                 'webViewType': 'pdf',
                                 'publicizeDetail':
                                     'http://61.7.142.47:8880/sfiblog/upload/pdf/policy.pdf'
+                              });*/
+                          Navigator.pushNamed(context, PublicezeScreen.routName,
+                              arguments: {
+                                'id': '30',
+                                'webViewType': 'webview',
+                                'publicizeDetail': ''
                               });
                         }),
                         CustomDrawerMenu(
-                            context, AppLocalizations.of(context).translate('signOut'), Icons.exit_to_app, () {
+                            context,
+                            AppLocalizations.of(context).translate('signOut'),
+                            Icons.exit_to_app, () {
                           normalDialogYesNo(
-                              context, AppLocalizations.of(context).translate('signOut_Ask'));
-                          print('ออกจากระบบ');
+                              context,
+                              AppLocalizations.of(context)
+                                  .translate('signOut_Ask'));
+                          //print('ออกจากระบบ');
                         }),
                       ],
                     ),
@@ -254,66 +288,96 @@ class _HomeScreenState extends State<HomeScreen> {
             indexPage = value;
           });
         },
-        items: <BottomNavigationBarItem>[ButtomNavNews(context), ButtomNavActiviy(context)],
+        items: <BottomNavigationBarItem>[
+          ButtomNavNews(context),
+          ButtomNavActiviy(context)
+        ],
       );
 
   Future<void> getUserPeferent() async {
-    String url = "http://61.7.142.47:8086/sfi-hr/updateToken.php";
-
     SharedPreferences preferences = await SharedPreferences.getInstance();
     setState(() {
       name = preferences.getString("username");
       positionGroupCode = preferences.getString('positionGroup');
       positionName = preferences.getString("positionName");
-      empCode = preferences.getString('empcode')!.substring(0, 2) +
-          '-' +
-          preferences.getString('empcode')!.substring(2);
+      empCodeOrigin = preferences.getString("empcode");
+      empCode =
+          '${preferences.getString('empcode')!.substring(0, 2)}-${preferences.getString('empcode')!.substring(2)}';
+      versionInstore = preferences.getString("versionInStore"); //versionInStore
+      versionInApp = preferences.getString("versionInApp");//versionInApp
     });
 
-    await Firebase.initializeApp().whenComplete(() {
-      FirebaseMessaging.instance.getToken().then((value) async {
-        String? token = value;
-        //print("Token:>>>>>>>>>>>>>>>>>$token");
-        preferences.setString('token', token!);
+    //print("รหัสพนักงาน-------------------------> $empCodeOrigin");
+    String url = "http://61.7.142.47:8086/sfi-hr/updateToken.php";
+    String urlCheckResign =
+        "http://61.7.142.47:8086/sfi-hr/checkResign.php?empCode=$empCodeOrigin";
 
-        var formData = FormData.fromMap({
-          'empCode': empCode!.split('-')[0] + empCode!.split('-')[1],
-          'nAme': name,
-          'toKen': token
-        });
-        await Dio()
-            .post(url, data: formData)
-            .then((value) => print("อัพเด Token เรียบร้อย"));
+    if (int.parse(versionInstore!) > int.parse(versionInApp!)) {
+      print("มีการอัพเดทใหม่");
+      Navigator.pushNamedAndRemoveUntil(
+          context, SplashScreen.routName, (route) => false);
+    } else {
+      await Dio().get(urlCheckResign).then((value) async {
+        print("CheckResign.data>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>$value");
+        if (value.data == 'false') {
+          //ถ้าเป็น false แสดงว่าลาออกแล้ว
+          preferences.clear();
+          Navigator.pushNamedAndRemoveUntil(
+              context, SignInScreen.routName, (route) => false);
+          print("ลาออกแล้ว");
+        } else {
+          await Firebase.initializeApp().whenComplete(() async {
+            FirebaseMessaging.instance.getToken().then((value) async {
+              String? token = value;
+              print("Token:>>>>>>>>>>>>>>>>>$token");
+              preferences.setString('token', token!);
+
+              var formData = FormData.fromMap({
+                'empCode': empCode!.split('-')[0] + empCode!.split('-')[1],
+                'nAme': name,
+                'toKen': token
+              });
+
+              await Dio()
+                  .post(url, data: formData)
+                  .then((value) => print("อัพเด Token เรียบร้อย"));
+            });
+
+
+            await FirebaseMessaging.instance
+                .subscribeToTopic('allDevices')
+                .then((value) => print("สมัครรับข้อมูลเรียบร้อย"));
+
+            FirebaseMessaging.onMessageOpenedApp
+                .listen((RemoteMessage message) {
+              print('A new onMessageOpenedApp event was published!');
+              print('Message data: ${message.data}');
+              if (message.data['screen'] == 'approveLeave' ||
+                  message.data['screen'] == 'approveChange') {
+                Navigator.pushNamed(context, ApproveHolidayScreen.routName);
+              } else if (message.data['screen'] == 'activity') {
+                Navigator.pushNamed(context, HomeScreen.routName);
+              } else if (message.data['screen'] == 'publicize') {
+                Navigator.pushNamed(context, PublicezeScreen.routName,
+                    arguments: {
+                      'id': message.data['id'],
+                      'webViewType': message.data['webViewType'],
+                      'publicizeDetail': message.data['publicizeDetail']
+                    });
+              } else if (message.data['screen'] == 'leave_screen') {
+                Navigator.pop(context);
+                Navigator.pushNamed(context, HolidayScreen.routName);
+              }
+            });
+          });
+        }
       });
-    });
-    await FirebaseMessaging.instance
-        .subscribeToTopic('allDevices')
-        .then((value) => print("สมัครรับข้อมูลเรียบร้อย"));
-
-    FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
-      print('A new onMessageOpenedApp event was published!');
-      print('Message data: ${message.data}');
-      if (message.data['screen'] == 'approveLeave') {
-        Navigator.pushNamed(context, ApproveHolidayScreen.routName);
-      } else if (message.data['screen'] == 'activity') {
-        Navigator.pushNamed(context, HomeScreen.routName);
-      } else if (message.data['screen'] == 'publicize') {
-        Navigator.pushNamed(context, PublicezeScreen.routName, arguments: {
-          'id': message.data['id'],
-          'webViewType': message.data['webViewType'],
-          'publicizeDetail': message.data['publicizeDetail']
-        });
-      }else if (message.data['screen'] == 'leave_screen') {
-        Navigator.pop(context);
-        Navigator.pushNamed(context, HolidayScreen.routName);
-      }
-    });
+    }
   }
 
   // ignore: non_constant_identifier_names
-  void PageChang(Widget page, String title) {
+  void PageChang(Widget page) {
     setState(() {
-      _title = title;
       currentPage = page;
       Navigator.pop(context);
     });

@@ -135,7 +135,6 @@ class ButtomApproveLeav extends StatelessWidget {
           "?absenceDocument=$documentNo&statusApprove=${IntstatusLeaving.toString()}&empCode=$empcode&columeApprove=$columeApprove";
      try{
        Response response = await Dio().get(url);
-
        if(response.toString() == 'true'){
          print('อัพเดทข้อมูลสถานะลาเรียบร้อย');
          print('สถานะการอนุมัติ : $IntstatusLeaving');
@@ -151,7 +150,7 @@ class ButtomApproveLeav extends StatelessWidget {
 
 
 
-  Future<void> getApproveHoliday() async {
+  /*Future<void> getApproveHoliday() async {
 
     var provider = Provider.of<ApproveHolidayProvider>(context, listen: false);
     provider.removeLeavingCard();
@@ -202,11 +201,7 @@ class ButtomApproveLeav extends StatelessWidget {
 
     // ignore: empty_catches
     } catch (e) {}
-  }
-
-
-  
-  
+  }*/
 
 
 }

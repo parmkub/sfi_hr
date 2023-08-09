@@ -1,7 +1,3 @@
-import 'dart:async';
-import 'dart:convert';
-import 'dart:io';
-import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:sfiasset/app_localizations.dart';
@@ -64,7 +60,6 @@ const String kTransparentBackgroundPage = '''
 ''';
 
 class JobEntryScreen extends StatefulWidget {
-
   const JobEntryScreen({Key? key}) : super(key: key);
 
   static String routName = "/jobEntry_screen";
@@ -74,12 +69,11 @@ class JobEntryScreen extends StatefulWidget {
 }
 
 class _JobEntryState extends State<JobEntryScreen> {
- late final WebViewController _controller;
-  bool isLoading=true;
- var loadingPercentage = 0;
+  late final WebViewController _controller;
+  bool isLoading = true;
+  var loadingPercentage = 0;
 
-
- @override
+  @override
   void initState() {
     // TODO: implement initState
     super.initState();
@@ -128,37 +122,28 @@ class _JobEntryState extends State<JobEntryScreen> {
               .showSnackBar(SnackBar(content: Text(message.message)));
         },
       );
-
-
-
-
- }
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAppBarMenu(AppLocalizations.of(context)!.translate("job"),),
-      body:  Stack(
-        children: [
-         WebViewWidget(controller: _controller),
-         if (loadingPercentage < 100)
-           LinearProgressIndicator(value: loadingPercentage / 100),
-         loadingPercentage < 100
-             ? const Center(
-           child: Center(
-             child: CircularProgressIndicator(),
-           )
-         )
-             : Stack(),
-         /* isLoading ? Center(child: CircularProgressIndicator(),):
+        appBar: CustomAppBarMenu(
+          AppLocalizations.of(context)!.translate("job"),
+        ),
+        body: Stack(
+          children: [
+            WebViewWidget(controller: _controller),
+            if (loadingPercentage < 100)
+              LinearProgressIndicator(value: loadingPercentage / 100),
+            loadingPercentage < 100
+                ? const Center(
+                    child: Center(
+                    child: CircularProgressIndicator(),
+                  ))
+                : Stack(),
+            /* isLoading ? Center(child: CircularProgressIndicator(),):
               Stack(),*/
-        ],
-      )
-
-    );
-
+          ],
+        ));
   }
-
 }
-
-

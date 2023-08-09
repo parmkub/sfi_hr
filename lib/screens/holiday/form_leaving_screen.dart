@@ -1,4 +1,4 @@
-// ignore_for_file: avoid_print, non_constant_identifier_names, empty_catches, unnecessary_string_interpolations
+// ignore_for_file: avoid_print, non_constant_identifier_names, empty_catches, unnecessary_string_interpolations, prefer_typing_uninitialized_variables, duplicate_ignore, use_build_context_synchronously, prefer_interpolation_to_compose_strings, unnecessary_cast
 
 import 'dart:convert';
 import 'dart:math';
@@ -13,7 +13,6 @@ import 'package:sfiasset/components/default_buttom.dart';
 import 'package:sfiasset/components/normal_dialog.dart';
 import 'package:sfiasset/constans.dart';
 import 'package:sfiasset/model/leaving_card.dart';
-import 'package:sfiasset/model/total_pakron_model.dart';
 import 'package:sfiasset/providers/leaving_provider.dart';
 import 'package:sfiasset/size_config.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -54,17 +53,18 @@ class _FormLeavingScreenState extends State<FormLeavingScreen> {
   var bossName;
 
   bool pass = true;
+  double halfHour = 0.0;
 
 
   String CodeToString(BuildContext context,String title)  {
-    String _resual = "";
+    String resual = "";
     Map<String, String> codeToString = {
-      '02': AppLocalizations.of(context)!.translate('lagit'),
-      'AB': AppLocalizations.of(context)!.translate('lagitDiscount'),
-      '11': AppLocalizations.of(context)!.translate('sick'),
-      '14': AppLocalizations.of(context)!.translate('lakron'),
-      '12': AppLocalizations.of(context)!.translate('accident'),
-      '29': AppLocalizations.of(context)!.translate('lapukron'),
+      '02': AppLocalizations.of(context).translate('lagit'),
+      'AB': AppLocalizations.of(context).translate('lagitDiscount'),
+      '11': AppLocalizations.of(context).translate('sick'),
+      '14': AppLocalizations.of(context).translate('lakron'),
+      '12': AppLocalizations.of(context).translate('accident'),
+      '29': AppLocalizations.of(context).translate('lapukron'),
 
    /*   '02': AppLocalizations.of(context).translate('lagit'),
       'AB': 'ลากิจหักตังค์',
@@ -73,9 +73,9 @@ class _FormLeavingScreenState extends State<FormLeavingScreen> {
       '14': 'ลาคลอด',
       '12': 'ลาเนื่องจากอุบัติเหตุ'*/
     };
-    _resual = codeToString[title].toString();
+    resual = codeToString[title].toString();
 
-    return _resual;
+    return resual;
   }
 
   Map<String, String> codeToString = {
@@ -94,8 +94,9 @@ class _FormLeavingScreenState extends State<FormLeavingScreen> {
     '12': 'ลาเนื่องจากอุบัติเหตุ'
   };
 
-  int? _fullDay = 1, _hour = 0;
-  final int? _statusApprove = 0;
+  int? _fullDay = 1;
+  double? _hour ;
+  final int _statusApprove = 0;
 
   String? _token;
 
@@ -119,7 +120,7 @@ class _FormLeavingScreenState extends State<FormLeavingScreen> {
     final Duration difference = dateRang.duration;
     return Scaffold(
       resizeToAvoidBottomInset: false, //ยกเลิก ลดขนาดหน้าจอเมื่อคียร์บอร์ดอัพ
-      appBar: CustomAppBarMenu(AppLocalizations.of(context)!.translate('writeLeaveDocument')),
+      appBar: CustomAppBarMenu(AppLocalizations.of(context).translate('writeLeaveDocument')),
       body: GestureDetector(
         onTap: () => FocusScope.of(context).requestFocus(FocusNode()),
         behavior: HitTestBehavior.opaque,
@@ -143,7 +144,7 @@ class _FormLeavingScreenState extends State<FormLeavingScreen> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: <Widget>[
-                            Text(AppLocalizations.of(context)!.translate('leaveDocument'),
+                            Text(AppLocalizations.of(context).translate('leaveDocument'),
                                 style: TextStyle(
                                     color: kTextColor,
                                     fontSize: getProportionateScreenWidth(12),
@@ -204,6 +205,30 @@ class _FormLeavingScreenState extends State<FormLeavingScreen> {
                               switch(_selectTypeLeav){
                                 case "02":
                                   //_leavingDtail = "ลากิจ";
+                                print("---->hour: $_hour");
+                                  _shoDialogDetail(
+                                      start,
+                                      end,
+                                      difference,
+                                      _dateTime,
+                                      _empCode,
+                                      _selectTypeLeav,
+                                      _fullDay,
+                                      _hour! ,
+                                      chooseLeaveingFormat);
+                                  break;
+                                case "11":
+                                  /*print("---->start: $start");
+                                  print("---->ent: $end");
+                                  print("---->difference: $difference");
+                                  print("---->dateTime: $_dateTime");
+                                  print("---->empCode: $_empCode");
+                                  print("---->selectTypeLeav: $_selectTypeLeav");
+                                  print("---->fullDay: $_fullDay");
+                                  print("---->hour: $_hour");
+                                  print("---->chooseLeaveingFormat: $chooseLeaveingFormat");
+                                  */
+
                                   _shoDialogDetail(
                                       start,
                                       end,
@@ -214,14 +239,18 @@ class _FormLeavingScreenState extends State<FormLeavingScreen> {
                                       _fullDay,
                                       _hour,
                                       chooseLeaveingFormat);
+                                  print('ลาป่วย5555');
                                   break;
+
                                 case "29":
                                   if(pass) {
+                                   // int hour = _hour!.toInt();
                                     print(
                                         'จำนวนชั่วโมงลาที่ใช่ไปแล้ว $useLeaved ชม');
                                     if (chooseLeaveingFormat == 1) {
+
                                       useLeaved =
-                                          useLeaved + _hour! + (_fullDay! * 8)!;
+                                          (useLeaved + _hour!.toInt() + (_fullDay! * 8)) as int;
                                       print(
                                           'จำนวนชั่วโมงที่ต้องการลารวม $useLeaved ชม');
                                     } else if (chooseLeaveingFormat == 2) {
@@ -296,10 +325,10 @@ class _FormLeavingScreenState extends State<FormLeavingScreen> {
 
   Future<void> getPakronTableMobile() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
-    String? _empCode = preferences.getString('empcode');
+    String? empCode = preferences.getString('empcode');
     //print('empcode : $_empCode');
     String url =
-        "http://61.7.142.47:8086/sfi-hr/select_leav_document.php?empcode=$_empCode";
+        "http://61.7.142.47:8086/sfi-hr/select_leav_document.php?empcode=$empCode";
     int day = 0;
     int hour = 0;
 
@@ -359,8 +388,9 @@ class _FormLeavingScreenState extends State<FormLeavingScreen> {
       String? empCode,
       String? selectTypeLeav,
       int? fullDay,
-      int? hour,
+      double? hour,
       int StatusShow) async {
+
     return showDialog(
         context: context,
         builder: (BuildContext context) {
@@ -567,7 +597,13 @@ class _FormLeavingScreenState extends State<FormLeavingScreen> {
     );
   }
 
-  ListBody ReportAlertOne(String dateTime, int? fullDay, int? hour) {
+  ListBody ReportAlertOne(String dateTime, int? fullDay, double? hour) {
+    //print(">>>>>>>hour $hour");
+    if(hour! < 1.0){
+      halfHour = 0.5;
+    }else{
+      halfHour = hour;
+    }
     return ListBody(
       children: <Widget>[
         ListTile(
@@ -623,7 +659,7 @@ class _FormLeavingScreenState extends State<FormLeavingScreen> {
             : ListTile(
                 title: SizedBox(
                     child: Text(
-                  "$hour ${AppLocalizations.of(context).translate('hour')}",
+                       "$halfHour ${AppLocalizations.of(context).translate('hour')}",
                   style: TextStyle(
                       color: kTextColor,
                       fontSize: getProportionateScreenWidth(12)),
@@ -814,10 +850,10 @@ class _FormLeavingScreenState extends State<FormLeavingScreen> {
 
   String getRandString() {
     var r = Random();
-    const _chars =
+    const chars =
         'AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz1234567890';
     String randomString =
-        List.generate(6, (index) => _chars[r.nextInt(_chars.length)]).join();
+        List.generate(6, (index) => chars[r.nextInt(chars.length)]).join();
     // String randomString =
     //     String.fromCharCodes(List.generate(16, (index) => r.nextInt(33) + 89));
     return randomString;
@@ -844,6 +880,13 @@ class _FormLeavingScreenState extends State<FormLeavingScreen> {
     String? diviCode = prefs.getString('divicode');
     String? sectCode = prefs.getString('sectcode');
     String? name = prefs.getString('name');
+    String? positionGroup = prefs.getString('positiongroup');
+
+    if(positionGroup == '042'){
+      diviCode = '0';
+    }else if(positionGroup == '032') {
+      sectCode = '0';
+    }
 
     String url = "http://61.7.142.47:8086/sfi-hr/getTokenBoss.php";
     var formData = FormData.fromMap({
@@ -860,16 +903,16 @@ class _FormLeavingScreenState extends State<FormLeavingScreen> {
         print(result[i]['TOKEN']);*/
         bossName = result[i]['NAME'];
         var formDataNoti = FormData.fromMap({
-          'title': 'แจ้งลาของ ${name}',
+          'title': 'แจ้งลาของ $name',
           'token': result[i]['TOKEN'],
-          'message': 'ขออนุมัติลา ${name}',
+          'message': 'ขออนุมัติลา $name',
           'screen': 'approveLeave',
         });
-        await Future.delayed(Duration(seconds: 3),(){
+        await Future.delayed(const Duration(seconds: 3),(){
           Dio().post(url, data: formDataNoti).then((value) {
             var result = jsonDecode(value.data);
             if (result['success'] == 1) {
-              print('ส่งแจ้งเตือนให้หัวหน้า ${bossName} ได้');
+              print('ส่งแจ้งเตือนให้หัวหน้า $bossName ได้');
             } else {
               print('ไม่สามารถส่งแจ้งเตือนได้');
             }
@@ -950,10 +993,10 @@ class _FormLeavingScreenState extends State<FormLeavingScreen> {
     var provider = Provider.of<LeavingProvider>(context, listen: false);
     provider.removeLeavingCard();
     SharedPreferences preferences = await SharedPreferences.getInstance();
-    String? _empCode = preferences.getString('empcode');
+    String? empCode = preferences.getString('empcode');
 
     String url =
-        "http://61.7.142.47:8086/sfi-hr/select_leav_document.php?empcode=$_empCode";
+        "http://61.7.142.47:8086/sfi-hr/select_leav_document.php?empcode=$empCode";
     Response response = await Dio().get(url);
     try {
       var result = jsonDecode(response.data);
@@ -1005,7 +1048,7 @@ class _FormLeavingScreenState extends State<FormLeavingScreen> {
                           setState(() {
                             _character = valude;
                             _fullDay = 1;
-                            _hour = 0;
+                            _hour = 0.0;
                             print("เลือก: $_character");
                           });
                         },
@@ -1028,7 +1071,7 @@ class _FormLeavingScreenState extends State<FormLeavingScreen> {
                               setState(() {
                                 _character = valude;
                                 _fullDay = 0;
-                                _hour = 4;
+                                _hour = 4.0;
                                 print("เลือก: $_character");
                               });
                             },
@@ -1242,21 +1285,22 @@ class _FormLeavingScreenState extends State<FormLeavingScreen> {
             decoration: const InputDecoration(),
             value: _selectTypeLeav,
             isExpanded: true,
+            dropdownColor: const Color.fromRGBO(245,245, 220, 1),
             items: [
               DropdownMenuItem(
                 value: "02",
                 child: Text(
                   AppLocalizations.of(context).translate('lagit'),
                   style: TextStyle(
-                      fontSize: getProportionateScreenWidth(12),
+                      fontSize: getProportionateScreenWidth(14),
                       color: kTextColor),
                 ),
               ),
-              /*DropdownMenuItem(
+             /* DropdownMenuItem(
                 value: "11",
                 child: Text(
-                  "ลาป่วย",
-                  style: TextStyle(fontSize: 14, color: kTextColor),
+                  AppLocalizations.of(context).translate('sick'),
+                  style: TextStyle(fontSize: getProportionateScreenWidth(14), color: kTextColor),
                 ),
               ),*/
               DropdownMenuItem(
@@ -1264,7 +1308,7 @@ class _FormLeavingScreenState extends State<FormLeavingScreen> {
                 child: Text(
                   AppLocalizations.of(context).translate('lapukron'),
                   style: TextStyle(
-                      fontSize: getProportionateScreenWidth(12),
+                      fontSize: getProportionateScreenWidth(14),
                       color: kTextColor),
                 ),
               ),
@@ -1298,7 +1342,7 @@ class _FormLeavingScreenState extends State<FormLeavingScreen> {
                 _hour = 4;
               }
 
-              print("ประเภทการลา:" + _selectTypeLeav!);
+              print("ประเภทการลา:${_selectTypeLeav!}");
               print('รายละเอียดการลา:$_leavingDtail');
             }),
           ),
@@ -1327,6 +1371,15 @@ class _FormLeavingScreenState extends State<FormLeavingScreen> {
             value: _selectHour,
             isExpanded: true,
             items: [
+              DropdownMenuItem(
+                value: "0.3",
+                child: Text(
+                  "30 ${AppLocalizations.of(context).translate('minute')}",
+                  style: TextStyle(
+                      fontSize: getProportionateScreenWidth(12),
+                      color: kTextColor),
+                ),
+              ),
               DropdownMenuItem(
                 value: "1",
                 child: Text(
@@ -1393,8 +1446,8 @@ class _FormLeavingScreenState extends State<FormLeavingScreen> {
             ],
             onChanged: (val) => setState(() {
               _selectHour = val!;
-              _hour = int.parse(_selectHour);
-              print("searchSource:" + _selectHour!);
+              _hour = double.parse(_selectHour);
+              print("จำนวนชั่วโมงที่เลือก:" + _selectHour!);
             }),
           ),
         ),

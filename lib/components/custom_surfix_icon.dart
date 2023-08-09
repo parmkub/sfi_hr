@@ -18,13 +18,13 @@ class CustomSurfixIcon extends StatelessWidget {
       child: Padding(
         padding: EdgeInsets.fromLTRB(
           0,
-          getProportionateScreenWidth(20),
-          getProportionateScreenWidth(20),
-          getProportionateScreenWidth(20),
+          getProportionateScreenWidth(14),
+          getProportionateScreenWidth(14),
+          getProportionateScreenWidth(14),
         ),
         child: SvgPicture.asset(
           svgIcon,
-          height: getProportionateScreenWidth(16),
+          height: getProportionateScreenWidth(12),
         ),
       ),
     );

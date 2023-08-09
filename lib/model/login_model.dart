@@ -8,6 +8,7 @@ class LoginModel {
   String? sECTCODE;
   String? dIVICODE;
   String? dEPARTCODE;
+  String? pASSWORDAUTHEN;
 
   LoginModel(
       { required this.uSERID,
@@ -18,7 +19,8 @@ class LoginModel {
         required this.pOSITIONFGROUPNAME,
         required this.sECTCODE,
         required this.dEPARTCODE,
-        required this.dIVICODE});
+        required this.dIVICODE,
+        required this.pASSWORDAUTHEN});
 
   LoginModel.fromJson(Map<String, dynamic> json) {
     uSERID = json['USERID'];
@@ -30,6 +32,7 @@ class LoginModel {
     sECTCODE = json['SECTCODE'];
     dIVICODE = json['DIVICODE'];
     dEPARTCODE = json['DEPARTCODE'];
+    pASSWORDAUTHEN = json['PASS_AUTHEN'];
   }
 
   Map<String, dynamic> toJson() {
@@ -43,6 +46,7 @@ class LoginModel {
     data['SECTCODE']=this.sECTCODE;
     data['DIVICODE'] = this.dIVICODE;
     data['dEPARTCODE'] = this.dEPARTCODE;
+    data['PASSWORDAUTHEN'] = this.pASSWORDAUTHEN;
     return data;
   }
 }

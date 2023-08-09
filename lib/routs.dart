@@ -13,6 +13,9 @@ import 'package:sfiasset/screens/home/home_screen.dart';
 import 'package:sfiasset/screens/home/publicize_screen/publicize_screen.dart';
 import 'package:sfiasset/screens/hr_team/hr_team_screen.dart';
 import 'package:sfiasset/screens/jobEntry/job_entry_screen.dart';
+import 'package:sfiasset/screens/policy/policy_screen.dart';
+import 'package:sfiasset/screens/registor_screen/check_user_screen.dart';
+import 'package:sfiasset/screens/registor_screen/registor_screen.dart';
 import 'package:sfiasset/screens/sign_in/sign_in_screen.dart';
 import 'package:sfiasset/screens/splash_screen/splash_screen.dart';
 import 'package:sfiasset/screens/team/team_screen.dart';
@@ -27,7 +30,7 @@ final Map<String, WidgetBuilder> routs = {
   SplashScreen.routName : (context)=>const SplashScreen(),
   SignInScreen.routName : (context)=>const SignInScreen(),
   HomeScreen.routName : (context)=>const HomeScreen(),
-  HolidayScreen.routName : (context)=> const HolidayScreen(),
+  HolidayScreen.routName : (context)=>  HolidayScreen(indexPage: 0,),
   JobEntryScreen.routName : (context)=> const JobEntryScreen(),
   FormLeavingScreen.routName : (context)=> const FormLeavingScreen(),
   EmpCardScreen.routName : (context)=> const EmpCardScreen(),
@@ -41,5 +44,8 @@ final Map<String, WidgetBuilder> routs = {
   TeamStatics.routName : (context)=>   TeamStatics(teamModel: ModalRoute.of(context)!.settings.arguments as TeamModel),
   AppealScreen.routName : (context)=> const AppealScreen(),
   ConnectLossScreen.routName : (context)=> const ConnectLossScreen(),
+  RegistorScreen.routName : (context)=>   const RegistorScreen(username: '',empCode: '',name: '',),
+  CheckUserSceen.routName : (context)=> const CheckUserSceen(),
+  PolicyScreen.routName : (context)=> const PolicyScreen(),
   // FixScreen.routName : (context)=>FixScreen(),
 };

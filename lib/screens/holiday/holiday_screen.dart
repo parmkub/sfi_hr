@@ -9,6 +9,7 @@ import 'package:sfiasset/model/approve_holiday_model.dart';
 import 'package:sfiasset/model/leaving_card.dart';
 import 'package:sfiasset/providers/approve_holiday_provider.dart';
 import 'package:sfiasset/providers/leaving_provider.dart';
+import 'package:sfiasset/screens/holiday/components/body_holiday_change.dart';
 import 'package:sfiasset/screens/holiday/components/body_holiday_statistics.dart';
 import 'package:sfiasset/screens/holiday/form_leaving_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -18,7 +19,8 @@ import 'components/body_holiday_leaving.dart';
 import 'components/bottom_navigation.dart';
 
 class HolidayScreen extends StatefulWidget {
-  const HolidayScreen({Key? key}) : super(key: key);
+  final int indexPage;
+  const HolidayScreen({Key? key, required this.indexPage}) : super(key: key);
 
   static String routName = "/holiday_screen";
   @override
@@ -26,20 +28,22 @@ class HolidayScreen extends StatefulWidget {
 }
 
 class _HolidayScreenState extends State<HolidayScreen> {
+
   List<LeavingCard> LeavingModels = [];
   List<Widget> listWidgets = [
     BodyHolidayLeaving(), //บันทึกวันลา
+    BodyHolidayChange(), //บันทึกการเปลี่ยนวันลา
     BodyHoliday(), //สถิติ
     BodyHolidayCalendar(), //ปฏิทิน
   ];
   int indexPage = 0;
-
   bool statusData = true;
 
   var countPaKron = 0;
 
   @override
   void initState() {
+    indexPage = widget.indexPage;
     getPossitionGroup();
     getLeavingCard();
     super.initState();
@@ -51,21 +55,30 @@ class _HolidayScreenState extends State<HolidayScreen> {
       appBar: CustomAppBarMenu(AppLocalizations.of(context).translate('holiday')),
       body: listWidgets[indexPage],
       bottomNavigationBar: showBottomNavigationBar(),
-      floatingActionButton: indexPage != 0 || statusData
+      floatingActionButton: indexPage > 1 || statusData
           ? const SizedBox()
           : FloatingActionButton(
               backgroundColor: kPrimaryColor,
               hoverColor: kSecondaryColor,
               child: const Icon(Icons.add),
               onPressed: () {
-                Navigator.pushNamed(context, FormLeavingScreen.routName);
+                if(indexPage == 0){
+                  Navigator.pushNamed(context, FormLeavingScreen.routName);
+                }else{
+                  setState(() {
+                    indexPage = 3 ;
+                  });
+                }
+
               },
             ),
     );
   }
 
   BottomNavigationBar showBottomNavigationBar() => BottomNavigationBar(
+
         currentIndex: indexPage,
+        type: BottomNavigationBarType.fixed,
         onTap: (value) {
           setState(() {
             indexPage = value;
@@ -73,6 +86,7 @@ class _HolidayScreenState extends State<HolidayScreen> {
         },
         items: <BottomNavigationBarItem>[
           ButtomNavWritLeaving(context),
+          ButtomNavWritHolidayChange(context),
           ButtomNavHoliday(context),
           ButtomNavCalendarHoliday(context),
         ],

@@ -1,6 +1,5 @@
-// ignore_for_file: avoid_print, use_build_context_synchronously
+// ignore_for_file: avoid_print, use_build_context_synchronously, library_private_types_in_public_api
 
-import 'dart:convert';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
@@ -26,8 +25,8 @@ class Body extends StatefulWidget {
 class _BodyState extends State<Body> {
   // ignore: prefer_final_fields
   GlobalKey<ScaffoldState> _scaffoldKey =  GlobalKey();
-  String version = '';
-  int? newVersionCode, simpleVersionCode;
+  String version = '10.0';
+  int newVersionCode = 0, simpleVersionCode = 0;
 
   int currentPage = 0;
   String? empCode;
@@ -45,7 +44,6 @@ class _BodyState extends State<Body> {
     // TODO: implement initState
 
     checkVersionApp();
-    checkConnect();
     super.initState();
   }
 
@@ -70,20 +68,9 @@ class _BodyState extends State<Body> {
       SharedPreferences preferences = await SharedPreferences.getInstance();
       empCode = preferences.get('empcode') as String?;
       if (empCode!.isNotEmpty || empCode != null) {
-        String url =
-            "http://61.7.142.47:8086/sfi-hr/Athens.php?empcode=$empCode";
-        await Dio().get(url).then((value) async {
-          statusConnect = value.statusCode;
-
-          if (value.data == 'Null' || value.data == null) {
-            Navigator.pushNamedAndRemoveUntil(
-                context, SignInScreen.routName, (route) => false);
-          } else {
-            Navigator.pushNamedAndRemoveUntil(
-                context, HomeScreen.routName, (route) => false);
-          }
+        Navigator.pushNamedAndRemoveUntil(
+            context, HomeScreen.routName, (route) => false);
           /*debugPrint('value :==> ${value.data}');*/
-        });
       } else {
         Navigator.pushNamedAndRemoveUntil(
             context, SignInScreen.routName, (route) => false);
@@ -101,6 +88,7 @@ class _BodyState extends State<Body> {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
+      // ignore: unnecessary_null_comparison
       child: newVersionCode == null || simpleVersionCode == null? Center(child: showProgress(),): SizedBox(
         width: double.infinity,
         child: Column(
@@ -139,7 +127,7 @@ class _BodyState extends State<Body> {
                     const Spacer(
                       flex: 3,
                     ),
-                    newVersionCode! > simpleVersionCode!
+                    newVersionCode > simpleVersionCode
                         ? DefaultButton(
                             text: 'Update App Now',
                             press: () {
@@ -185,23 +173,28 @@ class _BodyState extends State<Body> {
 
   Future<void> checkVersionApp() async {
 
-
     await InAppUpdate.checkForUpdate().then((info) async {
       setState(() {
-        newVersionCode = int.parse(info.availableVersionCode.toString());
+        newVersionCode = int.parse(info.availableVersionCode.toString()); // version code in Google Play Store
         print('BuildNewVersionCode :==> $newVersionCode');
       });
-      await PackageInfo.fromPlatform().then((info) => {
+      await PackageInfo.fromPlatform().then((info) async {
+        SharedPreferences preferences = await SharedPreferences.getInstance();
+        preferences.setString('versionInStore', newVersionCode.toString());
+        preferences.setString('versionInApp', info.buildNumber.toString());
+
         setState(() {
           version = info.version;
-          simpleVersionCode = int.parse(info.buildNumber) ;
+          simpleVersionCode = int.parse(info.buildNumber) ;  // version code in build.gradle
           print('version :==> $version');
           print('BuildSimpleVersionCode :==> $simpleVersionCode');
 
-          if(newVersionCode! > simpleVersionCode!){
+          if(newVersionCode > simpleVersionCode){
             InAppUpdate.performImmediateUpdate();
+          }else{
+            checkConnect();
           }
-        }),
+        });
       });
       // ignore: argument_type_not_assignable_to_error_handler
     }).catchError((){

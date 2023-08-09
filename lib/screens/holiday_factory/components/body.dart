@@ -9,7 +9,6 @@ import 'package:sfiasset/screens/home/components/mark_color_calendar.dart';
 import 'package:sfiasset/size_config.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
 
-
 class Body extends StatefulWidget {
   const Body({Key? key}) : super(key: key);
 
@@ -36,56 +35,64 @@ class _BodyState extends State<Body> {
 
   @override
   Widget build(BuildContext context) {
-    return statusLoad ? Card(
-      elevation: 20,
-      margin: const EdgeInsets.all(10),
-      child: Column(children: [
-
-        SizedBox(
-          height: getProportionateScreenHeight(650),
-          child: SfCalendar(
-            view: CalendarView.month,
-            // bool showNavigationArrow = false,   bool showDatePickerButton = false,
-            showNavigationArrow: true,
-            showDatePickerButton: true,
-            dataSource: HolidayDataSource(calendarToDay),
-            monthViewSettings: MonthViewSettings(
-              appointmentDisplayMode: MonthAppointmentDisplayMode.appointment,
-                showAgenda: true,
-                agendaStyle: AgendaStyle(
-                  backgroundColor: Colors.white,
-                  dateTextStyle: TextStyle(
-                      color: Colors.black54,
-                      fontSize: getProportionateScreenWidth(12.0)),
-                  appointmentTextStyle: TextStyle(
-                      color: Colors.black,
-                      fontSize: getProportionateScreenWidth(12.0)),
-                  dayTextStyle: TextStyle(
-                      color: Colors.black,
-                      fontSize: getProportionateScreenWidth(14.0)),
+    return statusLoad
+        ? Card(
+            elevation: 20,
+            margin: const EdgeInsets.all(10),
+            child: Column(children: [
+              SizedBox(
+                height: getProportionateScreenHeight(650),
+                child: SfCalendar(
+                  view: CalendarView.month,
+                  // bool showNavigationArrow = false,   bool showDatePickerButton = false,
+                  showNavigationArrow: true,
+                  showDatePickerButton: true,
+                  dataSource: HolidayDataSource(calendarToDay),
+                  monthViewSettings: MonthViewSettings(
+                    appointmentDisplayMode:
+                        MonthAppointmentDisplayMode.appointment,
+                    showAgenda: true,
+                    agendaStyle: AgendaStyle(
+                      backgroundColor: Colors.white,
+                      dateTextStyle: TextStyle(
+                          color: Colors.black54,
+                          fontSize: getProportionateScreenWidth(12.0)),
+                      appointmentTextStyle: TextStyle(
+                          color: Colors.black,
+                          fontSize: getProportionateScreenWidth(12.0)),
+                      dayTextStyle: TextStyle(
+                          color: Colors.black,
+                          fontSize: getProportionateScreenWidth(14.0)),
+                    ),
+                    monthCellStyle: MonthCellStyle(
+                      backgroundColor: Colors.white,
+                      trailingDatesBackgroundColor: Colors.white10,
+                      leadingDatesBackgroundColor: Colors.white10,
+                      todayBackgroundColor: Colors.blue,
+                      textStyle: TextStyle(
+                          color: Colors.black,
+                          fontSize: getProportionateScreenWidth(12.0)),
+                    ),
+                    numberOfWeeksInView: 6,
+                  ),
                 ),
-                monthCellStyle: MonthCellStyle(
-                  backgroundColor: Colors.white,
-                  trailingDatesBackgroundColor: Colors.white10,
-                  leadingDatesBackgroundColor: Colors.white10,
-                  todayBackgroundColor: Colors.blue,
-                  textStyle: TextStyle(
-                      color: Colors.black,
-                      fontSize: getProportionateScreenWidth(12.0)),
-                ),
-                numberOfWeeksInView: 6,
-                ),
-          ),
-        ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children:  [
-            MarkColorCalendar(color: 0xFF40E0D0, nameColor: AppLocalizations.of(context).translate('holiday')),
-            MarkColorCalendar(color: 0xFFFFFF66, nameColor: AppLocalizations.of(context).translate('activity')),
-          ],
-        )
-      ]),
-    ): const Center(child: CircularProgressIndicator());
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  MarkColorCalendar(
+                      color: 0xFF40E0D0,
+                      nameColor: AppLocalizations.of(context)
+                          .translate('holidayTraditional')),
+                  MarkColorCalendar(
+                      color: 0xFFFFFF66,
+                      nameColor:
+                          AppLocalizations.of(context).translate('activity')),
+                ],
+              )
+            ]),
+          )
+        : const Center(child: CircularProgressIndicator());
   }
 
   Future<void> _getDataSourceNew() async {
@@ -93,43 +100,44 @@ class _BodyState extends State<Body> {
     statusLoad = false;
     String url =
         'http://61.7.142.47:8086/sfi-hr/select_hr_calendar.php?location=chp';
-   await Dio().get(url).then((value) => {
-     if(value.statusCode == 200){
-       setState(() {
-         result = jsonDecode(value.data);
-         for (var map in result) {
-             CarlendarHrModel carlendarHrModel = CarlendarHrModel.fromJson(map);
-             calendarAll.add(carlendarHrModel);
-           numRow++;
-           if (numRow == result.length) {
-             for (int i = 0; i < result.length; i++) {
-               String year = today.toString().split("-")[0];
-               int dateFrom =
-               int.parse(calendarAll[i].sTARTDAY!.split("-")[0]);
-               int dateTo = int.parse(calendarAll[i].eNDDAY!.split("-")[0]);
-               int color = int.parse(calendarAll[i].cOLORTYPE!);
+    await Dio().get(url).then((value) => {
+          if (value.statusCode == 200)
+            {
+              setState(() {
+                result = jsonDecode(value.data);
+                for (var map in result) {
+                  CarlendarHrModel carlendarHrModel =
+                      CarlendarHrModel.fromJson(map);
+                  calendarAll.add(carlendarHrModel);
+                  numRow++;
+                  if (numRow == result.length) {
+                    for (int i = 0; i < result.length; i++) {
+                      String year = today.toString().split("-")[0];
+                      int dateFrom =
+                          int.parse(calendarAll[i].sTARTDAY!.split("-")[0]);
+                      int dateTo =
+                          int.parse(calendarAll[i].eNDDAY!.split("-")[0]);
+                      int color = int.parse(calendarAll[i].cOLORTYPE!);
 
-               String month = calendarAll[i].sTARTDAY!.split("-")[1];
-               String detail = calendarAll[i].dETAIL!;
+                      String month = ConverMountList(calendarAll[i].sTARTDAY!.split("-")[1]);
+                      String detail = calendarAll[i].dETAIL!;
 
-               calendarToDay.add(Holiday(
-                   DateTime(int.parse(year), int.parse(month), dateFrom),
-                   DateTime(int.parse(year), int.parse(month), dateTo),
-                   detail,
-                   Color(color),
-                   false));
-             }
-           }
-         }
-         statusLoad = true;
-       })
-     }else{
-       statusLoad = false
-     }
-   });
-
+                      calendarToDay.add(Holiday(
+                          DateTime(int.parse(year), int.parse(month), dateFrom),
+                          DateTime(int.parse(year), int.parse(month), dateTo),
+                          detail,
+                          Color(color),
+                          false));
+                    }
+                  }
+                }
+                statusLoad = true;
+              })
+            }
+          else
+            {statusLoad = false}
+        });
   }
-
 
   Future<void> _getDataSource() async {
     String url =
@@ -147,8 +155,7 @@ class _BodyState extends State<Body> {
         if (numRow == result.length) {
           for (int i = 0; i < result.length; i++) {
             String year = today.toString().split("-")[0];
-            int dateFrom =
-                int.parse(calendarAll[i].sTARTDAY!.split("-")[0]);
+            int dateFrom = int.parse(calendarAll[i].sTARTDAY!.split("-")[0]);
             int dateTo = int.parse(calendarAll[i].eNDDAY!.split("-")[0]);
             int color = int.parse(calendarAll[i].cOLORTYPE!);
 
@@ -167,5 +174,94 @@ class _BodyState extends State<Body> {
     } catch (e) {
       print(e);
     }
+  }
+
+  //List Map Data
+  String ConverMounthNew(String mount){
+    List<Map<String, String>> mounth = [{
+      'JAN':'01',
+      'FEB':'02',
+      'MAR':'03',
+      'APR':'04',
+      'MAY':'05',
+      'JUN':'06',
+      'JUL':'07',
+      'AUG':'08',
+      'SEP':'09',
+      'OCT':'10',
+      'NOV':'11',
+      'DEC':'12',
+    }];
+    String ConverMounth = '';
+    ConverMounth = mounth[0][mount]!;
+
+    return ConverMounth;
+  }
+
+
+  //Map Data
+  String ConverMountList(String mount){
+    String ConverMounth = '';
+     Map<String, String> data = {
+      'JAN':'01',
+      'FEB':'02',
+      'MAR':'03',
+      'APR':'04',
+      'MAY':'05',
+      'JUN':'06',
+      'JUL':'07',
+      'AUG':'08',
+      'SEP':'09',
+      'OCT':'10',
+      'NOV':'11',
+      'DEC':'12',
+    };
+    ConverMounth = data[mount]!;
+    return ConverMounth;
+  }
+
+  String convertMonth(String month) {
+    String monthConvert = '';
+    switch (month) {
+      case 'JAN':
+        monthConvert = '01';
+        break;
+      case 'FEB':
+        monthConvert = '02';
+        break;
+      case 'MAR':
+        monthConvert = '03';
+        break;
+      case 'APR':
+        monthConvert = '04';
+        break;
+      case 'MAY':
+        monthConvert = '05';
+        break;
+      case 'JUN':
+        monthConvert = '06';
+        break;
+      case 'JUL':
+        monthConvert = '07';
+        break;
+      case 'AUG':
+        monthConvert = '08';
+        break;
+      case 'SEP':
+        monthConvert = '09';
+        break;
+      case 'OCT':
+        monthConvert = '10';
+        break;
+      case 'NOV':
+        monthConvert = '11';
+        break;
+      case 'DEC':
+        monthConvert = '12';
+        break;
+      default:
+        monthConvert = '01';
+    }
+    return monthConvert;
   }
 }

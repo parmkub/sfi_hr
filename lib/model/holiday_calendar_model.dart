@@ -6,6 +6,7 @@ class HolidayCalendar {
   String? aBSENCEHOUR;
   String? aBSENCECOMMENT;
   String? dELETEMARK;
+  String? mOVEFROMDATE;
 
   HolidayCalendar(
       {this.aBSENCEDATE,
@@ -14,7 +15,8 @@ class HolidayCalendar {
         this.aBSENCEDAY,
         this.aBSENCEHOUR,
         this.aBSENCECOMMENT,
-        this.dELETEMARK});
+        this.dELETEMARK,
+        this.mOVEFROMDATE});
 
   HolidayCalendar.fromJson(Map<String, dynamic> json) {
     aBSENCEDATE = json['ABSENCE_DATE'];
@@ -24,6 +26,7 @@ class HolidayCalendar {
     aBSENCEHOUR = json['ABSENCE_HOUR'];
     aBSENCECOMMENT = json['ABSENCE_COMMENT'];
     dELETEMARK = json['DELETE_MARK'];
+    mOVEFROMDATE = json['MOVE_FROM_DATE'];
   }
 
   Map<String, dynamic> toJson() {
@@ -35,6 +38,7 @@ class HolidayCalendar {
     data['ABSENCE_HOUR'] = aBSENCEHOUR;
     data['ABSENCE_COMMENT'] = aBSENCECOMMENT;
     data['DELETE_MARK'] = dELETEMARK;
+    data['MOVE_FROM_DATE'] = mOVEFROMDATE;
     return data;
   }
 }

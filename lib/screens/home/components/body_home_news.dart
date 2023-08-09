@@ -152,7 +152,7 @@ class _BodyHomeNewsState extends State<BodyHomeNews> {
                     CardMenu(context, Icons.beach_access, AppLocalizations.of(context).translate('holiday'), HolidayScreen.routName),
                     CardMenu(context, Icons.person_search_outlined, AppLocalizations.of(context).translate('myTeam'), TeamScreen.routName),
                     CardMenu(context, Icons.menu_book, AppLocalizations.of(context).translate('userManual'), UserManualScreen.routName),
-                    CardMenu(context, Icons.favorite, AppLocalizations.of(context).translate('hrContacts'), HRTeamScreen.routName),
+                    CardMenu(context, Icons.newspaper, AppLocalizations.of(context).translate('newsHR'), HRTeamScreen.routName),
                   ]),
                 ),
               ),

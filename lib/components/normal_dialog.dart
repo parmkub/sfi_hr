@@ -8,9 +8,9 @@ Future<void> normalDialog(BuildContext context, String message) async {
   showDialog(context: context, builder: (context)=>SimpleDialog(
     title: Text(message),
     children: <Widget>[
-      Row(
+      const Row(
         mainAxisAlignment: MainAxisAlignment.center,
-        children: const <Widget>[
+        children: <Widget>[
           Icon(
             Icons.question_answer_rounded,
             size: 50,
@@ -21,19 +21,11 @@ Future<void> normalDialog(BuildContext context, String message) async {
       Row(
         mainAxisAlignment: MainAxisAlignment.end,
         children: <Widget>[
-          // ignore: deprecated_member_use
-        /*  FlatButton(
-            onPressed: () => Navigator.pop(context),
-            child: const Text(
-              'OK',
-              style: TextStyle(fontSize: 18),
-            ),
-          )*/
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: const Text(
+            child:  Text(
               'OK',
-              style: TextStyle(fontSize: 18),
+              style: TextStyle(fontSize: getProportionateScreenWidth(18)),
             ),
           )
 
@@ -53,9 +45,9 @@ Future<void> normalDialogYesNo(BuildContext context, String message ) async {
         margin: const EdgeInsets.fromLTRB(10, 0, 10, 0),
         child:Column(
           children: [
-            Row(
+            const Row(
               mainAxisAlignment: MainAxisAlignment.center,
-              children: const <Widget>[
+              children: <Widget>[
                 Icon(
                     Icons.question_answer_outlined,
                     size: 50,
@@ -69,21 +61,14 @@ Future<void> normalDialogYesNo(BuildContext context, String message ) async {
               children: <Widget>[
                 Expanded(
                   child: Container(
+                    decoration: BoxDecoration(
+                      border: Border.all(color: Colors.green),
+                      borderRadius: BorderRadius.circular(20),
+                    ),
                     padding:const EdgeInsets.all(2),
-                    child: /*FlatButton(
-                      color: Colors.red,
-                      onPressed: (){
-                        SignOutProcess(context);
-                      }
-                      ,
-                      child:  Text(
-                        'ใช่',
-                        style: TextStyle(fontSize: getProportionateScreenWidth(16.0),color: Colors.white),
-                      ),
-                    ),*/
+                    child:
                     TextButton(
                       style: TextButton.styleFrom(
-                        backgroundColor: Colors.red,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(20),
                         ),
@@ -94,26 +79,23 @@ Future<void> normalDialogYesNo(BuildContext context, String message ) async {
                       ,
                       child:  Text(
                         AppLocalizations.of(context).translate('yes'),
-                        style: TextStyle(fontSize: getProportionateScreenWidth(16.0),color: Colors.white),
+                        style: TextStyle(fontSize: getProportionateScreenWidth(16.0),color: Colors.green),
                       ),
                     ),
                   ),),
+                SizedBox(width: getProportionateScreenWidth(10.0),),
                 // ignore: deprecated_member_use
 
                 Expanded(
                   child: Container(
+                    decoration: BoxDecoration(
+                      border: Border.all(color: Colors.red),
+                      borderRadius: BorderRadius.circular(20),
+                    ),
                     padding: const EdgeInsets.all(2),
-                    child: /*FlatButton(
-                      color: Colors.green,
-                      onPressed: ()=> Navigator.pop(context),
-                      child:  Text(
-                        'ไม่ใช่',
-                        style: TextStyle(fontSize: getProportionateScreenWidth(16.0),color: Colors.white),
-                      ),
-                    ),*/
+                    child:
                     TextButton(
                       style: TextButton.styleFrom(
-                        backgroundColor: Colors.green,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(20),
                         ),
@@ -121,7 +103,7 @@ Future<void> normalDialogYesNo(BuildContext context, String message ) async {
                       onPressed: ()=> Navigator.pop(context),
                       child:  Text(
                         AppLocalizations.of(context).translate('no'),
-                        style: TextStyle(fontSize: getProportionateScreenWidth(16.0),color: Colors.white),
+                        style: TextStyle(fontSize: getProportionateScreenWidth(16.0),color: Colors.red )
                       ),
                     ),
                   ),

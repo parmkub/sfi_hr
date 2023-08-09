@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:provider/provider.dart';
 import 'package:sfiasset/app_localizations.dart';
+import 'package:sfiasset/providers/approve_chang_holiday_provider.dart';
 import 'package:sfiasset/providers/approve_holiday_provider.dart';
 import 'package:sfiasset/providers/leaving_provider.dart';
 import 'package:sfiasset/routs.dart';
@@ -15,6 +16,9 @@ void main() {
     }),
     ChangeNotifierProvider(create: (context) {
       return ApproveHolidayProvider();
+    }),
+    ChangeNotifierProvider(create: (context){
+      return ApproveChangHolidayProvider();
     })
   ], child: const MyApp()));
 }

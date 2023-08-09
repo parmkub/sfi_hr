@@ -1,6 +1,7 @@
 // ignore_for_file: deprecated_member_use
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 import 'constans.dart';
 
@@ -41,13 +42,12 @@ AppBarTheme appBarTheme() {
   return const AppBarTheme(
     color: Color(0xFFFF1744),
     elevation: 0,
-    brightness: Brightness.light,
     iconTheme: IconThemeData(color: Colors.black),
-    textTheme: TextTheme(
+   /* textTheme: TextTheme(
       headline6: TextStyle(
         color: Color(0XFF8B8B8B),
         fontSize: 18.0,
       ),
-    ),
+    ),*/ systemOverlayStyle: SystemUiOverlayStyle.dark,
   );
 }

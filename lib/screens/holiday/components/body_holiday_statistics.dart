@@ -153,9 +153,19 @@ class _BodyHolidayState extends State<BodyHoliday> {
                 "${date.split(' ')[2]} ${AppLocalizations.of(context).translate("hour")}"
                   " ${date.split(' ')[4]} ${AppLocalizations.of(context).translate("minute")}";
       }else if (date.split(' ').length > 4  ) {
-        convertTxt =
-        "${date.split(' ')[0]} ${AppLocalizations.of(context).translate("day")} "
-            "${date.split(' ')[2]} ${AppLocalizations.of(context).translate("hour")}";
+        if(date.split(' ')[3] == "Mn") {
+          convertTxt =
+          "${date.split(' ')[0]} ${AppLocalizations.of(context).translate(
+              "day")} "
+              "${date.split(' ')[2]} ${AppLocalizations.of(context).translate(
+              "minute")}";
+        }else {
+          convertTxt =
+          "${date.split(' ')[0]} ${AppLocalizations.of(context).translate(
+              "day")} "
+              "${date.split(' ')[2]} ${AppLocalizations.of(context).translate(
+              "hour")}";
+        }
       } else {
         if (date.contains("Day")) {
           convertTxt = "${date.split(' ')[0]} ${AppLocalizations.of(context).translate("day")}";

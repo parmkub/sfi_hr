@@ -25,8 +25,11 @@ class MarkColorCalendar extends StatelessWidget {
               borderRadius: BorderRadius.circular(3),
             ),
           ),
-          const SizedBox(width: 5,),
-          Text(nameColor,style: TextStyle(fontSize: getProportionateScreenWidth(12)),),
+          const SizedBox(width: 10,),
+          Flexible(
+            child: Text(
+              nameColor,style: TextStyle(fontSize: getProportionateScreenWidth(12)),overflow: TextOverflow.clip,),)
+
         ],
       ),
     );

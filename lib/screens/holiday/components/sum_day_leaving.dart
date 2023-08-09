@@ -19,6 +19,7 @@ class SumLeavingDay extends StatelessWidget {
     return Text(
       '${AppLocalizations.of(context).translate('sumDay')}       : $_dayHour ',
       style: const TextStyle(
+          color: Colors.white,
           fontSize: 14.0,
           fontWeight: FontWeight.bold),
     );

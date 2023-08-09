@@ -181,13 +181,12 @@ class _BodyApproveState extends State<BodyApprove> {
               ],
             ),
           )
-        : Center(
+        : const Center(
             child: CircularProgressIndicator(),
           );
   }
 
-  Widget buildStepIndicator(
-      String leavType, String leavStatus, String review, String approve) {
+  Widget buildStepIndicator(String leavType, String leavStatus, String review, String approve) {
     if (leavType == "11") {
       nbStape = 4;
     } else {
@@ -297,7 +296,6 @@ class _BodyApproveState extends State<BodyApprove> {
     SharedPreferences preferences = await SharedPreferences.getInstance();
 
     //String? PositionGroupCode = preferences.getString('positionGroup');
-    String? DepartCode = preferences.getString('departcode');
     String? positionGroup = preferences.getString('positionGroup');
     print('positionGroup:>>>> $positionGroup'); //กรุ๊ปตำแหน่ง
 
@@ -349,11 +347,11 @@ class _BodyApproveState extends State<BodyApprove> {
 
   String? ConvertCodeLeaving(String date) {
     Map<String, String> dataMap = {
-      '02': AppLocalizations.of(context)!.translate('lagit'),
-      '11': AppLocalizations.of(context)!.translate('sick'),
-      '14': AppLocalizations.of(context)!.translate('lakron'),
-      '12': AppLocalizations.of(context)!.translate('accident'),
-      '29': AppLocalizations.of(context)!.translate('lapukron'),
+      '02': AppLocalizations.of(context).translate('lagit'),
+      '11': AppLocalizations.of(context).translate('sick'),
+      '14': AppLocalizations.of(context).translate('lakron'),
+      '12': AppLocalizations.of(context).translate('accident'),
+      '29': AppLocalizations.of(context).translate('lapukron'),
     };
     return dataMap[date];
   }
