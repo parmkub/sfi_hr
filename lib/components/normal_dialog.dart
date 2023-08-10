@@ -4,17 +4,17 @@ import 'package:sfiasset/components/sigout_process.dart';
 import 'package:sfiasset/constans.dart';
 import 'package:sfiasset/size_config.dart';
 
-Future<void> normalDialog(BuildContext context, String message) async {
+Future<void> normalDialog(BuildContext context, String message,IconData icon,Color color) async {
   showDialog(context: context, builder: (context)=>SimpleDialog(
     title: Text(message),
     children: <Widget>[
-      const Row(
+       Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
           Icon(
-            Icons.question_answer_rounded,
-            size: 50,
-            color: kPrimaryColor
+            icon,
+            size: getProportionateScreenWidth(50),
+            color: color
           )
         ],
       ),
@@ -24,8 +24,8 @@ Future<void> normalDialog(BuildContext context, String message) async {
           TextButton(
             onPressed: () => Navigator.pop(context),
             child:  Text(
-              'OK',
-              style: TextStyle(fontSize: getProportionateScreenWidth(18)),
+              AppLocalizations.of(context).translate('ok'),
+              style: TextStyle(fontSize: getProportionateScreenWidth(16),color: Colors.green),
             ),
           )
 

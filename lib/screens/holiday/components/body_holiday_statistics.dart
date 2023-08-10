@@ -72,62 +72,62 @@ class _BodyHolidayState extends State<BodyHoliday> {
                     CustomHolidayCard(
                         context,
                         AppLocalizations.of(context)!.translate('workDay'),
-                        ConverDate(holidayModels[0].wORKINGDAY.toString()),
+                        ConverDate(context, holidayModels[0].wORKINGDAY.toString()),
                         "assets/images/Working-bro.png",
                         () {}),
                     CustomHolidayCard(
                         context,
                         AppLocalizations.of(context)!.translate('lapukron'),
-                        "${ConverDate(holidayModels[0].pUKRONH.toString())}/${holidayModels[0].hOLIDAYTOTAL} ${AppLocalizations.of(context).translate('day')}",
+                        "${ConverDate(context, holidayModels[0].pUKRONH.toString(),)}/${holidayModels[0].hOLIDAYTOTAL} ${AppLocalizations.of(context).translate('day')}",
                         "assets/images/pakroh.png",
                         () {}),
                     CustomHolidayCard(
                         context,
                         AppLocalizations.of(context)!.translate('worklate'),
-                        "${ConverDate(holidayModels[0].sAI.toString())
+                        "${ConverDate(context, holidayModels[0].sAI.toString())
                                 .split(" ")[0]} ${AppLocalizations.of(context).translate('timeLate')}",
                         "assets/images/Deadline-pana.png",
                         () {}),
                     CustomHolidayCard(
                         context,
                         AppLocalizations.of(context)!.translate('lagit'),
-                        ConverDate(holidayModels[0].lAGITJAY.toString()),
+                        ConverDate(context, holidayModels[0].lAGITJAY.toString()),
                         "assets/images/lagit-jay.png",
                         () {}),
                     CustomHolidayCard(
                         context,
                         AppLocalizations.of(context)!.translate('lagitDiscount'),
-                        ConverDate(holidayModels[0].lAGITNOTJAY.toString()),
+                        ConverDate(context, holidayModels[0].lAGITNOTJAY.toString()),
                         "assets/images/lagit-njay.png",
                         () {}),
                     CustomHolidayCard(
                         context,
                         AppLocalizations.of(context)!.translate('sick'),
-                        ConverDate(holidayModels[0].lAPOUYJAY.toString()),
+                        ConverDate(context, holidayModels[0].lAPOUYJAY.toString()),
                         "assets/images/sick-jay.png",
                         () {}),
                     CustomHolidayCard(
                         context,
                         AppLocalizations.of(context)!.translate('sickDiscount'),
-                        ConverDate(holidayModels[0].lAPOUYNOTJAY.toString()),
+                        ConverDate(context, holidayModels[0].lAPOUYNOTJAY.toString()),
                         "assets/images/sick-not-jay.png",
                         () {}),
                     CustomHolidayCard(
                         context,
                         AppLocalizations.of(context)!.translate('lakron'),
-                        ConverDate(holidayModels[0].lACRODJAY.toString()),
+                        ConverDate(context, holidayModels[0].lACRODJAY.toString()),
                         "assets/images/Midwives-jay.png",
                         () {}),
                     CustomHolidayCard(
                         context,
                         AppLocalizations.of(context)!.translate('lakronDiscount'),
-                        ConverDate(holidayModels[0].lACRODNETJAY.toString()),
+                        ConverDate(context, holidayModels[0].lACRODNETJAY.toString()),
                         "assets/images/Midwives-not-Jay.png",
                         () {}),
                     CustomHolidayCard(
                         context,
                         AppLocalizations.of(context)!.translate('absentFromWork'),
-                        ConverDate(holidayModels[0].kADHANG.toString()),
+                        ConverDate(context, holidayModels[0].kADHANG.toString()),
                         "assets/images/Working late.png",
                         () {}),
                   ],
@@ -143,7 +143,7 @@ class _BodyHolidayState extends State<BodyHoliday> {
             ));
   }
 
-  String ConverDate(String date) {
+  /*String ConverDate(String date) {
     String convertTxt;
     if (date != "null") {
       print("ช่องว่าง ${date.split(' ').length}");
@@ -178,5 +178,5 @@ class _BodyHolidayState extends State<BodyHoliday> {
     }
 
     return convertTxt;
-  }
+  }*/
 }

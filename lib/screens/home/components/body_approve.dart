@@ -448,6 +448,7 @@ class _BodyApproveState extends State<BodyApprove> {
     if (positionGroup == '052') {
       positionName = 'depart_code'; //ฝ่าย
       positionCode = preferences.getString('departcode');
+      print('departcode:>>>> $positionCode');
     } else if (positionGroup == '042') {
       positionName = 'divi_code'; // ส่วน
       positionCode = preferences.getString('divicode');
@@ -544,6 +545,7 @@ class _BodyApproveState extends State<BodyApprove> {
       '14': 0xA98540F3,
       '12': 0xA9E324BA,
       '29': 0xF53E5EFA,
+      'AB': 0xF0EC9A42,
     };
     return dataMap[date];
   }

@@ -36,7 +36,7 @@ class BuildCalandar extends StatelessWidget {
   String documentNo = "";
   int absenceDay = 1;
   int absenceHour = 0;
-  String token;
+  String token = "";
   bool visableFullDay = false;
 
   final CalendarController _calendarController = CalendarController();
@@ -44,9 +44,11 @@ class BuildCalandar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
     return Expanded(
       flex: 3,
       child:
+          holidayCalendars.isEmpty ? const CircularProgressIndicator() :
 
            Card(
               elevation: 5.0,
@@ -69,7 +71,7 @@ class BuildCalandar extends StatelessWidget {
                       normalDialog(
                           context,
                           AppLocalizations.of(context).translate(
-                              'This is a Holiday of week')); //วันที่เลือกเป็นวันหยุดประจำสัปดาห์
+                              'This is a Holiday of week'),Icons.check_circle_outline,Colors.green); //วันที่เลือกเป็นวันหยุดประจำสัปดาห์
                     } else {
                       getHolidayChange(details.date!).then((value) {
                         print(value.toString());
@@ -77,7 +79,7 @@ class BuildCalandar extends StatelessWidget {
                           normalDialog(
                               context,
                               AppLocalizations.of(context).translate(
-                                  'Chose day is not free day')); //วันที่เลือกไม่ใช้วันหยุดลอย
+                                  'Chose day is not free day'),Icons.error_outline_outlined,Colors.red); //วันที่เลือกไม่ใช้วันหยุดลอย
                         } else {
                           documentNo = getDocumentNo();
                           showDialog(

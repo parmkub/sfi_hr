@@ -151,7 +151,7 @@ class _BodyState extends State<Body> {
                                   Register();
 
                                 }else{
-                                  normalDialog(context, AppLocalizations.of(context).translate('passwordNotMatch')); //รหัสผ่านไม่ตรงกัน
+                                  normalDialog(context, AppLocalizations.of(context).translate('passwordNotMatch'),Icons.error_outline_outlined,Colors.red); //รหัสผ่านไม่ตรงกัน
                                 }
                               }
                             },
@@ -218,7 +218,7 @@ class _BodyState extends State<Body> {
         ));
 
       } else {
-        normalDialog(context, AppLocalizations.of(context).translate('registerFail')); //ลงทะเบียนไม่สำเร็จ
+        normalDialog(context, AppLocalizations.of(context).translate('registerFail'),Icons.error_outline_outlined,Colors.red); //ลงทะเบียนไม่สำเร็จ
       }
     });
   }

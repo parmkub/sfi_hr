@@ -145,7 +145,7 @@ class _BodyHolidayChangeState extends State<BodyHolidayChange> {
                                           });
                                         }
                                       },
-                                      icon: Icon(Icons.keyboard_arrow_down)),
+                                      icon: showStepApprove[index] ? const Icon(Icons.keyboard_arrow_up) : const Icon(Icons.keyboard_arrow_down)),
                                   showStepApprove[index]
                                       ? Container(
                                           padding: const EdgeInsets.all(10),
@@ -156,12 +156,17 @@ class _BodyHolidayChangeState extends State<BodyHolidayChange> {
                                                   CrossAxisAlignment.start,
                                               children: <Widget>[
                                                 StepsIndicator(
+                                                  selectedStepColorOut: Colors
+                                                      .transparent,
                                                   lineLength:
                                                       getProportionateScreenWidth(
                                                           120),
                                                   nbSteps: 3,
-                                                  selectedStep: int.parse(
-                                                      '${provider.changHoliday[index].aBSENCESTATUS}'),
+                                                  selectedStep: StepValude(
+                                                      provider.changHoliday[index].aBSENCESTATUS.toString()),
+
+                                              /*    int.parse(
+                                                      '${provider.changHoliday[index].aBSENCESTATUS}'),*/
                                                 ),
                                                 Row(
                                                   mainAxisAlignment:
@@ -264,6 +269,19 @@ class _BodyHolidayChangeState extends State<BodyHolidayChange> {
     } else {
       print('ไม่สามารถลบข้อมูลได้');
     }
+  }
+
+  int StepValude(String leavStatus) {
+    int steValude;
+
+      if (leavStatus == '2') {
+        steValude = 3;
+      } else {
+        steValude = int.parse(leavStatus);
+      }
+
+
+    return steValude;
   }
 
   Future<void> getHolidayChangeCard() async {

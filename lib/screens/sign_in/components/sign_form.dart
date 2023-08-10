@@ -1,4 +1,4 @@
-// ignore_for_file: avoid_print, duplicate_ignore, use_build_context_synchronously, unrelated_type_equality_checks
+// ignore_for_file: avoid_print, duplicate_ignore, use_build_context_synchronously, unrelated_type_equality_checks, library_private_types_in_public_api
 
 import 'dart:convert';
 
@@ -37,17 +37,6 @@ class _SignFormState extends State<SignForm> {
 
   @override
   Widget build(BuildContext context) {
-    Color getColor(Set<MaterialState> states) {
-      const Set<MaterialState> interactiveStates = <MaterialState>{
-        MaterialState.pressed,
-        MaterialState.hovered,
-        MaterialState.focused,
-      };
-      if (states.any(interactiveStates.contains)) {
-        return kPrimaryColor.withOpacity(0.5);
-      }
-      return Colors.black26;
-    }
 
     return Stack(
       children: [
@@ -76,7 +65,7 @@ class _SignFormState extends State<SignForm> {
                           normalDialog(
                               context,
                               AppLocalizations.of(context)
-                                  .translate('acceptPolicy'));
+                                  .translate('acceptPolicy'),Icons.local_police,Colors.green);
                         }
                         // checkAuthens();
                       }
@@ -164,7 +153,7 @@ class _SignFormState extends State<SignForm> {
     if (response.statusCode == 200) {
       if (response.toString() == 'Null') {
         normalDialog(
-            context, AppLocalizations.of(context).translate('contactAdmin'));
+            context, AppLocalizations.of(context).translate('contactAdmin'),Icons.contact_phone_outlined,Colors.red);
         setState(() {
           loadProgress = false;
         });
@@ -174,23 +163,23 @@ class _SignFormState extends State<SignForm> {
         print(result);
         for (var map in result) {
           loginModel = LoginModel.fromJson(map);
-          String? _password = loginModel!.pASSWORDAUTHEN;
+          String? passWord = loginModel!.pASSWORDAUTHEN;
           //print('username ===== $_username , password ====== $_password');
-          if (_password == null) {
+          if (passWord == null) {
             normalDialog(
-                context, AppLocalizations.of(context).translate('registerFound'));
+                context, AppLocalizations.of(context).translate('registerFound'),Icons.error_outline_outlined,Colors.red);
             setState(() {
               loadProgress = false;
             });
 
           } else {
-            if (BCrypt.checkpw(password!, _password!)) {
+            if (BCrypt.checkpw(password!, passWord)) {
               // ถ้าตรงกัน
               print('ล๊อกอินสำเร็จ');
               setPreferenes(HomeScreen.routName, loginModel!);
             } else {
               normalDialog(
-                  context, AppLocalizations.of(context).translate('userFail'));
+                  context, AppLocalizations.of(context).translate('userFail'),Icons.find_in_page_outlined,Colors.red);
               setState(() {
                 loadProgress = false;
               });
@@ -199,7 +188,7 @@ class _SignFormState extends State<SignForm> {
         }
       }
     } else {
-      normalDialog(context, 'กรุณาลองใหม่อีกครั้ง');
+      normalDialog(context, 'กรุณาลองใหม่อีกครั้ง',Icons.refresh_outlined,Colors.red);
     }
   }
 

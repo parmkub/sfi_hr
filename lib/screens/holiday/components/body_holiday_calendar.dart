@@ -34,7 +34,6 @@ class _BodyHolidayCalendarState extends State<BodyHolidayCalendar> {
 
   @override
   void initState() {
-    getPerferences();
     getDataHoliday();
     // TODO: implement initState
     super.initState();
@@ -70,9 +69,7 @@ class _BodyHolidayCalendarState extends State<BodyHolidayCalendar> {
       ),
     );
   }
-  Future<void> getPerferences() async {
 
-  }
 
   Future<void> getDataHoliday() async {
     await SharedPreferences.getInstance().then((value) async{

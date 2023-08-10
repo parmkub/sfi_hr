@@ -66,12 +66,12 @@
   "dayOff": "วันที่หยุด",
   "stepApprove": "ลำดับการอนุมัติ",
   "lagit": "ลากิจ",
-  "lagitDiscount": "ลากิจหักเงิน",
+  "lagitDiscount": "ลากิจไม่รับค่าจ้าง",
   "sick": "ลาป่วย",
-  "sickDiscount": "ลาป่วยหักเงิน",
+  "sickDiscount": "ลาป่วยไม่รับค่าจ้าง",
   "lapukron": "ลาพักร้อน",
   "lakron": "ลาคลอด",
-  "lakronDiscount": "ลาคลอดหักเงิน",
+  "lakronDiscount": "ลาคลอดไม่รับค่าจ้าง",
   "absentFromWork": "ขาดงาน",
   "accident": "อุบัติเหตุ",
   "noApprove": "ไม่อนุมัติ",
@@ -107,9 +107,6 @@
   "success": "สำเร็จ",
   "contactAdmin": "กรุณาติดต่อฝ่ายทะเบียน",
   "close": "ปิด",
-
-
-
 
 
   "userManual": "คู่มือพนักงาน",

@@ -56,6 +56,8 @@ class _FormLeavingScreenState extends State<FormLeavingScreen> {
   double halfHour = 0.0;
 
 
+
+
   String CodeToString(BuildContext context,String title)  {
     String resual = "";
     Map<String, String> codeToString = {
@@ -94,8 +96,8 @@ class _FormLeavingScreenState extends State<FormLeavingScreen> {
     '12': 'ลาเนื่องจากอุบัติเหตุ'
   };
 
-  int? _fullDay = 1;
-  double? _hour ;
+  int _fullDay = 1;
+  double _hour = 0.0;
   final int _statusApprove = 0;
 
   String? _token;
@@ -267,7 +269,8 @@ class _FormLeavingScreenState extends State<FormLeavingScreen> {
                                   }
 
                                  if( useLeaved > dIFFPAKRON) {
-                                  normalDialog(context, AppLocalizations.of(context).translate('leaveNotEnough'));
+                                  normalDialog(context, AppLocalizations.of(context).translate('leaveNotEnough'),Icons.error_outline_outlined,Colors.red);
+                                   print('จำนวนวันลาที่เหลือ $dIFFPAKRON ชม');
                                  }else{
                                    print('จำนวนวันลาที่เหลือ $dIFFPAKRON ชม');
                                    _shoDialogDetail(
@@ -473,9 +476,12 @@ class _FormLeavingScreenState extends State<FormLeavingScreen> {
                   ),
                 ),
                 onPressed: () {
+
                   InsertData(chooseLeaveingFormat, difference);
                   sendNotify();
                   Navigator.pop(context);
+
+
                 },
                 child: Text(
                   AppLocalizations.of(context).translate('save'),
@@ -960,8 +966,18 @@ class _FormLeavingScreenState extends State<FormLeavingScreen> {
 
     String url = "http://61.7.142.47:8086/sfi-hr/insertLeaving.php";
     Response response = await Dio().post(url, data: formData);
+    print(">>>>>>>>>>>>>>>>>>>${response.toString()}");
     if (response.toString() == 'true') {
-      // ignore: use_build_context_synchronously
+      Navigator.pop(context);
+      normalDialog(context, 'บันทึกข้อมูลเรียบร้อย',Icons.check_circle_outline,Colors.green);
+
+      getLeavingCard();
+
+
+
+
+
+      /*// ignore: use_build_context_synchronously
       var provider = Provider.of<LeavingProvider>(context, listen: false);
       provider.removeLeavingCard();
       SharedPreferences preferences = await SharedPreferences.getInstance();
@@ -979,14 +995,14 @@ class _FormLeavingScreenState extends State<FormLeavingScreen> {
 
           }
         }
-      } catch (e) {}
+      } catch (e) {}*/
 
       print("บันทึกข้อมูลเรียบร้อย");
     } else {
+      normalDialog(context, 'บันทึกข้อมูลผิดพลาด',Icons.error_outline,Colors.red);
       print(response.toString());
       print("บันทึกข้อมูลผิดพลาด");
     }
-    Navigator.pop(context);
   }
 
   Future<void> getLeavingCard() async {
@@ -1455,3 +1471,4 @@ class _FormLeavingScreenState extends State<FormLeavingScreen> {
     );
   }
 }
+

@@ -100,10 +100,10 @@ class _BodyAppealState extends State<BodyAppeal> {
     debugPrint('resultStatus = $resultStatus');
 
     if (resultStatus == 200) {
-      normalDialog(context, AppLocalizations.of(context).translate('Appeal_success'));
+      normalDialog(context, AppLocalizations.of(context).translate('Appeal_success'),Icons.check_circle_outline_rounded,Colors.green);
       _formKey.currentState!.reset();
     } else {
-      normalDialog(context, AppLocalizations.of(context).translate('Appeal_fail'));
+      normalDialog(context, AppLocalizations.of(context).translate('Appeal_fail'),Icons.error_outline_rounded,Colors.red);
     }
 
   }
@@ -116,10 +116,10 @@ class _BodyAppealState extends State<BodyAppeal> {
     var response = await Dio().post(url, data: formData);
     debugPrint('response = $response');
      if (response.toString() == 'true') {
-        normalDialog(context, AppLocalizations.of(context).translate('Appeal_success'));
+        normalDialog(context, AppLocalizations.of(context).translate('Appeal_success'),Icons.check_circle_outline_rounded,Colors.green);
         _formKey.currentState!.reset();
       } else {
-        normalDialog(context, AppLocalizations.of(context).translate('Appeal_fail'));
+        normalDialog(context, AppLocalizations.of(context).translate('Appeal_fail'),Icons.error_outline_rounded,Colors.red);
       }
 
   }
@@ -128,9 +128,9 @@ class _BodyAppealState extends State<BodyAppeal> {
     showDialog(context: context, builder: (context)=>SimpleDialog(
       title: Text(message),
       children: <Widget>[
-        Row(
+        const Row(
           mainAxisAlignment: MainAxisAlignment.center,
-          children: const <Widget>[
+          children: <Widget>[
             Icon(
                 Icons.question_answer_rounded,
                 size: 50,

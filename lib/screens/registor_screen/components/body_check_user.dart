@@ -1,7 +1,10 @@
+// ignore_for_file: non_constant_identifier_names, prefer_typing_uninitialized_variables
+
 import 'dart:convert';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:sfiasset/app_localizations.dart';
 import 'package:sfiasset/components/custom_surfix_icon.dart';
 import 'package:sfiasset/components/normal_dialog.dart';
 import 'package:sfiasset/screens/registor_screen/registor_screen.dart';
@@ -31,7 +34,7 @@ class _BodyCheckState extends State<BodyCheck> {
               .requestFocus(FocusNode()), //คลิ๊กตรงไหนก็ได้เพื่อเก็บ keybord
           behavior: HitTestBehavior.opaque,
           child: SingleChildScrollView(
-            child: Container(
+            child: SizedBox(
                 width: double.infinity,
                 child: Padding(
                   padding: EdgeInsets.symmetric(
@@ -61,13 +64,12 @@ class _BodyCheckState extends State<BodyCheck> {
                       ),
                       TextButton(
                         style: TextButton.styleFrom(
-                          padding: EdgeInsets.symmetric(
+                          foregroundColor: Colors.white, padding: EdgeInsets.symmetric(
                             horizontal: getProportionateScreenWidth(10),
                             vertical: getProportionateScreenWidth(10),
                           ),
                           shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(15)),
-                          primary: Colors.white,
                           backgroundColor: kPrimaryColor,
                         ),
                         onPressed: () {
@@ -75,10 +77,10 @@ class _BodyCheckState extends State<BodyCheck> {
                             if (value) {
                               if (resignStatus == 'N') {
                                 normalDialog(context,
-                                    'ท่านได้ลงทะเบียนไว้เรียบร้อยแล้ว');
+                                    'ท่านได้ลงทะเบียนไว้เรียบร้อยแล้ว',Icons.check_circle_outline_outlined,Colors.green);
                               } else if (resignStatus == 'Y') {
                                 normalDialog(
-                                    context, 'ท่านได้ลงทะเบียนไว้แล้ว แต่ต้องยืนยันด้วยอีเมล');
+                                    context, 'ท่านได้ลงทะเบียนไว้แล้ว แต่ต้องยืนยันด้วยอีเมล',Icons.error_outline_outlined,Colors.red);
                               } else {
                                 showDialog(
                                     context: context,
@@ -117,10 +119,10 @@ class _BodyCheckState extends State<BodyCheck> {
                                                     Navigator.push(
                                                         context, route);
                                                   },
-                                                  child: const Text(
-                                                    'OK',
+                                                  child:  Text(
+                                                    AppLocalizations.of(context).translate('ok'),
                                                     style:
-                                                        TextStyle(fontSize: 18),
+                                                        TextStyle(fontSize: getProportionateScreenWidth(18)),
                                                   ),
                                                 )
                                               ],
@@ -130,7 +132,7 @@ class _BodyCheckState extends State<BodyCheck> {
                               }
                             } else {
                               normalDialog(context,
-                                  'ไม่พบขอมูลพนักงาน กรุณาติดต่อฝ่ายทะเบียน');
+                                  'ไม่พบขอมูลพนักงาน กรุณาติดต่อฝ่ายทะเบียน',Icons.error_outline_outlined,Colors.red);
                             }
                           });
                         },
@@ -157,7 +159,7 @@ class _BodyCheckState extends State<BodyCheck> {
 
     Response response = await Dio().get(url);
     if (response.statusCode != 200) {
-      print('ติดต่อ API ไม่ได้');
+     // print('ติดต่อ API ไม่ได้');
       return false;
     } else {
       //print(response.toString());
@@ -170,7 +172,7 @@ class _BodyCheckState extends State<BodyCheck> {
         name = data[0]['NAME'];
         resignStatus = data[0]['RESIGN_STATUS'];
 
-        print(resignStatus);
+        //print(resignStatus);
 
         /*   print(Username);
         print(name);

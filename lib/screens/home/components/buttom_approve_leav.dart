@@ -219,7 +219,7 @@ class ButtomApproveLeav extends StatelessWidget {
 
   Future<void> sendMailToHR() async {
     String url =
-        "http://61.7.142.47:3002/sendemail?documentNo=$documentNo&name=$name&typeDocument";
+        "http://61.7.142.47:3002/sendemail?documentNo=$documentNo&name=$name";
     Response response = await Dio().get(url);
     String _massess = '';
     try {
