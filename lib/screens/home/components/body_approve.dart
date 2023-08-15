@@ -101,15 +101,11 @@ class _BodyApproveState extends State<BodyApprove> {
                                                     "${AppLocalizations.of(context).translate('endDate')} : ${provider.ApproveHolidayCard[index].mAX}",
                                                     style: buildTextStyle(14)),
                                                 provider.ApproveHolidayCard[index]
-                                                    .aBSENCEDAY ==
-                                                    "0"
-                                                    ? provider.ApproveHolidayCard[index].aBSENCEHOUR == ".3" || provider.ApproveHolidayCard[index].aBSENCEHOUR == ".4" ? Text(
-                                                    "${AppLocalizations.of(context).translate('sumDay')}  30 ${AppLocalizations.of(context).translate('minute')}",
-                                                    style: buildTextStyle(12)):Text(
-                                                    "${AppLocalizations.of(context).translate('sumDay')}  ${provider.ApproveHolidayCard[index].aBSENCEHOUR} ${AppLocalizations.of(context).translate('hour')}",
+                                                    .aBSENCEDAY == "0" ? provider.ApproveHolidayCard[index].aBSENCEHOUR == ".3" || provider.ApproveHolidayCard[index].aBSENCEHOUR == ".4" ?
+                                                    Text("${AppLocalizations.of(context).translate('sumDay')}  30 ${AppLocalizations.of(context).translate('minute')}", style: buildTextStyle(12))
+                                                    :Text("${AppLocalizations.of(context).translate('sumDay')}  ${provider.ApproveHolidayCard[index].aBSENCEHOUR} ${AppLocalizations.of(context).translate('hour')}",
                                                     style: buildTextStyle(12))
-                                                    : Text(
-                                                    "${AppLocalizations.of(context).translate('sumDay')}  ${provider.ApproveHolidayCard[index].aBSENCEDAY} ${AppLocalizations.of(context).translate('day')}",
+                                                    : Text("${AppLocalizations.of(context).translate('sumDay')}  ${provider.ApproveHolidayCard[index].dAY} ${AppLocalizations.of(context).translate('day')}",
                                                     style: buildTextStyle(12)),
                                                 provider.ApproveHolidayCard[index]
                                                     .aBSENCEDETAIL ==

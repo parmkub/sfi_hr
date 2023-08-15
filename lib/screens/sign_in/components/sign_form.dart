@@ -81,7 +81,7 @@ class _SignFormState extends State<SignForm> {
                     child: Text(
                       AppLocalizations.of(context).translate('register'),//ลงทะเบียน
                       style: TextStyle(
-                          color: kTextColor,
+                          color: Colors.lightBlue,
                           fontSize: getProportionateScreenWidth(14)),
                     )),
              /*   TextButton(
@@ -106,9 +106,9 @@ class _SignFormState extends State<SignForm> {
                           });
                     },
                     child: Text(
-                      '${AppLocalizations.of(context).translate('privatePolicy')}\n       Privacy Policy',//นโยบายความเป็นส่วนตัว
+                      AppLocalizations.of(context).translate('privatePolicy'),//นโยบายความเป็นส่วนตัว
                       style: TextStyle(
-                          color: kTextColor,
+                          color: Colors.lightBlue,
                           fontSize: getProportionateScreenWidth(14)),
                     )),
                 Row(

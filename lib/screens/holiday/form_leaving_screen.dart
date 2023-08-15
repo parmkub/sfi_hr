@@ -288,7 +288,6 @@ class _FormLeavingScreenState extends State<FormLeavingScreen> {
 
                               }
 
-
                               // ScaffoldMessenger.of(context).showSnackBar(
                               //     const SnackBar(content: Text('Processing Data')),);
                             }
@@ -965,19 +964,14 @@ class _FormLeavingScreenState extends State<FormLeavingScreen> {
     });
 
     String url = "http://61.7.142.47:8086/sfi-hr/insertLeaving.php";
-    Response response = await Dio().post(url, data: formData);
-    print(">>>>>>>>>>>>>>>>>>>${response.toString()}");
-    if (response.toString() == 'true') {
-      Navigator.pop(context);
-      normalDialog(context, 'บันทึกข้อมูลเรียบร้อย',Icons.check_circle_outline,Colors.green);
+     await Dio().post(url, data: formData).then((value) {
+      if (value.toString() == 'true') {
+        Navigator.pop(context);
+        normalDialog(context, 'บันทึกข้อมูลเรียบร้อย',Icons.check_circle_outline,Colors.green);
 
-      getLeavingCard();
+        getLeavingCard();
 
-
-
-
-
-      /*// ignore: use_build_context_synchronously
+        /*// ignore: use_build_context_synchronously
       var provider = Provider.of<LeavingProvider>(context, listen: false);
       provider.removeLeavingCard();
       SharedPreferences preferences = await SharedPreferences.getInstance();
@@ -997,12 +991,14 @@ class _FormLeavingScreenState extends State<FormLeavingScreen> {
         }
       } catch (e) {}*/
 
-      print("บันทึกข้อมูลเรียบร้อย");
-    } else {
-      normalDialog(context, 'บันทึกข้อมูลผิดพลาด',Icons.error_outline,Colors.red);
-      print(response.toString());
-      print("บันทึกข้อมูลผิดพลาด");
-    }
+        print("บันทึกข้อมูลเรียบร้อย");
+      } else {
+        normalDialog(context, 'บันทึกข้อมูลผิดพลาด',Icons.error_outline,Colors.red);
+        print(value.toString());
+        print("บันทึกข้อมูลผิดพลาด");
+      }
+    });
+
   }
 
   Future<void> getLeavingCard() async {

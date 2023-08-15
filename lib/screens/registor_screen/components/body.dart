@@ -26,7 +26,7 @@ class Body extends StatefulWidget {
 class _BodyState extends State<Body> {
   String empCode = "";
 
-  var userName, name;
+  var userName = "", name = "";
 
   bool passwordVisable = true;
   bool passwordAgainVisable = true;
@@ -73,13 +73,13 @@ class _BodyState extends State<Body> {
                       SizedBox(
                         height: getProportionateScreenWidth(10)
                       ),
-                      Text(
+                      /*Text(
                         AppLocalizations.of(context).translate('register'), //ลงทะเบียน
                         style: TextStyle(
                             color: Colors.black,
                             fontSize: getProportionateScreenWidth(18),
                             fontWeight: FontWeight.bold),
-                      ),
+                      ),*/
                       SizedBox(
                         height: getProportionateScreenWidth(30)
                       ),
@@ -99,7 +99,7 @@ class _BodyState extends State<Body> {
                           borderRadius: BorderRadius.circular(30),
                           border: Border.all(color: Colors.black),
                         ),
-                        child:  Text("${AppLocalizations.of(context).translate('empcode')} :$empCode",style: TextStyle(fontSize: getProportionateScreenWidth(14)),),
+                        child:  Text("${AppLocalizations.of(context).translate('empCode')} :$empCode",style: TextStyle(fontSize: getProportionateScreenWidth(14)),),
                       ),
                       SizedBox(
                           height: getProportionateScreenWidth(10)

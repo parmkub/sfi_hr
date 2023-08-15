@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:sfiasset/app_localizations.dart';
 import 'package:sfiasset/screens/registor_screen/components/body_check_user.dart';
 
 import '../../constans.dart';
@@ -15,7 +16,7 @@ class _CheckUserSceenState extends State<CheckUserSceen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAppBarMenu('ลงทะเบียน'),
+      appBar: CustomAppBarMenu(AppLocalizations.of(context).translate('register')),
       body: BodyCheck()
     );
   }

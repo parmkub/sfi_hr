@@ -47,7 +47,7 @@ class _BodyCheckState extends State<BodyCheck> {
                         height: SizeConfig.screenHeight! * 0.04,
                       ),
                       Text(
-                        'ตรวจสอบรหัสพนักงาน',
+                        AppLocalizations.of(context).translate('checkEmpCode'), //ตรวจสอบรหัสพนักงาน
                         style: TextStyle(
                             color: Colors.black,
                             fontSize: getProportionateScreenWidth(20),
@@ -77,16 +77,16 @@ class _BodyCheckState extends State<BodyCheck> {
                             if (value) {
                               if (resignStatus == 'N') {
                                 normalDialog(context,
-                                    'ท่านได้ลงทะเบียนไว้เรียบร้อยแล้ว',Icons.check_circle_outline_outlined,Colors.green);
+                                    AppLocalizations.of(context).translate('registeredAlready'),Icons.error_outline,Colors.red); //ท่านได้ลงทะเบียนไว้แล้ว
                               } else if (resignStatus == 'Y') {
                                 normalDialog(
-                                    context, 'ท่านได้ลงทะเบียนไว้แล้ว แต่ต้องยืนยันด้วยอีเมล',Icons.error_outline_outlined,Colors.red);
+                                    context, AppLocalizations.of(context).translate('confirmByEmail'),Icons.error_outline_outlined,Colors.red); //ยืนยันตัวตนผ่านทางอีเมล์
                               } else {
                                 showDialog(
                                     context: context,
                                     builder: (context) => SimpleDialog(
-                                          title: const Text(
-                                              'ท่านสามารถลงทะเบียนขอใช้ระบบได้'),
+                                          title:  Text(
+                                              AppLocalizations.of(context).translate('checkSucsess')), //ตรวจสอบสำเร็จ ท่านสามารถลงทะเบียนได้
                                           children: <Widget>[
                                             const Row(
                                               mainAxisAlignment:
@@ -132,13 +132,13 @@ class _BodyCheckState extends State<BodyCheck> {
                               }
                             } else {
                               normalDialog(context,
-                                  'ไม่พบขอมูลพนักงาน กรุณาติดต่อฝ่ายทะเบียน',Icons.error_outline_outlined,Colors.red);
+                                  AppLocalizations.of(context).translate('checkUnScusess'),Icons.error_outline_outlined,Colors.red); //ท่านไม่สามรถลงทะเบียนได้ กรุณาติดต่อเจ้าหน้าที่
                             }
                           });
                         },
                         child: SizedBox(
                             child: Text(
-                          "ตรวจสอบรหัสพนักงาน",
+                          AppLocalizations.of(context).translate('checkEmpCode'), //ตรวจสอบรหัสพนักงาน
                           style: TextStyle(
                               fontSize: getProportionateScreenWidth(16)),
                         )),
@@ -187,13 +187,13 @@ class _BodyCheckState extends State<BodyCheck> {
       onChanged: (value) => {empCode = value},
       validator: (value) {
         if (value.toString().isEmpty) {
-          return "กรุณากรอกรหัสพนักงาน";
+          return AppLocalizations.of(context).translate('PleaseEnterEmpcode'); //"กรุณากรอกรหัสพนักงาน
         }
         return null;
       },
       decoration: InputDecoration(
-        labelText: "รหัสพนักงาน",
-        hintText: "กรุณากรอกรหัสพนักงาน",
+        labelText: AppLocalizations.of(context).translate('empCode'), //"รหัสพนักงาน
+        hintText: AppLocalizations.of(context).translate('PleaseEnterEmpcode'), //"กรอกรหัสพนักงาน",
         floatingLabelBehavior: FloatingLabelBehavior.always,
         suffixIcon: CustomSurfixIcon(
           press: () {},

@@ -43,14 +43,14 @@ const String kPhoneNumberNullError = "Please Enter your phone number";
 const String kAddressNullError = "Please Enter your address";
 
 AppBar CustomAppBarHome() => AppBar(
-  toolbarHeight: 100,
+  toolbarHeight: 80,
   flexibleSpace: Container(
     decoration: const BoxDecoration(
       gradient: kBackgroundColor
     ),
   ),
   title: Padding(
-    padding: const EdgeInsets.all(20),
+    padding: const EdgeInsets.all(10),
     child: Image.asset(
       'assets/images/logo.png',
       height: getProportionateScreenHeight(50),
@@ -113,6 +113,7 @@ flexibleSpace: Container(
             fontSize: getProportionateScreenWidth(18.0)),
       ),
   ),
+
 
   centerTitle: false,
 );

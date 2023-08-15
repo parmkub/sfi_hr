@@ -31,7 +31,7 @@ class _BodyApproveState extends State<BodyApprove> {
 
   @override
   void initState() {
-    //getApproveHoliday();
+    getApproveHoliday();
     // TODO: implement initState
     super.initState();
   }
@@ -95,7 +95,7 @@ class _BodyApproveState extends State<BodyApprove> {
                                                       style:
                                                           buildTextStyle(14)),
                                                   Text(
-                                                      "รวม ${provider.ApproveHolidayCard[index].dAY} วัน",
+                                                      "รวม ${provider.ApproveHolidayCard[index].aBSENCEDAY} วัน",
                                                       style:
                                                           buildTextStyle(12)),
                                                 ],
