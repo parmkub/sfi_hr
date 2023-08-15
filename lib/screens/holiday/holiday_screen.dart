@@ -1,3 +1,5 @@
+// ignore_for_file: non_constant_identifier_names, empty_catches
+
 import 'dart:convert';
 
 import 'package:dio/dio.dart';
@@ -5,9 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sfiasset/app_localizations.dart';
 import 'package:sfiasset/constans.dart';
-import 'package:sfiasset/model/approve_holiday_model.dart';
 import 'package:sfiasset/model/leaving_card.dart';
-import 'package:sfiasset/providers/approve_holiday_provider.dart';
 import 'package:sfiasset/providers/leaving_provider.dart';
 import 'package:sfiasset/screens/holiday/components/body_holiday_change.dart';
 import 'package:sfiasset/screens/holiday/components/body_holiday_statistics.dart';
@@ -31,10 +31,10 @@ class _HolidayScreenState extends State<HolidayScreen> {
 
   List<LeavingCard> LeavingModels = [];
   List<Widget> listWidgets = [
-    BodyHolidayLeaving(), //บันทึกวันลา
-    BodyHolidayChange(), //บันทึกการเปลี่ยนวันลา
-    BodyHoliday(), //สถิติ
-    BodyHolidayCalendar(), //ปฏิทิน
+    const BodyHolidayLeaving(), //บันทึกวันลา
+    const BodyHolidayChange(), //บันทึกการเปลี่ยนวันลา
+    const BodyHoliday(), //สถิติ
+    const BodyHolidayCalendar(), //ปฏิทิน
   ];
   int indexPage = 0;
   bool statusData = true;
@@ -96,10 +96,10 @@ class _HolidayScreenState extends State<HolidayScreen> {
     var provider = Provider.of<LeavingProvider>(context, listen: false);
     provider.removeLeavingCard();
     SharedPreferences preferences = await SharedPreferences.getInstance();
-    String? _empCode = preferences.getString('empcode');
+    String? empCode = preferences.getString('empcode');
 
     String url =
-        "http://61.7.142.47:8086/sfi-hr/select_leav_document.php?empcode=$_empCode";
+        "http://61.7.142.47:8086/sfi-hr/select_leav_document.php?empcode=$empCode";
     Response response = await Dio().get(url);
     try {
       var result = jsonDecode(response.data);
@@ -116,35 +116,12 @@ class _HolidayScreenState extends State<HolidayScreen> {
   }
 
 
-  Future<void> getApproveHoliday(
-      String PositionGroupCode, String DepartCode) async {
-    var provider = Provider.of<ApproveHolidayProvider>(context, listen: false);
-    provider.removeLeavingCard();
-    SharedPreferences preferences = await SharedPreferences.getInstance();
-    String? _empCode = preferences.getString('empcode');
 
-    String url =
-        "http://61.7.142.47:8086/sfi-hr/select_Approve_document.php?departCode=$DepartCode&positionGroupCode=$PositionGroupCode";
-    Response response = await Dio().get(url);
-    try {
-      var result = jsonDecode(response.data);
-      if (result != null) {
-        for (var map in result) {
-          ApproveHoliday approveHolidayCard = ApproveHoliday.fromJson(map);
 
-          //   setState(() {
-          provider.addLeavingCard(approveHolidayCard);
-          print('ดึงข้อมูลการ์ด');
-          // LeavingModels.add(leavingCard);
-          //  });
-        }
-      }
-    } catch (e) {}
-  }
   Future<void> getPossitionGroup() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     String? positionGroup = preferences.getString('positionGroup');
-    print('ตำแหน่งกลุ่ม:${positionGroup!}');
+    //print('ตำแหน่งกลุ่ม:${positionGroup!}');
     setState(() {
       //ถ้ามีตำแหน่ง 051,052,061,071,072 ไม่ให้แสดงปุ่มบันทึกวันลา
     if (positionGroup == '051' || positionGroup == '052' ||

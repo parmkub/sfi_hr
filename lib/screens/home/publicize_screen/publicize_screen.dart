@@ -23,7 +23,7 @@ class _PublicezeScreenState extends State<PublicezeScreen> {
           'publicizeDetail': ''
         }) as Map<String, dynamic>; // กรณีที่มีการส่งค่ามาหลายค่า
     return Scaffold(
-        appBar: CustomAppBarMenu(AppLocalizations.of(context)!.translate('detail')),
+        appBar: CustomAppBarMenu(AppLocalizations.of(context).translate('detail')),
         body: BodyBublicize(
           publicizeID: arguments['id'] as String,
           WebViewType: arguments['webViewType'] as String,

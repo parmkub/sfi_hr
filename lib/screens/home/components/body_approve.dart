@@ -267,17 +267,17 @@ class _BodyApproveState extends State<BodyApprove> {
                 child: Container(
                     child: Column(
                       children: [
-                        ListReport(AppLocalizations.of(context)!.translate('workDay'), ConverDate(holidayModels[0].wORKINGDAY.toString()), "assets/images/Working-bro.png"),
-                        ListReport(AppLocalizations.of(context)!.translate('lapukron'), "${ConverDate(holidayModels[0].pUKRONH.toString())}/${holidayModels[0].hOLIDAYTOTAL} ${AppLocalizations.of(context).translate('day')}", "assets/images/pakroh.png"),
-                        ListReport(AppLocalizations.of(context)!.translate('worklate'), "${ConverDate(holidayModels[0].sAI.toString())
+                        ListReport(AppLocalizations.of(context).translate('workDay'), ConverDate(holidayModels[0].wORKINGDAY.toString()), "assets/images/Working-bro.png"),
+                        ListReport(AppLocalizations.of(context).translate('lapukron'), "${ConverDate(holidayModels[0].pUKRONH.toString())}/${holidayModels[0].hOLIDAYTOTAL} ${AppLocalizations.of(context).translate('day')}", "assets/images/pakroh.png"),
+                        ListReport(AppLocalizations.of(context).translate('worklate'), "${ConverDate(holidayModels[0].sAI.toString())
                             .split(" ")[0]} ${AppLocalizations.of(context).translate('timeLate')}", "assets/images/Deadline-pana.png"),
-                        ListReport(AppLocalizations.of(context)!.translate('lagit'), ConverDate(holidayModels[0].lAGITJAY.toString()), "assets/images/lagit-jay.png"),
-                        ListReport(AppLocalizations.of(context)!.translate('lagitDiscount'), ConverDate(holidayModels[0].lAGITNOTJAY.toString()), "assets/images/lagit-njay.png"),
-                        ListReport(AppLocalizations.of(context)!.translate('sick'),  ConverDate(holidayModels[0].lAPOUYJAY.toString()), "assets/images/sick-jay.png"),
-                        ListReport(AppLocalizations.of(context)!.translate('sickDiscount'), ConverDate(holidayModels[0].lAPOUYNOTJAY.toString()), "assets/images/sick-not-jay.png"),
-                        ListReport(AppLocalizations.of(context)!.translate('lakron'),  ConverDate(holidayModels[0].lACRODJAY.toString()), "assets/images/Midwives-jay.png"),
-                        ListReport(AppLocalizations.of(context)!.translate('lakronDiscount'), ConverDate(holidayModels[0].lACRODNETJAY.toString()), "assets/images/Midwives-not-Jay.png"),
-                        ListReport(AppLocalizations.of(context)!.translate('absentFromWork'), ConverDate(holidayModels[0].kADHANG.toString()), "assets/images/Working late.png"),
+                        ListReport(AppLocalizations.of(context).translate('lagit'), ConverDate(holidayModels[0].lAGITJAY.toString()), "assets/images/lagit-jay.png"),
+                        ListReport(AppLocalizations.of(context).translate('lagitDiscount'), ConverDate(holidayModels[0].lAGITNOTJAY.toString()), "assets/images/lagit-njay.png"),
+                        ListReport(AppLocalizations.of(context).translate('sick'),  ConverDate(holidayModels[0].lAPOUYJAY.toString()), "assets/images/sick-jay.png"),
+                        ListReport(AppLocalizations.of(context).translate('sickDiscount'), ConverDate(holidayModels[0].lAPOUYNOTJAY.toString()), "assets/images/sick-not-jay.png"),
+                        ListReport(AppLocalizations.of(context).translate('lakron'),  ConverDate(holidayModels[0].lACRODJAY.toString()), "assets/images/Midwives-jay.png"),
+                        ListReport(AppLocalizations.of(context).translate('lakronDiscount'), ConverDate(holidayModels[0].lACRODNETJAY.toString()), "assets/images/Midwives-not-Jay.png"),
+                        ListReport(AppLocalizations.of(context).translate('absentFromWork'), ConverDate(holidayModels[0].kADHANG.toString()), "assets/images/Working late.png"),
                       ],
                     )
                 ),
@@ -286,7 +286,7 @@ class _BodyApproveState extends State<BodyApprove> {
             actions: [
               TextButton(onPressed: (){
                 Navigator.pop(context);
-              }, child: Text(AppLocalizations.of(context)!.translate('close')))
+              }, child: Text(AppLocalizations.of(context).translate('close')))
             ],
           );
         });

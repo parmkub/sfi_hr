@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:sfiasset/app_localizations.dart';
 import 'package:sfiasset/constans.dart';
 
-import '../../size_config.dart';
 
 import 'components/body.dart';
 

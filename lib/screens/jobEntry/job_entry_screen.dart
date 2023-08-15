@@ -128,7 +128,7 @@ class _JobEntryState extends State<JobEntryScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: CustomAppBarMenu(
-          AppLocalizations.of(context)!.translate("job"),
+          AppLocalizations.of(context).translate("job"),
         ),
         body: Stack(
           children: [

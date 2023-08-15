@@ -3,7 +3,6 @@ import 'package:sfiasset/app_localizations.dart';
 import 'package:sfiasset/constans.dart';
 import 'package:sfiasset/screens/emp_card/components/body_card.dart';
 
-import '../../size_config.dart';
 
 class EmpCardScreen extends StatefulWidget {
   const EmpCardScreen({Key? key}) : super(key: key);

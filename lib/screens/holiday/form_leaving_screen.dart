@@ -216,7 +216,7 @@ class _FormLeavingScreenState extends State<FormLeavingScreen> {
                                       _empCode,
                                       _selectTypeLeav,
                                       _fullDay,
-                                      _hour! ,
+                                      _hour ,
                                       chooseLeaveingFormat);
                                   break;
                                 case "11":
@@ -252,7 +252,7 @@ class _FormLeavingScreenState extends State<FormLeavingScreen> {
                                     if (chooseLeaveingFormat == 1) {
 
                                       useLeaved =
-                                          (useLeaved + _hour!.toInt() + (_fullDay! * 8)) as int;
+                                          (useLeaved + _hour.toInt() + (_fullDay * 8)) as int;
                                       print(
                                           'จำนวนชั่วโมงที่ต้องการลารวม $useLeaved ชม');
                                     } else if (chooseLeaveingFormat == 2) {
@@ -967,9 +967,12 @@ class _FormLeavingScreenState extends State<FormLeavingScreen> {
      await Dio().post(url, data: formData).then((value) {
       if (value.toString() == 'true') {
         Navigator.pop(context);
+        getLeavingCard();
         normalDialog(context, 'บันทึกข้อมูลเรียบร้อย',Icons.check_circle_outline,Colors.green);
 
-        getLeavingCard();
+
+
+
 
         /*// ignore: use_build_context_synchronously
       var provider = Provider.of<LeavingProvider>(context, listen: false);

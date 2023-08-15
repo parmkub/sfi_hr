@@ -288,7 +288,7 @@ class ButtomApproveLeav extends StatelessWidget {
           shape: const RoundedRectangleBorder(
               borderRadius: BorderRadius.all(Radius.circular(10.0))),
           title: Text(
-            AppLocalizations.of(context)!.translate('disapprove'),
+            AppLocalizations.of(context).translate('disapprove'),
             style: TextStyle(
                 fontSize: getProportionateScreenWidth(14),
                 color: kTextColor,

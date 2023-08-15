@@ -16,7 +16,7 @@ class _UserManualScreenState extends State<UserManualScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAppBarMenu(AppLocalizations.of(context)!.translate('userManual')!),
+      appBar: CustomAppBarMenu(AppLocalizations.of(context).translate('userManual')),
       body:  const BodyUserManual(blogType: 'manual',),
     );
   }
