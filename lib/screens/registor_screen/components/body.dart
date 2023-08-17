@@ -172,6 +172,7 @@ class _BodyState extends State<Body> {
   }
 
   Future<void> Register() async {
+    print("userName>>>>>>>>>>>>$userName");
     String url = "http://61.7.142.47:8086/sfi-hr/RegisterUser.php";
     var fromData = FormData.fromMap({
       "empCode": empCode,
@@ -180,7 +181,7 @@ class _BodyState extends State<Body> {
       "email": email,
     });
     await Dio().post(url, data: fromData).then((value) {
-      //print("res = $value");
+      print("res = $value");
       if (value.toString() == "true") {
         //normalDialog(context, AppLocalizations.of(context).translate('registerSuccess')); //่ลงทะเบียนสำเร็จ
 
