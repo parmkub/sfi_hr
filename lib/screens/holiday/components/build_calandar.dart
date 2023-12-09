@@ -278,7 +278,10 @@ class BuildCalandar extends StatelessWidget {
                                             ),
                                             ElevatedButton(
                                               onPressed: () {
-                                                showDialog(
+                                              //  Navigator.pop(context);
+                                                InsertDataChang(
+                                                    context);
+                                               /* showDialog(
                                                     context: context,
                                                     builder: (context) {
                                                       return AlertDialog(
@@ -362,7 +365,7 @@ class BuildCalandar extends StatelessWidget {
                                                               ))
                                                         ],
                                                       );
-                                                    });
+                                                    });*/
                                               },
                                               style: ElevatedButton.styleFrom(
                                                 backgroundColor: kPrimaryColor,

@@ -120,6 +120,8 @@ flexibleSpace: Container(
 
 String ConverDate(BuildContext context,String date) {
   String convertTxt;
+  print("date :=========5555> $date");
+
   if (date != "null") {
     print("ช่องว่าง ${date.split(' ').length}");
     if (date.split(' ').length > 5) {

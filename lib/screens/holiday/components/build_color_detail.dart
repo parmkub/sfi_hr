@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:sfiasset/app_localizations.dart';
 import 'package:sfiasset/screens/home/components/mark_color_calendar.dart';
+import 'package:sfiasset/size_config.dart';
 
 class BuildColorDetail extends StatelessWidget {
   const BuildColorDetail({
@@ -72,6 +73,13 @@ class BuildColorDetail extends StatelessWidget {
                     color: 0xFF40E0D0,
                     nameColor: AppLocalizations.of(context)
                         .translate('factoryHoliday')),
+                MarkColorCalendar(
+                    color: 0xFF651FFF,
+                    nameColor: AppLocalizations.of(context)
+                        .translate('laVL')),
+                SizedBox(
+                  width: getProportionateScreenWidth(110),
+                )
               ],
             ),
 

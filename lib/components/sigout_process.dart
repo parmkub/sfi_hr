@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:sfiasset/screens/menu_main_screen/menu_main.dart';
 import 'package:sfiasset/screens/sign_in/sign_in_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -6,5 +7,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 Future<void> SignOutProcess (BuildContext context) async {
   SharedPreferences preferences = await SharedPreferences.getInstance();
   preferences.clear();
-  Navigator.pushNamedAndRemoveUntil(context, SignInScreen.routName, (route) => false);
+  // ignore: use_build_context_synchronously
+  Navigator.pushNamedAndRemoveUntil(context, MenuMainScreen.routName, (route) => false);
 }

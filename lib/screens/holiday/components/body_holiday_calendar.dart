@@ -159,6 +159,9 @@ class _BodyHolidayCalendarState extends State<BodyHolidayCalendar> {
           } else if (holidayCalendars[i].aBSENCECODE == "AG") {
             color = 0xFF40E0D0;
             detail = AppLocalizations.of(context).translate('factoryHoliday');
+          } else if(holidayCalendars[i].aBSENCEDAY == "VL"){
+            color = 0xFF651FFF;
+            detail = AppLocalizations.of(context).translate('laVL');
           }
 
           String year = today.toString().split("-")[0];

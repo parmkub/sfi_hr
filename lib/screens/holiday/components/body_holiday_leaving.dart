@@ -16,6 +16,8 @@ import 'package:sfiasset/size_config.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:steps_indicator/steps_indicator.dart';
 
+import '../../approve_holiday/components/web_view_leaving.dart';
+
 class BodyHolidayLeaving extends StatefulWidget {
   const BodyHolidayLeaving({Key? key}) : super(key: key);
 
@@ -55,6 +57,9 @@ class _BodyHolidayLeavingState extends State<BodyHolidayLeaving> {
                   ),
                   child: GestureDetector(
                     onTap: () {
+                      Navigator.push(context, MaterialPageRoute(builder: (context){
+                        return WebViewLeaving(documentId: "${provider.leavingCards[index].aBSENCEDOCUMENT}",typeLeave: "${provider.leavingCards[index].aBSENCECODE}",);
+                      }));
                       // Navigator.pushNamed(context, LeavingDocument.routName);
                     },
                     child: Card(
@@ -419,6 +424,7 @@ class _BodyHolidayLeavingState extends State<BodyHolidayLeaving> {
       'AB': AppLocalizations.of(context).translate('lagitDiscount'),
       '11': AppLocalizations.of(context).translate('sick'),
       '14': AppLocalizations.of(context).translate('lakron'),
+      'BA': AppLocalizations.of(context).translate('lakronDiscount'),
       '12': AppLocalizations.of(context).translate('accident'),
       '29': AppLocalizations.of(context).translate('lapukron'),
     };
@@ -431,6 +437,7 @@ class _BodyHolidayLeavingState extends State<BodyHolidayLeaving> {
       'AB': 0xF0EC9A42,
       '11': 0xFF4BC9EE,
       '14': 0xA98540F3,
+      'BA': 0xA98540F3,
       '12': 0xA9E324BA,
       '29': 0xF53E5EFA,
     };
@@ -443,6 +450,7 @@ class _BodyHolidayLeavingState extends State<BodyHolidayLeaving> {
       'AB': 'lagit-njay.png',
       '11': 'sick-jay.png',
       '14': 'Midwives-jay.png',
+      'BA': 'Midwives-not-Jay.png',
       '12': 'sick-not-jay.png',
       '29': 'pakroh.png',
     };
@@ -451,19 +459,19 @@ class _BodyHolidayLeavingState extends State<BodyHolidayLeaving> {
 
   int StepValude(String leavType, String leavStatus) {
     int steValude;
-    if (leavType == '11' || leavType == 'Ba') {
-      if (leavStatus == '3') {
-        steValude = 4;
+   /* if (leavType == '11' || leavType == 'Ba') {
+      if (leavStatus == '2') {
+        steValude =3;
       } else {
         steValude = int.parse(leavStatus);
       }
-    } else {
+    } else {*/
       if (leavStatus == '2') {
         steValude = 3;
       } else {
         steValude = int.parse(leavStatus);
       }
-    }
+    /*}*/
 
     return steValude;
   }

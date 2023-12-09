@@ -10,8 +10,10 @@ import 'package:sfiasset/constans.dart';
 import 'package:sfiasset/model/approve_holiday_model.dart';
 import 'package:sfiasset/model/holiday_medel.dart';
 import 'package:sfiasset/providers/approve_holiday_provider.dart';
+import 'package:sfiasset/screens/approve_holiday/components/web_view_leaving.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:steps_indicator/steps_indicator.dart';
+import 'package:webview_flutter/webview_flutter.dart';
 
 import '../../../size_config.dart';
 import 'buttom_approve_leav.dart';
@@ -24,6 +26,9 @@ class BodyApprove extends StatefulWidget {
 }
 
 class _BodyApproveState extends State<BodyApprove> {
+
+
+
   int? nbStape;
 
   String? url;
@@ -33,12 +38,19 @@ class _BodyApproveState extends State<BodyApprove> {
   List<HolidayModel> holidayModels = [];
   bool statusData = true;
 
+  final controller = WebViewController()
+    ..setJavaScriptMode(JavaScriptMode.unrestricted)
+    ..loadRequest(Uri.parse("https://flutter.dev"));
+
+
+
   @override
   void initState() {
     getApproveHoliday();
     // TODO: implement initState
     super.initState();
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -213,25 +225,28 @@ class _BodyApproveState extends State<BodyApprove> {
                               ),
 
                             ),
-                            provider.ApproveHolidayCard[index].aBSENCECODE == '11' ?
+                          /*  provider.ApproveHolidayCard[index].aBSENCECODE == '11' || provider.ApproveHolidayCard[index].aBSENCECODE == 'BA'?*/
                             Positioned(
-                              top: getProportionateScreenWidth(120),
-                              left: getProportionateScreenWidth(5),
+                              top: getProportionateScreenWidth(130),
+                              left: getProportionateScreenWidth(300),
                               child: IconButton(
 
                                 onPressed: () {
-                                  showModalBottomSheet(context: context, builder: (context){
-                                    return Container(
-                                      child: SingleChildScrollView(
-                                        child: Image.asset("assets/images/sick-jay.png"),
-                                      )
-                                    );
-                                  });
+                                  print("เลขที่เอกสาร ${provider.ApproveHolidayCard[index].aBSENCEDOCUMENT}");
+                                  Navigator.push(context, MaterialPageRoute(builder: (context){
+                                    return WebViewLeaving(documentId: "${provider.ApproveHolidayCard[index].aBSENCEDOCUMENT}",typeLeave: "${provider.ApproveHolidayCard[index].aBSENCECODE}",);
+                                  }));
+                                 /* showModalBottomSheet(context: context, builder: (context){
+                                    return WebViewLeaving(documentId: "${provider.ApproveHolidayCard[index].aBSENCEDOCUMENT}",);
+                                  });*/
+
+
+
                                 },
-                                icon: const Icon(Icons.attachment_sharp,color: Colors.black,),
+                                icon:  Icon(Icons.attachment_sharp,color: Colors.black,size: getProportionateScreenHeight(30),),
                               ),
-                            ):
-                            Container(),
+                            )
+                            /*Container(),*/
                           ],
                         )
                       ));
@@ -242,6 +257,8 @@ class _BodyApproveState extends State<BodyApprove> {
       ),
     );
   }
+
+
 
   Future<Object> getDataHoliday(String empCode, String name) async {
     holidayModels.clear();
@@ -473,6 +490,7 @@ class _BodyApproveState extends State<BodyApprove> {
           ApproveHoliday approveHolidayCard = ApproveHoliday.fromJson(map);
           //   setState(() {
           provider.addLeavingCard(approveHolidayCard);
+          debugPrint(result.toString());
           debugPrint('ดึงข้อมูลการ์ด');
           // LeavingModels.add(leavingCard);
           //  });
@@ -527,7 +545,9 @@ class _BodyApproveState extends State<BodyApprove> {
       '02': AppLocalizations.of(context).translate('lagit'),
       'AB': AppLocalizations.of(context).translate('lagitDiscount'),
       '11': AppLocalizations.of(context).translate('sick'),
+      'BA': AppLocalizations.of(context).translate('sickDiscount'),
       '14': AppLocalizations.of(context).translate('lakron'),
+      'BD': AppLocalizations.of(context).translate('lakronDiscount'),
       '12': AppLocalizations.of(context).translate('accident'),
       '29': AppLocalizations.of(context).translate('lapukron'),
     };
@@ -537,11 +557,13 @@ class _BodyApproveState extends State<BodyApprove> {
   int? ColorTypeLeaving(String date) {
     Map<String, int> dataMap = {
       '02': 0xF0EC9A42,
-      '11': 0xFF4BC9EE,
-      '14': 0xA98540F3,
-      '12': 0xA9E324BA,
-      '29': 0xF53E5EFA,
       'AB': 0xF0EC9A42,
+      '11': 0xFF4BC9EE,
+      'BA': 0xFF4BC9EE,
+      '14': 0xA98540F3,
+      'BD': 0xA98540F3,
+      '12': 0xA9E324BA, //อุบัติเหตุในการทำงาน
+      '29': 0xF53E5EFA,
     };
     return dataMap[date];
   }
@@ -610,3 +632,5 @@ class _BodyApproveState extends State<BodyApprove> {
   }
 
 }
+
+

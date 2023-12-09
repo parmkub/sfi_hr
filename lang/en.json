@@ -33,6 +33,7 @@
   "confirmByEmail": "Confirm by email",
   "checkSucsess": "You can register to use the application",
   "checkUnScusess": "You can't register to use the application. Please contact HRI",
+  "paySlip": "Pay Slip",
 
 
 
@@ -80,6 +81,7 @@
   "lakron": "Maternity",
   "lakronDiscount": "Discount Maternity Leave",
   "absentFromWork": "Absent",
+  "laVl": "Vacation VL",
   "accident": "Accident",
   "noApprove": "No Approve",
   "because": "Because",

@@ -2,20 +2,37 @@ import 'package:flutter/material.dart';
 import 'package:sfiasset/app_localizations.dart';
 import 'package:sfiasset/components/sigout_process.dart';
 import 'package:sfiasset/constans.dart';
+import 'package:sfiasset/screens/jobEntry/job_screen.dart';
+import 'package:sfiasset/screens/jobEntry/job_sign_in/job_sign_in_screen.dart';
 import 'package:sfiasset/size_config.dart';
 
 Future<void> normalDialog(BuildContext context, String message,IconData icon,Color color) async {
   showDialog(context: context, builder: (context)=>SimpleDialog(
-    title: Text(message),
+    title: Text('ข้อความ',style: TextStyle(color: kTextColor,fontSize: getProportionateScreenWidth(20)),),
     children: <Widget>[
+
        Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
           Icon(
             icon,
-            size: getProportionateScreenWidth(50),
+            size: getProportionateScreenHeight(80),
             color: color
           )
+        ],
+      ),
+      Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+
+        children: <Widget>[
+          Expanded(child: Padding(
+            padding: const EdgeInsets.all(10),
+            child: Align(
+              alignment: Alignment.center,
+              child: Text(message,style:  TextStyle(color: kTextColor,fontSize: getProportionateScreenHeight(16)),),
+            ),))
+
+
         ],
       ),
       Row(
@@ -25,7 +42,160 @@ Future<void> normalDialog(BuildContext context, String message,IconData icon,Col
             onPressed: () => Navigator.pop(context),
             child:  Text(
               AppLocalizations.of(context).translate('ok'),
-              style: TextStyle(fontSize: getProportionateScreenWidth(16),color: Colors.green),
+              style: TextStyle(fontSize: getProportionateScreenHeight(16),color: Colors.green),
+            ),
+          )
+
+        ],
+      )
+
+    ],
+  ));
+}
+
+Future<void> normalDialogNavigator(BuildContext context, String message,IconData icon,Color color,String navigator) async {
+  showDialog(context: context, builder: (context)=>SimpleDialog(
+    title: Text('ข้อความ',style: TextStyle(color: kTextColor,fontSize: getProportionateScreenHeight(20)),),
+    children: <Widget>[
+
+      Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          Icon(
+              icon,
+              size: getProportionateScreenHeight(80),
+              color: color
+          )
+        ],
+      ),
+      Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+
+        children: <Widget>[
+          Expanded(child: Padding(
+            padding: const EdgeInsets.all(10),
+            child: Align(
+              alignment: Alignment.center,
+              child: Text(message,style:  TextStyle(color: kTextColor,fontSize: getProportionateScreenHeight(16)),),
+            ),))
+
+
+        ],
+      ),
+      Row(
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: <Widget>[
+          TextButton(
+            onPressed: () {
+              Navigator.pop(context);
+              Navigator.pushNamed(context, navigator);
+            }       ,
+      child:  Text(
+              AppLocalizations.of(context).translate('ok'),
+              style: TextStyle(fontSize: getProportionateScreenHeight(16),color: Colors.green),
+            ),
+          )
+
+        ],
+      )
+
+    ],
+  ));
+}
+Future<void> normalDialogLoginJob(BuildContext context, String message,IconData icon,Color color,String status) async {
+  showDialog(context: context, builder: (context)=>SimpleDialog(
+    title: Text('ข้อความ',style: TextStyle(color: kTextColor,fontSize: getProportionateScreenHeight(20)),),
+    children: <Widget>[
+
+      Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          Icon(
+              icon,
+              size: getProportionateScreenHeight(80),
+              color: color
+          )
+        ],
+      ),
+      Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+
+        children: <Widget>[
+          Expanded(child: Padding(
+            padding: const EdgeInsets.all(10),
+            child: Align(
+              alignment: Alignment.center,
+              child: Text(message,style:  TextStyle(color: kTextColor,fontSize: getProportionateScreenHeight(16)),),
+            ),))
+
+
+        ],
+      ),
+      Row(
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: <Widget>[
+          TextButton(
+            onPressed: (){
+              if(status == 'success'){
+                Navigator.pop(context);
+                Navigator.pushNamedAndRemoveUntil(context, JobScreen.routName, (route) => false);
+              }else{
+                Navigator.pop(context);
+              }
+      },
+            child:  Text(
+              AppLocalizations.of(context).translate('ok'),
+              style: TextStyle(fontSize: getProportionateScreenHeight(16),color: Colors.green),
+            ),
+          )
+
+        ],
+      )
+
+    ],
+  ));
+}
+
+Future<void> normalDialogJobRegister(BuildContext context, String message,IconData icon,Color color,String status) async {
+  showDialog(context: context, builder: (context)=>SimpleDialog(
+    title: Text('ข้อความ',style: TextStyle(color: kTextColor,fontSize: getProportionateScreenHeight(20)),),
+    children: <Widget>[
+
+      Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          Icon(
+              icon,
+              size: getProportionateScreenWidth(80),
+              color: color
+          )
+        ],
+      ),
+      Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          Align(
+            alignment: Alignment.center,
+            child: Text(message,style: const TextStyle(color: kTextColor),),
+          ),
+        ],
+      ),
+      Row(
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: <Widget>[
+          TextButton(
+            onPressed: () {
+              if(status == 'success') {
+                Navigator.pop(context);
+                Navigator.pop(context);
+                Navigator.pushNamed(context, JobSignInScreen.routName);
+              }else{
+                Navigator.pop(context);
+              }
+            },
+            child:  Text(
+              AppLocalizations.of(context).translate('ok'),
+              style: TextStyle(fontSize: getProportionateScreenHeight(16),color: Colors.green),
             ),
           )
 
@@ -79,11 +249,11 @@ Future<void> normalDialogYesNo(BuildContext context, String message ) async {
                       ,
                       child:  Text(
                         AppLocalizations.of(context).translate('yes'),
-                        style: TextStyle(fontSize: getProportionateScreenWidth(16.0),color: Colors.green),
+                        style: TextStyle(fontSize: getProportionateScreenHeight(16.0),color: Colors.green),
                       ),
                     ),
                   ),),
-                SizedBox(width: getProportionateScreenWidth(10.0),),
+                SizedBox(width: getProportionateScreenHeight(10.0),),
                 // ignore: deprecated_member_use
 
                 Expanded(

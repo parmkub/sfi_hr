@@ -1,7 +1,12 @@
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:provider/provider.dart';
 import 'package:sfiasset/app_localizations.dart';
+import 'package:sfiasset/firebase_options.dart';
+import 'package:sfiasset/providers/Job_user_profile_provider.dart';
 import 'package:sfiasset/providers/approve_chang_holiday_provider.dart';
 import 'package:sfiasset/providers/approve_holiday_provider.dart';
 import 'package:sfiasset/providers/leaving_provider.dart';
@@ -9,7 +14,28 @@ import 'package:sfiasset/routs.dart';
 import 'package:sfiasset/screens/splash_screen/splash_screen.dart';
 import 'package:sfiasset/theme.dart';
 
-void main() {
+Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
+  print('Handling a background message ${message.messageId}');
+}
+
+void main() async{
+  WidgetsFlutterBinding.ensureInitialized();
+  SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp,DeviceOrientation.portraitDown]);
+  await Firebase.initializeApp(
+      options: DefaultFirebaseOptions.currentPlatform
+  );
+  FirebaseMessaging messaging = FirebaseMessaging.instance;
+  FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
+  await messaging.requestPermission(
+    alert: true,
+    announcement: false,
+    badge: true,
+    carPlay: false,
+    criticalAlert: false,
+    provisional: false,
+    sound: true,
+  );
+
   runApp(MultiProvider(providers: [
     ChangeNotifierProvider(create: (context) {
       return LeavingProvider();
@@ -19,6 +45,9 @@ void main() {
     }),
     ChangeNotifierProvider(create: (context){
       return ApproveChangHolidayProvider();
+    }),
+    ChangeNotifierProvider(create: (context){
+      return JobUerProfileProvider();
     })
   ], child: const MyApp()));
 }

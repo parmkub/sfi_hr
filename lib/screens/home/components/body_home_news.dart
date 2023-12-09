@@ -1,5 +1,7 @@
 import 'dart:convert';
 
+import 'package:carousel_slider/carousel_options.dart';
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:sfiasset/app_localizations.dart';
@@ -59,7 +61,51 @@ class _BodyHomeNewsState extends State<BodyHomeNews> {
                 )),
             Expanded(
               flex: 4,
-              child: PageView.builder(
+              child: CarouselSlider.builder(
+                itemCount: publicizeAll.length,
+                itemBuilder: (context, index, realIndex) {
+                  return Container(
+                    child: GestureDetector(
+                        onTap: () {
+                          print(publicizeAll[index].iD);
+                          Navigator.pushNamed(
+                            context,
+                            PublicezeScreen.routName,
+                            arguments: {
+                              'id': publicizeAll[index].iD,
+                              'webViewType':
+                              publicizeAll[index].wEBVIEWTYPE,
+                              'publicizeDetail': publicizeAll[index].dETAIL
+                            },
+                          );
+                        },
+                        child: Card(
+                          shape: const RoundedRectangleBorder(
+                            side: BorderSide(
+                                color: kPrimaryColor, width: 0.2),
+                          ),
+                          elevation: 5,
+                          child: Image.network(
+                            '${publicizeAll[index].tHUMNAIL}',
+                            fit: BoxFit.fill,
+                          ),
+                        )),
+                  );
+                },
+                options: CarouselOptions(
+                  autoPlay: true,
+                  aspectRatio: 2.5,
+                  //enlargeCenterPage: true,
+                  enlargeStrategy: CenterPageEnlargeStrategy.height,
+                  onPageChanged: (index, reason) {
+                    setState(() {
+                      currentPageNews = index;
+                    });
+                  },
+                ),
+              ),
+
+              /*PageView.builder(
                 onPageChanged: (value) {
                   setState(() {
                     currentPageNews = value;
@@ -95,7 +141,7 @@ class _BodyHomeNewsState extends State<BodyHomeNews> {
                     ),
                   ),
                 ),
-              ),
+              ),*/
             ),
 
 

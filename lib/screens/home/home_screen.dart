@@ -18,6 +18,7 @@ import 'package:sfiasset/screens/home/components/body_home_news.dart';
 import 'package:sfiasset/screens/home/publicize_screen/publicize_screen.dart';
 import 'package:sfiasset/screens/hr_team/hr_team_screen.dart';
 import 'package:sfiasset/screens/jobEntry/job_entry_screen.dart';
+import 'package:sfiasset/screens/payment/payment_screen.dart';
 import 'package:sfiasset/screens/sign_in/sign_in_screen.dart';
 import 'package:sfiasset/screens/splash_screen/splash_screen.dart';
 import 'package:sfiasset/screens/team/team_screen.dart';
@@ -97,6 +98,14 @@ class _HomeScreenState extends State<HomeScreen> {
                           Navigator.pushNamed(context, EmpCardScreen.routName);
                           // PageChang(const BodyInformationEmp(),"บัตรพนักงาน");
                         }),
+               /*         CustomDrawerMenu(
+                            context,
+                            AppLocalizations.of(context).translate('paySlip'),
+                            Icons.payments, () {
+                          Navigator.pop(context);
+                          Navigator.pushNamed(context, PaymentScreen.routName);
+                          // PageChang(const BodyInformationEmp(),"บัตรพนักงาน");
+                        }),*/
                         CustomDrawerMenu(
                             context,
                             AppLocalizations.of(context)

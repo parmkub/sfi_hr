@@ -9,6 +9,7 @@ import 'package:sfiasset/components/default_buttom.dart';
 import 'package:sfiasset/constans.dart';
 import 'package:sfiasset/screens/connect_loss/connect_loss_screen.dart';
 import 'package:sfiasset/screens/home/home_screen.dart';
+import 'package:sfiasset/screens/menu_main_screen/menu_main.dart';
 import 'package:sfiasset/screens/sign_in/sign_in_screen.dart';
 import 'package:sfiasset/screens/splash_screen/componanents/splash_content.dart';
 import 'package:sfiasset/size_config.dart';
@@ -23,7 +24,6 @@ class Body extends StatefulWidget {
 }
 
 class _BodyState extends State<Body> {
-  // ignore: prefer_final_fields
   GlobalKey<ScaffoldState> _scaffoldKey =  GlobalKey();
   String version = '10.0';
   int newVersionCode = 0, simpleVersionCode = 0;
@@ -36,7 +36,7 @@ class _BodyState extends State<Body> {
     {"text": "HR CARE", "image": "assets/images/Splash3.png"},
   ];
 
-  int? statusConnect;
+  int? statusConnect = 0;
 
 
   @override
@@ -44,6 +44,7 @@ class _BodyState extends State<Body> {
     // TODO: implement initState
 
     checkVersionApp();
+    //checkPreference();
     super.initState();
   }
 
@@ -51,6 +52,7 @@ class _BodyState extends State<Body> {
     try {
       String url = "http://61.7.142.47:8086/dashboard/";
       await Dio().get(url).then((value) async {
+        print('statusConnect :==> $value');
         statusConnect = value.statusCode;
         if (statusConnect == 200) {
           checkPreference();
@@ -89,7 +91,11 @@ class _BodyState extends State<Body> {
   Widget build(BuildContext context) {
     return SafeArea(
       // ignore: unnecessary_null_comparison
-      child: newVersionCode == null || simpleVersionCode == null? Center(child: showProgress(),): SizedBox(
+      child: newVersionCode == null || simpleVersionCode == null
+          ? Center(
+        child: showProgress(),
+      )
+          : SizedBox(
         width: double.infinity,
         child: Column(
           children: <Widget>[
@@ -121,7 +127,7 @@ class _BodyState extends State<Body> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: List.generate(
                         splashData.length,
-                        (index) => buildDot(index),
+                            (index) => buildDot(index),
                       ),
                     ),
                     const Spacer(
@@ -129,19 +135,20 @@ class _BodyState extends State<Body> {
                     ),
                     newVersionCode > simpleVersionCode
                         ? DefaultButton(
-                            text: 'Update App Now',
-                            press: () {
-                              checkVersionApp();
-                            },
-                          )
-                        :
-                    DefaultButton(
+                      text: 'Update App Now',
+                      press: () {
+                        checkVersionApp();
+                      },
+                    )
+                        : DefaultButton(
                       text: 'Continue',
                       press: () {
-                        Navigator.pushNamed(context, SignInScreen.routName);
+                        Navigator.pushNamedAndRemoveUntil(context, MenuMainScreen.routName, (route) => false);
+
+                        // Navigator.pushNamed(
+                        //     context, SignInScreen.routName);
                       },
                     ),
-
                     const Spacer(),
                     Text(
                       'Version $version.$simpleVersionCode',
@@ -174,6 +181,7 @@ class _BodyState extends State<Body> {
   Future<void> checkVersionApp() async {
 
     await InAppUpdate.checkForUpdate().then((info) async {
+      print('info :==> $info');
       setState(() {
         newVersionCode = int.parse(info.availableVersionCode.toString()); // version code in Google Play Store
         print('BuildNewVersionCode :==> $newVersionCode');

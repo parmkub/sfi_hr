@@ -1,6 +1,7 @@
 
 
 import 'package:flutter/cupertino.dart';
+import 'package:sfiasset/model/job_blank_model.dart';
 import 'package:sfiasset/model/team_model.dart';
 import 'package:sfiasset/screens/appeal_screen/appeal_screen.dart';
 import 'package:sfiasset/screens/approve_holiday/approve_holiday_screen.dart';
@@ -23,8 +24,8 @@ import 'package:sfiasset/screens/jobEntry/job_screen.dart';
 import 'package:sfiasset/screens/jobEntry/job_setting/job_setting.dart';
 import 'package:sfiasset/screens/jobEntry/job_sign_in/job_sign_in_screen.dart';
 import 'package:sfiasset/screens/menu_main_screen/menu_main.dart';
-import 'package:sfiasset/screens/payment/payment_screen.dart';
 import 'package:sfiasset/screens/policy/policy_screen.dart';
+import 'package:sfiasset/screens/publicize_all/publicize_all_screen.dart';
 import 'package:sfiasset/screens/registor_screen/check_user_screen.dart';
 import 'package:sfiasset/screens/registor_screen/registor_screen.dart';
 import 'package:sfiasset/screens/sign_in/sign_in_screen.dart';
@@ -33,8 +34,6 @@ import 'package:sfiasset/screens/team/team_screen.dart';
 import 'package:sfiasset/screens/team_statics/team_statics_screen.dart';
 import 'package:sfiasset/screens/user_manual/user_manual_screen.dart';
 
-import 'model/job_blank_model.dart';
-import 'screens/publicize_all/publicize_all_screen.dart';
 
 
 final Map<String, WidgetBuilder> routs = {
@@ -69,7 +68,5 @@ final Map<String, WidgetBuilder> routs = {
   JobSettings.routName : (context)=> const JobSettings(),
   JobResetPassword.routName : (context)=> const JobResetPassword(),
   MenuMainScreen.routName : (context)=> const MenuMainScreen(),
-  PaymentScreen.routName : (context)=> const PaymentScreen(),
-
   // FixScreen.routName : (context)=>FixScreen(),
 };
